@@ -1,38 +1,45 @@
-# Superpowers for Codex
+# Superpowers for Codex 中文整理版
 
-Guide for using Superpowers with OpenAI Codex via native skill discovery.
+> 说明：这是 `Superpowers` 在 Codex 上使用方式的中文整理版。英文原文保持不变。
 
-## Quick Install
+## 这是什么
 
-Tell Codex:
+这是 `Superpowers` 在 OpenAI Codex 上的使用指南。核心思路是利用 Codex 的原生 skill discovery，从指定目录中自动发现并按需加载 skills。
 
-```
+## 快速安装
+
+直接对 Codex 说：
+
+```text
 Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
 ```
 
-## Manual Installation
+## 手动安装
 
-### Prerequisites
+### 前提条件
 
-- OpenAI Codex CLI
-- Git
+- 已安装 OpenAI Codex CLI
+- 已安装 Git
 
-### Steps
+### 步骤
 
-1. Clone the repo:
+1. 克隆仓库：
+
    ```bash
    git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
    ```
 
-2. Create the skills symlink:
+2. 创建 skills 软链接：
+
    ```bash
    mkdir -p ~/.agents/skills
    ln -s ~/.codex/superpowers/skills ~/.agents/skills/superpowers
    ```
 
-3. Restart Codex.
+3. 重启 Codex。
 
-4. **For subagent skills** (optional): Skills like `dispatching-parallel-agents` and `subagent-driven-development` require Codex's multi-agent feature. Add to your Codex config:
+4. 如果要使用依赖多代理能力的技能（可选），在 Codex 配置中加入：
+
    ```toml
    [features]
    multi_agent = true
@@ -40,39 +47,48 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 
 ### Windows
 
-Use a junction instead of a symlink (works without Developer Mode):
+Windows 下可以使用 junction：
 
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
 cmd /c mklink /J "$env:USERPROFILE\.agents\skills\superpowers" "$env:USERPROFILE\.codex\superpowers\skills"
 ```
 
-## How It Works
+## 它是怎么工作的
 
-Codex has native skill discovery — it scans `~/.agents/skills/` at startup, parses SKILL.md frontmatter, and loads skills on demand. Superpowers skills are made visible through a single symlink:
+Codex 会在启动时扫描 `~/.agents/skills/`，解析其中 `SKILL.md` 的 frontmatter，并在相关任务出现时自动加载技能。
 
-```
+在 `Superpowers` 中，核心做法是通过一条软链接把整个技能库暴露给 Codex：
+
+```text
 ~/.agents/skills/superpowers/ → ~/.codex/superpowers/skills/
 ```
 
-The `using-superpowers` skill is discovered automatically and enforces skill usage discipline — no additional configuration needed.
+`using-superpowers` 这个 skill 会自动被发现，并在后续使用中强化“该用 skill 时必须用 skill”的纪律。
 
-## Usage
+## 使用方式
 
-Skills are discovered automatically. Codex activates them when:
-- You mention a skill by name (e.g., "use brainstorming")
-- The task matches a skill's description
-- The `using-superpowers` skill directs Codex to use one
+通常无需手工激活，Codex 会在这些情况下自动调用：
 
-### Personal Skills
+- 你直接提到某个 skill 的名字
+- 当前任务与某个 skill 的描述匹配
+- `using-superpowers` skill 判断应当进一步调用某个 skill
 
-Create your own skills in `~/.agents/skills/`:
+## 自定义个人技能
+
+你也可以把自己的 skill 放到：
+
+```bash
+~/.agents/skills/
+```
+
+示例：
 
 ```bash
 mkdir -p ~/.agents/skills/my-skill
 ```
 
-Create `~/.agents/skills/my-skill/SKILL.md`:
+然后创建 `SKILL.md`：
 
 ```markdown
 ---
@@ -85,42 +101,46 @@ description: Use when [condition] - [what it does]
 [Your skill content here]
 ```
 
-The `description` field is how Codex decides when to activate a skill automatically — write it as a clear trigger condition.
+其中 `description` 非常重要，因为 Codex 会根据它判断何时自动触发该 skill。
 
-## Updating
+## 更新
 
 ```bash
 cd ~/.codex/superpowers && git pull
 ```
 
-Skills update instantly through the symlink.
+因为 skills 是通过软链接暴露给 Codex 的，所以更新后通常无需额外同步。
 
-## Uninstalling
+## 卸载
 
 ```bash
 rm ~/.agents/skills/superpowers
 ```
 
-**Windows (PowerShell):**
-```powershell
-Remove-Item "$env:USERPROFILE\.agents\skills\superpowers"
+如果还要删掉源码仓库：
+
+```bash
+rm -rf ~/.codex/superpowers
 ```
 
-Optionally delete the clone: `rm -rf ~/.codex/superpowers` (Windows: `Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\superpowers"`).
+Windows 下可用 PowerShell 对应命令删除。
 
-## Troubleshooting
+## 常见问题
 
-### Skills not showing up
+### Skills 没有显示出来
 
-1. Verify the symlink: `ls -la ~/.agents/skills/superpowers`
-2. Check skills exist: `ls ~/.codex/superpowers/skills`
-3. Restart Codex — skills are discovered at startup
+依次检查：
 
-### Windows junction issues
+1. 软链接是否存在
+2. `~/.codex/superpowers/skills` 下是否真的有 skill
+3. 是否已经重启 Codex
 
-Junctions normally work without special permissions. If creation fails, try running PowerShell as administrator.
+### Windows 下 junction 创建失败
 
-## Getting Help
+可尝试用管理员权限运行 PowerShell。
 
-- Report issues: https://github.com/obra/superpowers/issues
-- Main documentation: https://github.com/obra/superpowers
+## 相关文件
+
+- 英文原文：[README.codex.md](/Users/zhanyu/projects/superpowers/docs/README.codex.md)
+- 仓库入口：[README.md](/Users/zhanyu/projects/superpowers/README.md)
+
