@@ -1,12 +1,12 @@
-# Visual Brainstorming 重构：浏览器负责展示，终端负责命令
+# 可视化头脑风暴重构：浏览器负责展示，终端负责命令
 
 **日期：** 2026-02-19  
-**状态：** Approved  
+**状态：** 已批准  
 **范围：** `lib/brainstorm-server/`、`skills/brainstorming/visual-companion.md`、`tests/brainstorm-server/`
 
 ## 问题
 
-在 visual brainstorming 流程里，Claude 会把 `wait-for-feedback.sh` 作为后台任务运行，然后阻塞在 `TaskOutput(block=true, timeout=600s)`。这会直接占住整个 TUI，用户无法继续在终端里跟 Claude 交互，浏览器反而变成了唯一输入通道。
+在可视化头脑风暴流程里，Claude 会把 `wait-for-feedback.sh` 作为后台任务运行，然后阻塞在 `TaskOutput(block=true, timeout=600s)`。这会直接占住整个 TUI，用户无法继续在终端里跟 Claude 交互，浏览器反而变成了唯一输入通道。
 
 Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法同时监听两个输入通道。阻塞式 `TaskOutput` 用错了原语，它试图模拟平台本身并不支持的事件驱动行为。
 
@@ -14,24 +14,24 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 
 ### 核心模型
 
-**Browser = 交互式展示层。** 用来展示 mockup，也让用户点击选择选项。选择结果由服务端记录。
+**浏览器 = 交互式展示层。** 用来展示 mockup，也让用户点击选择选项。选择结果由服务端记录。
 
-**Terminal = 对话通道。** 永远不阻塞，永远可用。用户继续在这里和 Claude 对话。
+**终端 = 对话通道。** 永远不阻塞，永远可用。用户继续在这里和 Claude 对话。
 
 ### 循环
 
 1. Claude 把 HTML 文件写到 session 目录
-2. 服务端通过 chokidar 检测到变更，并向浏览器推送 WebSocket reload（这一点保持不变）
+2. 服务端通过 chokidar 检测到变更，并向浏览器推送 WebSocket 重载（这一点保持不变）
 3. Claude 结束当前 turn，并提示用户去浏览器看结果，再回到终端反馈
-4. 用户查看浏览器，可选地点击某个选项，然后在终端输入反馈
+4. 用户查看浏览器，可选地点击某个选项，然后回到终端输入反馈
 5. 下一轮 turn 中，Claude 读取 `$SCREEN_DIR/.events` 里的浏览器交互事件流（点击、选择等），再与终端文本合并
 6. 继续迭代，或推进到下一步
 
-没有后台任务。没有 `TaskOutput` 阻塞。没有轮询脚本。
+没有后台任务，没有 `TaskOutput` 阻塞，也没有轮询脚本。
 
 ### 关键删除项：`wait-for-feedback.sh`
 
-整个删除。它原本的职责是把“服务端把事件打到 stdout”和“Claude 需要接收到这些事件”之间桥接起来。现在 `.events` 文件替代了它：服务端直接把用户交互事件写进去，而 Claude 用平台现有的文件读取机制去读它就行。
+直接删除。它原本的职责是桥接“服务端把事件写到 stdout”和“Claude 需要接收到这些事件”之间的通路。现在由 `.events` 文件替代：服务端直接把用户交互事件写进去，而 Claude 用平台现有的文件读取机制读取即可。
 
 ### 关键新增项：`.events` 文件（每个 screen 的事件流）
 
@@ -57,11 +57,11 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 
 **A. 把用户事件写入 `.events` 文件。**
 
-在 WebSocket `message` handler 里，在把事件打到 stdout 之后，使用 `fs.appendFileSync` 把事件以 JSON 行形式追加到 `$SCREEN_DIR/.events`。只写用户交互事件（也就是 `source: 'user-event'`），不要写服务端生命周期事件。
+在 WebSocket 的 `message` 处理器里，在把事件写到 stdout 之后，使用 `fs.appendFileSync` 把事件以 JSONL 形式追加到 `$SCREEN_DIR/.events`。只写用户交互事件（也就是 `source: 'user-event'`），不要写服务端生命周期事件。
 
 **B. 在新 screen 出现时清空 `.events`。**
 
-在 chokidar 的 `add` handler 里（检测到新的 `.html` 文件），如果 `$SCREEN_DIR/.events` 存在，就删掉它。新 screen 的出现才是清空事件流的准确信号，比在 GET `/` 时清空靠谱得多，因为 `/` 每次 reload 都会触发。
+在 chokidar 的 `add` 处理器里（检测到新的 `.html` 文件），如果 `$SCREEN_DIR/.events` 存在，就删掉它。新 screen 的出现才是清空事件流的准确信号，比在 GET `/` 时清空靠谱得多，因为 `/` 每次重载都会触发。
 
 **C. 替换 `wrapInFrame` 的内容注入方式。**
 
@@ -91,19 +91,19 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 **移除：**
 - `sendToClaude()` 函数，以及 “Sent to Claude” 的整页替换逻辑
 - `window.send()`（它原本绑定到已删除的 Send 按钮）
-- 表单提交 handler，没有 textarea 后已经没有意义，只会制造噪声
-- input change handler，同理
+- 表单提交处理器，没有 textarea 后已经没有意义，只会制造噪声
+- input change 处理器，同理
 - `pageshow` 事件监听（之前是为了解决 textarea 状态残留）
 
 **保留：**
 - WebSocket 连接、重连逻辑、事件队列
-- reload handler（收到服务端推送后执行 `window.location.reload()`）
+- 重载处理器（收到服务端推送后执行 `window.location.reload()`）
 - `window.toggleSelect()`，负责选择高亮
 - `window.selectedChoice` 状态追踪
 - `window.brainstorm.send()` 和 `window.brainstorm.choice()`，它们和已删除的 `window.send()` 不是一回事。二者调用 `sendEvent`，把事件通过 WebSocket 写回服务端，对完整 HTML 页面仍然有用
 
 **收窄：**
-- click handler 只捕获 `[data-choice]` 点击，不再拦所有按钮 / 链接。旧版需要这样做，是因为浏览器还承担反馈输入；现在它只负责选择状态追踪
+- click 处理器只捕获 `[data-choice]` 点击，不再拦所有按钮 / 链接。旧版需要这样做，是因为浏览器还承担反馈输入；现在它只负责选择状态追踪
 
 **新增：**
 - 当用户点击 `data-choice` 元素时，同时更新状态条文案，展示当前选中的选项
@@ -111,7 +111,7 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 **从 `window.brainstorm` API 中移除：**
 - `brainstorm.sendToClaude`，因为它已经不存在
 
-### `visual-companion.md`（技能 指令）
+### `visual-companion.md`（技能说明）
 
 把 “The Loop” 一节改写成上面描述的非阻塞流程，并删除以下所有内容：
 - `wait-for-feedback.sh`
@@ -145,7 +145,7 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 
 服务端代码（`index.js`、`helper.js`、`frame-template.html`）完全平台无关，只使用纯 Node.js 和浏览器 JavaScript。已经在 Codex 的后台终端交互场景下验证可用。
 
-skill 指令（`visual-companion.md`）才是平台适配层。各个平台上的 Claude 用自己的工具去启动服务、读取 `.events` 等。由于新模型不依赖任何平台专属阻塞原语，所以天然更适合跨平台。
+技能说明（`visual-companion.md`）才是平台适配层。各个平台上的 Claude 用自己的工具去启动服务、读取 `.events` 等。由于新模型不依赖任何平台专属阻塞原语，所以天然更适合跨平台。
 
 ## 这次改动带来的能力
 
