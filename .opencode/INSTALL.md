@@ -1,12 +1,12 @@
-# Installing Superpowers for OpenCode
+# 为 OpenCode 安装 Superpowers
 
-## Prerequisites
+## 前置要求
 
-- [OpenCode.ai](https://opencode.ai) installed
+- 已安装 [OpenCode.ai](https://opencode.ai)
 
-## Installation
+## 安装
 
-Add superpowers to the `plugin` array in your `opencode.json` (global or project-level):
+把 superpowers 加到 `opencode.json` 的 `plugin` 数组里（全局或项目级都可以）：
 
 ```json
 {
@@ -14,41 +14,41 @@ Add superpowers to the `plugin` array in your `opencode.json` (global or project
 }
 ```
 
-Restart OpenCode. That's it — the plugin auto-installs and registers all skills.
+重启 OpenCode。就这些，插件会自动安装并注册所有 skills。
 
-Verify by asking: "Tell me about your superpowers"
+可以通过提问来验证，例如：“Tell me about your superpowers”
 
-## Migrating from the old symlink-based install
+## 从旧的 symlink 安装方式迁移
 
-If you previously installed superpowers using `git clone` and symlinks, remove the old setup:
+如果你之前是通过 `git clone` 加符号链接的方式安装 superpowers，请先移除旧配置：
 
 ```bash
-# Remove old symlinks
+# 删除旧的符号链接
 rm -f ~/.config/opencode/plugins/superpowers.js
 rm -rf ~/.config/opencode/skills/superpowers
 
-# Optionally remove the cloned repo
+# 如有需要，删除克隆下来的仓库
 rm -rf ~/.config/opencode/superpowers
 
-# Remove skills.paths from opencode.json if you added one for superpowers
+# 如果你曾为 superpowers 添加过 skills.paths，也要从 opencode.json 里删掉
 ```
 
-Then follow the installation steps above.
+然后按上面的安装步骤重新配置。
 
-## Usage
+## 使用方式
 
-Use OpenCode's native `skill` tool:
+使用 OpenCode 原生的 `skill` 工具：
 
 ```
 use skill tool to list skills
 use skill tool to load superpowers/brainstorming
 ```
 
-## Updating
+## 更新
 
-Superpowers updates automatically when you restart OpenCode.
+每次重启 OpenCode 时，Superpowers 都会自动更新。
 
-To pin a specific version:
+如果要固定某个版本：
 
 ```json
 {
@@ -56,28 +56,28 @@ To pin a specific version:
 }
 ```
 
-## Troubleshooting
+## 故障排查
 
-### Plugin not loading
+### 插件没有加载
 
-1. Check logs: `opencode run --print-logs "hello" 2>&1 | grep -i superpowers`
-2. Verify the plugin line in your `opencode.json`
-3. Make sure you're running a recent version of OpenCode
+1. 检查日志：`opencode run --print-logs "hello" 2>&1 | grep -i superpowers`
+2. 确认 `opencode.json` 里的插件配置行正确
+3. 确保你使用的是较新的 OpenCode 版本
 
-### Skills not found
+### 找不到 Skills
 
-1. Use `skill` tool to list what's discovered
-2. Check that the plugin is loading (see above)
+1. 用 `skill` 工具列出当前已发现的 skills
+2. 确认插件确实已加载（见上面）
 
-### Tool mapping
+### 工具映射
 
-When skills reference Claude Code tools:
+当 skill 中引用 Claude Code 的工具名时：
 - `TodoWrite` → `todowrite`
-- `Task` with subagents → `@mention` syntax
-- `Skill` tool → OpenCode's native `skill` tool
-- File operations → your native tools
+- 带 subagent 的 `Task` → `@mention` 语法
+- `Skill` tool → OpenCode 原生 `skill` 工具
+- 文件操作 → 使用你当前平台的原生工具
 
-## Getting Help
+## 获取帮助
 
-- Report issues: https://github.com/obra/superpowers/issues
-- Full documentation: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
+- 问题反馈：https://github.com/obra/superpowers/issues
+- 完整文档：https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
