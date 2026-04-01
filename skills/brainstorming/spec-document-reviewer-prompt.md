@@ -1,49 +1,47 @@
-# Spec Document Reviewer Prompt Template
+# Spec 文档审查 Prompt 模板
 
-Use this template when dispatching a spec document reviewer subagent.
+在派发 spec 文档审查 subagent 时使用这个模板。
 
-**Purpose:** Verify the spec is complete, consistent, and ready for implementation planning.
+**目的：** 验证 spec 是否完整、一致，并且已经可以进入实现规划阶段。
 
-**Dispatch after:** Spec document is written to docs/superpowers/specs/
+**派发时机：** spec 文档已经写入 `docs/superpowers/specs/`
 
 ```
 Task tool (general-purpose):
-  description: "Review spec document"
+  description: "审查 spec 文档"
   prompt: |
-    You are a spec document reviewer. Verify this spec is complete and ready for planning.
+    你是一个 spec 文档审查者。请验证这个 spec 是否完整，并且已经可以进入规划阶段。
 
-    **Spec to review:** [SPEC_FILE_PATH]
+    **待审查 spec：** [SPEC_FILE_PATH]
 
-    ## What to Check
+    ## 检查项
 
-    | Category | What to Look For |
-    |----------|------------------|
-    | Completeness | TODOs, placeholders, "TBD", incomplete sections |
-    | Consistency | Internal contradictions, conflicting requirements |
-    | Clarity | Requirements ambiguous enough to cause someone to build the wrong thing |
-    | Scope | Focused enough for a single plan — not covering multiple independent subsystems |
-    | YAGNI | Unrequested features, over-engineering |
+    | 类别 | 关注点 |
+    |------|--------|
+    | 完整性 | TODO、占位符、"TBD"、未完成章节 |
+    | 一致性 | 内部矛盾、彼此冲突的需求 |
+    | 清晰度 | 是否存在会让人做错东西的歧义需求 |
+    | 范围 | 是否足够聚焦于单一计划，而不是同时覆盖多个独立子系统 |
+    | YAGNI | 未被请求的功能、过度设计 |
 
-    ## Calibration
+    ## 校准标准
 
-    **Only flag issues that would cause real problems during implementation planning.**
-    A missing section, a contradiction, or a requirement so ambiguous it could be
-    interpreted two different ways — those are issues. Minor wording improvements,
-    stylistic preferences, and "sections less detailed than others" are not.
+    **只标记那些会在实现规划阶段造成真实问题的事项。**
+    缺失章节、互相矛盾的内容、或者模糊到可能被理解成两种不同实现的需求，这些才算问题。措辞上的小修小补、文风偏好，以及“某些章节写得没别的详细”，都不算。
 
-    Approve unless there are serious gaps that would lead to a flawed plan.
+    除非存在会导致规划失真的严重缺口，否则应予以通过。
 
-    ## Output Format
+    ## 输出格式
 
-    ## Spec Review
+    ## Spec 审查
 
-    **Status:** Approved | Issues Found
+    **状态：** Approved | Issues Found
 
-    **Issues (if any):**
-    - [Section X]: [specific issue] - [why it matters for planning]
+    **问题（如有）：**
+    - [章节 X]：[具体问题] - [为什么它会影响规划]
 
-    **Recommendations (advisory, do not block approval):**
-    - [suggestions for improvement]
+    **建议（仅供参考，不阻塞通过）：**
+    - [改进建议]
 ```
 
-**Reviewer returns:** Status, Issues (if any), Recommendations
+**审查者返回：** 状态、问题（如有）、建议

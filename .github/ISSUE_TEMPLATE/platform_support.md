@@ -1,23 +1,20 @@
 ---
-name: IDE / Platform Support Request
-about: Request support for a new IDE, editor, or AI coding tool
+name: IDE / 平台支持请求
+about: 请求支持新的 IDE、编辑器或 AI 编码工具
 labels: platform-support
 ---
 
 <!--
-BEFORE FILING: Search existing issues — your IDE may already be
-requested or discussed.
+提交前请先搜索现有 issue，你的 IDE 或平台可能已经有人提过或讨论过。
 -->
 
-- [ ] I searched existing issues for this IDE/platform
+- [ ] 我已经搜索过与这个 IDE / 平台相关的现有 issue
 
-## Which IDE or platform?
-<!-- Name and link -->
+## 是哪个 IDE 或平台？
+<!-- 填写名称和链接 -->
 
-## Does this tool have a plugin or extension system?
-<!-- If yes, link to the docs. If no, explain how third-party
-     integrations typically work with this tool. -->
+## 这个工具是否有插件或扩展系统？
+<!-- 如果有，请附上文档链接。如果没有，请说明第三方通常如何与这个工具集成。 -->
 
-## Have you tried manual installation?
-<!-- Many tools work with Superpowers through manual setup even without
-     official support. Did you try? What happened? -->
+## 你是否尝试过手动安装？
+<!-- 很多工具即使没有官方支持，也能通过手动配置与 Superpowers 配合使用。你试过了吗？结果如何？ -->

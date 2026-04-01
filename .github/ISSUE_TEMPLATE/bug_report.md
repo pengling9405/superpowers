@@ -1,52 +1,45 @@
 ---
-name: Bug Report
-about: Something isn't working as expected
+name: Bug 报告
+about: 某些行为没有按预期工作
 labels: bug
 ---
 
 <!--
-BEFORE FILING: Search open AND closed issues. The Windows SessionStart
-hook alone has been reported 29 times. If your issue already exists,
-add a comment or reaction to the existing one instead.
+提交前请先搜索打开和已关闭的 issue。仅 Windows SessionStart hook 这个问题就已经被报过 29 次。如果你的问题已经存在，请直接在原 issue 下补充评论或反应。
 -->
 
-- [ ] I searched existing issues and this is not a duplicate
+- [ ] 我已搜索现有 issue，这不是重复问题
 
-## Environment
+## 环境
 
-| Field | Value |
-|-------|-------|
-| Superpowers version | |
-| Harness (Claude Code, Cursor, etc.) | |
-| Harness version | |
-| Model | |
-| OS + shell | |
+| 字段 | 值 |
+|------|----|
+| Superpowers 版本 | |
+| Harness（Claude Code、Cursor 等） | |
+| Harness 版本 | |
+| 模型 | |
+| 操作系统 + shell | |
 
-## Is this a Superpowers issue or a platform issue?
-<!-- Superpowers is a plugin. Some reported "bugs" are actually issues
-     in the underlying platform or model. If you're not sure, try
-     reproducing without Superpowers installed.
+## 这是 Superpowers 的问题，还是平台本身的问题？
+<!-- Superpowers 是一个插件。有些被报告为“bug”的问题，实际上来自底层平台或模型。如果你不确定，请尝试在不安装 Superpowers 的情况下复现。
 
-     If the problem persists without Superpowers, file the issue with
-     your platform instead. -->
+     如果移除 Superpowers 后问题依然存在，请改为向对应平台提交 issue。 -->
 
-- [ ] I confirmed this issue does not occur without Superpowers installed
+- [ ] 我已确认这个问题不会在未安装 Superpowers 时出现
 
-## What happened?
-<!-- Be specific. "It doesn't work" is not a bug report. -->
+## 发生了什么？
+<!-- 请具体描述。“它不能用” 不是有效的 bug 报告。 -->
 
-## Steps to reproduce
+## 复现步骤
 1.
 2.
 3.
 
-## Expected behavior
-<!-- What should have happened? -->
+## 预期行为
+<!-- 本来应该发生什么？ -->
 
-## Actual behavior
-<!-- What happened instead? -->
+## 实际行为
+<!-- 实际发生了什么？ -->
 
-## Debug log or conversation transcript
-<!-- A debug log or conversation transcript showing the issue is the
-     single most helpful thing you can include. Without one, we're
-     guessing. Screenshots of error output are also useful. -->
+## 调试日志或对话记录
+<!-- 能展示这个问题的调试日志或对话记录，是你能提供的最有价值的信息。没有这些，基本只能靠猜。错误输出截图也很有帮助。 -->

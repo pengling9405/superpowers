@@ -1,34 +1,28 @@
 ---
-name: Feature Request
-about: Propose a change or addition to Superpowers
+name: 功能请求
+about: 为 Superpowers 提议新增功能或改动
 labels: enhancement
 ---
 
 <!--
-BEFORE FILING: Search open AND closed issues. Many features have been
-requested before — some were implemented differently, some are in
-progress, and some were intentionally declined.
+提交前请先搜索打开和已关闭的 issue。很多功能以前已经被提过，其中一些以不同方式实现了，一些仍在推进，还有一些是有意拒绝的。
 -->
 
-- [ ] I searched existing issues and this has not been proposed before
+- [ ] 我已搜索现有 issue，这个提议此前没有被提出过
 
-## What problem does this solve?
-<!-- Describe the problem from your own experience. What were you doing,
-     what went wrong or was missing, and why did it matter?
+## 这个需求解决什么问题？
+<!-- 请从你的实际经历描述问题。你当时在做什么，哪里出了问题或缺了什么，以及为什么这件事重要？
 
-     "It would be cool if..." is not a problem statement. -->
+     “如果能这样会很酷……” 不是问题陈述。 -->
 
-## Proposed solution
-<!-- What specifically do you want to happen? Be concrete. -->
+## 提议的解决方案
+<!-- 你具体希望发生什么？请写得明确。 -->
 
-## What alternatives did you consider?
-<!-- What other approaches could solve the same problem? Why is your
-     proposal better? -->
+## 你考虑过哪些替代方案？
+<!-- 还有哪些方式能解决同一个问题？为什么你的方案更好？ -->
 
-## Is this appropriate for core Superpowers?
-<!-- Would this benefit someone working on a completely different kind
-     of project? If this is specific to your domain, workflow, or a
-     third-party tool, it may belong as its own plugin instead. -->
+## 这是否适合进入 Superpowers 核心？
+<!-- 它是否也能帮助做完全不同项目的人？如果这个需求只适用于你的领域、工作流或某个第三方工具，它更可能适合做成独立插件。 -->
 
-## Context
-<!-- Optional: version info, harness, model, workflow where you hit this. -->
+## 背景信息
+<!-- 可选：版本信息、harness、模型、你遇到这个问题时的工作流等。 -->
