@@ -251,7 +251,7 @@ TDD cycle:
 ## When Mocks Become Too Complex
 
 **Warning signs:**
-- Mock 配置方式 longer than test logic
+- Mock 配置 longer than test logic
 - Mocking everything to make test pass
 - Mocks missing methods real components have
 - Test breaks when mock changes
@@ -285,7 +285,7 @@ TDD cycle:
 
 - Assertion checks for `*-mock` test IDs
 - Methods only called in test files
-- Mock 配置方式 is >50% of test
+- Mock 配置 is >50% of test
 - Test fails when you remove mock
 - Can't explain why mock is needed
 - Mocking "just to be safe"

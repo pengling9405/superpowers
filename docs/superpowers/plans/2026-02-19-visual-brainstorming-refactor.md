@@ -423,7 +423,7 @@ Replace the entire "The Loop" section with:
 
 2. **Tell user what to expect and end your turn:**
    - Remind them of the URL (every step, not just first)
-   - Give a brief text summary of what's on screen (e.g., "Showing 3 layout options for the homepage")
+   - Give a brief text summary of what's on screen (e.g., "Showing 3 layout options for the 首页")
    - Ask them to respond in the terminal: "Take a look and let me know what you think. Click to select an option if you'd like."
 
 3. **On your next turn** — after the user responds in the terminal:

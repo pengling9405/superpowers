@@ -149,7 +149,7 @@ Forces explicit choice.
 4. **Make agent act** - "What do you do?" not "What should you do?"
 5. **No easy outs** - Can't defer to "I'd ask your human partner" without choosing
 
-### 测试 配置方式
+### 测试配置
 
 ```markdown
 IMPORTANT: This is a real scenario. You must choose and act.

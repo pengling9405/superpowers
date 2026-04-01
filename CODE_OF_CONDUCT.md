@@ -71,12 +71,12 @@
 
 ## 署名
 
-本行为准则改编自 [Contributor Covenant][homepage] 2.0 版本：
+本行为准则改编自 [Contributor Covenant][首页] 2.0 版本：
 https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
 
 社区影响分级标准参考了 [Mozilla 的行为准则执行阶梯](https://github.com/mozilla/diversity)。
 
-[homepage]: https://www.contributor-covenant.org
+[首页]: https://www.contributor-covenant.org
 
 关于这份行为准则的常见问题，可参考 FAQ：
 https://www.contributor-covenant.org/faq

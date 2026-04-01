@@ -52,7 +52,7 @@ The integration test verifies the `subagent-driven-development` skill correctly:
 
 ### How It Works
 
-1. **配置方式**: Creates a temporary Node.js project with a minimal implementation plan
+1. **配置**: Creates a temporary Node.js project with a minimal implementation plan
 2. **Execution**: Runs Claude Code in headless mode with the skill
 3. **验证**: Parses the session transcript (`.jsonl` file) to verify:
    - Skill tool was invoked

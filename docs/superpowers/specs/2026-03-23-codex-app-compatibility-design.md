@@ -68,7 +68,7 @@ New section between "概览" and "Directory Selection 流程":
 **Step 0: Check if Already in an Isolated Workspace**
 
 Run the detection commands. If `GIT_DIR != GIT_COMMON`, skip worktree creation entirely. Instead:
-1. Skip to "Run Project 配置方式" subsection under Creation 步骤 — `npm install` etc. is idempotent, worth running for safety
+1. Skip to "Run Project 配置" subsection under Creation 步骤 — `npm install` etc. is idempotent, worth running for safety
 2. Then "Verify Clean Baseline" — run tests
 3. Report with branch state:
    - On a branch: "Already in an isolated workspace at `<path>` on branch `<name>`. Tests passing. Ready to implement."
@@ -80,11 +80,11 @@ Safety 验证 (.gitignore check) is skipped when Step 0 fires — irrelevant for
 
 Update the Integration section's "Called by" entries. Change the description on each from context-specific text to: "Ensures isolated workspace (creates one or verifies existing)". For 示例, the `subagent-driven-development` entry changes from "REQUIRED: Set up isolated workspace before starting" to "REQUIRED: Ensures isolated workspace (creates one or verifies existing)".
 
-**Sandbox fallback:** If `GIT_DIR == GIT_COMMON` and the skill proceeds to Creation 步骤, but `git worktree add -b` fails with a permission error (e.g., Seatbelt sandbox denial), treat this as a late-detected restricted environment. Fall back to the Step 0 "already in workspace" behavior — skip creation, run 配置方式 and baseline tests in the current directory, report accordingly.
+**Sandbox fallback:** If `GIT_DIR == GIT_COMMON` and the skill proceeds to Creation 步骤, but `git worktree add -b` fails with a permission error (e.g., Seatbelt sandbox denial), treat this as a late-detected restricted environment. Fall back to the Step 0 "already in workspace" behavior — skip creation, run 配置 and baseline tests in the current directory, report accordingly.
 
 After reporting in Step 0, STOP. Do not continue to Directory Selection or Creation 步骤.
 
-**Everything else unchanged:** Directory Selection, Safety 验证, Creation 步骤, Project 配置方式, Baseline Tests, Quick 参考, 常见 Mistakes, Red Flags.
+**Everything else unchanged:** Directory Selection, Safety 验证, Creation 步骤, Project 配置, Baseline Tests, Quick 参考, 常见 Mistakes, Red Flags.
 
 ### 2. `finishing-a-development-branch/SKILL.md` — Add 步骤 1.5 + cleanup guard (~20 lines)
 
@@ -235,7 +235,7 @@ If a third skill needs the same detection pattern, extract it into a shared `ref
 2. Detection in Worktree thread (Full access) — same detection, different sandbox behavior
 3. Finishing skill handoff format — verify agent emits handoff payload, not 4-option menu
 4. Full lifecycle — detection → commit → finishing detection → correct behavior → cleanup
-5. **Sandbox fallback in Local thread** — Start a Codex App **Local thread** (workspace-write sandbox). Prompt: "Use the superpowers skill `using-git-worktrees` to set up an isolated workspace for implementing a small change." Pre-check: `git checkout -b test-sandbox-check` should fail with `Operation not permitted`. Expected: the skill detects `GIT_DIR == GIT_COMMON` (normal repo), attempts `git worktree add -b`, hits Seatbelt denial, falls back to Step 0 "already in workspace" behavior — runs 配置方式, baseline tests, reports ready from current directory. Pass: agent recovers gracefully without cryptic error messages. Fail: agent prints raw Seatbelt error, retries, or gives up with confusing output.
+5. **Sandbox fallback in Local thread** — Start a Codex App **Local thread** (workspace-write sandbox). Prompt: "Use the superpowers skill `using-git-worktrees` to set up an isolated workspace for implementing a small change." Pre-check: `git checkout -b test-sandbox-check` should fail with `Operation not permitted`. Expected: the skill detects `GIT_DIR == GIT_COMMON` (normal repo), attempts `git worktree add -b`, hits Seatbelt denial, falls back to Step 0 "already in workspace" behavior — runs 配置, baseline tests, reports ready from current directory. Pass: agent recovers gracefully without cryptic error messages. Fail: agent prints raw Seatbelt error, retries, or gives up with confusing output.
 
 ### Regression
 

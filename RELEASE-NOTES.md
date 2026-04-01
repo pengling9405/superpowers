@@ -744,7 +744,7 @@ These changes address observed agent behavior where they rationalize around skil
 - Added Phase 4: Design Documentation to brainstorming skill
 - Design documents now written to `docs/plans/YYYY-MM-DD-<topic>-design.md` before implementation
 - Restores functionality from original brainstorming command that was lost during skill conversion
-- Documents written before worktree 配置方式 and implementation planning
+- Documents written before worktree 配置 and implementation planning
 - Tested with subagent to verify 遵循率 under time pressure
 
 ### Breaking Changes
@@ -871,7 +871,7 @@ Users experience seamless operation: the plugin handles cloning, forking, and up
 **What this means for you:**
 
 - **First install:** Plugin automatically clones skills to `~/.config/superpowers/skills/`
-- **Forking:** During 配置方式, you'll be offered the option to fork the skills repo (if `gh` is installed)
+- **Forking:** During 配置, you'll be offered the option to fork the skills repo (if `gh` is installed)
 - **Updates:** Skills auto-update on session start (fast-forward when possible)
 - **Contributing:** Work on branches, commit locally, submit PRs to upstream
 - **No more shadowing:** Old two-tier system (personal/core) replaced with single-repo branch 工作流
@@ -886,13 +886,13 @@ If you have an existing installation:
 ### Removed 特性
 
 - **Personal superpowers overlay system** - Replaced with git branch 工作流
-- **配置方式-personal-superpowers hook** - Replaced by initialize-skills.sh
+- **配置-personal-superpowers hook** - Replaced by initialize-skills.sh
 
 ## New 特性
 
 ### 技能 Repository Infrastructure
 
-**Automatic Clone & 配置方式** (`lib/initialize-skills.sh`)
+**Automatic Clone & 配置** (`lib/initialize-skills.sh`)
 - Clones obra/superpowers-skills on first run
 - Offers fork creation if GitHub CLI is installed
 - Sets up upstream/origin remotes correctly
@@ -971,7 +971,7 @@ If you have an existing installation:
 
 - Fixed duplicate upstream remote addition when forking
 - Fixed find-skills double "skills/" prefix in output
-- Removed obsolete 配置方式-personal-superpowers call from session-start
+- Removed obsolete 配置-personal-superpowers call from session-start
 - Fixed path references throughout hooks and commands
 
 ## Documentation

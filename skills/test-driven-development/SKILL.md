@@ -346,7 +346,7 @@ Can't check all boxes? You skipped TDD. Start over.
 | Don't know how to test | Write wished-for API. Write assertion first. Ask your human partner. |
 | Test too complicated | Design too complicated. Simplify interface. |
 | Must mock everything | Code too coupled. Use dependency injection. |
-| Test 配置方式 huge | Extract helpers. Still complex? Simplify design. |
+| Test 配置 huge | Extract helpers. Still complex? Simplify design. |
 
 ## 调试 Integration
 

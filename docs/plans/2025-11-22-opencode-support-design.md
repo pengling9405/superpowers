@@ -242,7 +242,7 @@ superpowers/
 
 2. Create `.opencode/INSTALL.md`
    - Installation instructions
-   - Directory 配置方式
+   - Directory 配置
    - Configuration 指导
 
 3. Test OpenCode implementation
