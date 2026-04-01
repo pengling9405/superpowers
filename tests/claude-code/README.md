@@ -1,64 +1,65 @@
-# Claude Code Skills Tests
+# Claude Code Skills 测试
 
-Automated tests for superpowers skills using Claude Code CLI.
+使用 Claude Code CLI 对 superpowers skills 进行自动化测试。
 
-## Overview
+## 概览
 
-This test suite verifies that skills are loaded correctly and Claude follows them as expected. Tests invoke Claude Code in headless mode (`claude -p`) and verify the behavior.
+这套测试用于验证 skills 是否被正确加载，以及 Claude 是否按预期遵循这些 skills。测试通过无头模式调用 Claude Code（`claude -p`），然后验证行为。
 
-## Requirements
+## 要求
 
-- Claude Code CLI installed and in PATH (`claude --version` should work)
-- Local superpowers plugin installed (see main README for installation)
+- 已安装 Claude Code CLI，并且在 PATH 中（`claude --version` 应该能运行）
+- 已安装本地 superpowers 插件（安装方式见主 README）
 
-## Running Tests
+## 运行测试
 
-### Run all fast tests (recommended):
+### 运行全部快速测试（推荐）：
 ```bash
 ./run-skill-tests.sh
 ```
 
-### Run integration tests (slow, 10-30 minutes):
+### 运行集成测试（较慢，10 到 30 分钟）：
 ```bash
 ./run-skill-tests.sh --integration
 ```
 
-### Run specific test:
+### 运行单个测试：
 ```bash
 ./run-skill-tests.sh --test test-subagent-driven-development.sh
 ```
 
-### Run with verbose output:
+### 以详细输出模式运行：
 ```bash
 ./run-skill-tests.sh --verbose
 ```
 
-### Set custom timeout:
+### 设置自定义超时：
 ```bash
-./run-skill-tests.sh --timeout 1800  # 30 minutes for integration tests
+./run-skill-tests.sh --timeout 1800  # 给集成测试 30 分钟
 ```
 
-## Test Structure
+## 测试结构
 
 ### test-helpers.sh
-Common functions for skills testing:
-- `run_claude "prompt" [timeout]` - Run Claude with prompt
-- `assert_contains output pattern name` - Verify pattern exists
-- `assert_not_contains output pattern name` - Verify pattern absent
-- `assert_count output pattern count name` - Verify exact count
-- `assert_order output pattern_a pattern_b name` - Verify order
-- `create_test_project` - Create temp test directory
-- `create_test_plan project_dir` - Create sample plan file
 
-### Test Files
+skills 测试通用函数：
+- `run_claude "prompt" [timeout]` - 用 prompt 运行 Claude
+- `assert_contains output pattern name` - 验证输出中包含某个模式
+- `assert_not_contains output pattern name` - 验证输出中不包含某个模式
+- `assert_count output pattern count name` - 验证某模式出现的精确次数
+- `assert_order output pattern_a pattern_b name` - 验证先后顺序
+- `create_test_project` - 创建临时测试目录
+- `create_test_plan project_dir` - 创建示例计划文件
 
-Each test file:
-1. Sources `test-helpers.sh`
-2. Runs Claude Code with specific prompts
-3. Verifies expected behavior using assertions
-4. Returns 0 on success, non-zero on failure
+### 测试文件
 
-## Example Test
+每个测试文件都应该：
+1. 引入 `test-helpers.sh`
+2. 使用特定 prompt 运行 Claude Code
+3. 用断言验证预期行为
+4. 成功时返回 0，失败时返回非 0
+
+## 示例测试
 
 ```bash
 #!/usr/bin/env bash
@@ -69,90 +70,94 @@ source "$SCRIPT_DIR/test-helpers.sh"
 
 echo "=== Test: My Skill ==="
 
-# Ask Claude about the skill
+# 向 Claude 询问这个 skill
 output=$(run_claude "What does the my-skill skill do?" 30)
 
-# Verify response
+# 验证响应
 assert_contains "$output" "expected behavior" "Skill describes behavior"
 
 echo "=== All tests passed ==="
 ```
 
-## Current Tests
+## 当前测试
 
-### Fast Tests (run by default)
+### 快速测试（默认运行）
 
 #### test-subagent-driven-development.sh
-Tests skill content and requirements (~2 minutes):
-- Skill loading and accessibility
-- Workflow ordering (spec compliance before code quality)
-- Self-review requirements documented
-- Plan reading efficiency documented
-- Spec compliance reviewer skepticism documented
-- Review loops documented
-- Task context provision documented
 
-### Integration Tests (use --integration flag)
+测试 skill 内容和要求（约 2 分钟）：
+- skill 是否能被加载与访问
+- 工作流顺序是否正确（spec compliance 在 code quality 之前）
+- 是否记录了 self-review 要求
+- 是否记录了 plan 读取效率要求
+- 是否记录了 spec compliance reviewer 的怀疑态度
+- 是否记录了 review loop
+- 是否记录了 task 上下文提供方式
+
+### 集成测试（使用 `--integration`）
 
 #### test-subagent-driven-development-integration.sh
-Full workflow execution test (~10-30 minutes):
-- Creates real test project with Node.js setup
-- Creates implementation plan with 2 tasks
-- Executes plan using subagent-driven-development
-- Verifies actual behaviors:
-  - Plan read once at start (not per task)
-  - Full task text provided in subagent prompts
-  - Subagents perform self-review before reporting
-  - Spec compliance review happens before code quality
-  - Spec reviewer reads code independently
-  - Working implementation is produced
-  - Tests pass
-  - Proper git commits created
 
-**What it tests:**
-- The workflow actually works end-to-end
-- Our improvements are actually applied
-- Subagents follow the skill correctly
-- Final code is functional and tested
+完整工作流执行测试（约 10 到 30 分钟）：
+- 创建真实测试项目和 Node.js 配置
+- 创建包含 2 个任务的实现计划
+- 使用 `subagent-driven-development` 执行计划
+- 验证真实行为：
+  - plan 只在开始时读取一次（而不是每个 task 读一次）
+  - subagent prompt 中提供了完整 task 文本
+  - subagent 在汇报前会先自审
+  - spec compliance review 发生在 code quality 之前
+  - spec reviewer 会独立阅读代码
+  - 最终能产出可工作的实现
+  - 测试通过
+  - 正确创建 git commit
 
-## Adding New Tests
+**它验证什么：**
+- 这套工作流是否真的能端到端工作
+- 我们的改进是否真的被应用
+- subagent 是否正确遵循该 skill
+- 最终代码是否可用且经过测试
 
-1. Create new test file: `test-<skill-name>.sh`
-2. Source test-helpers.sh
-3. Write tests using `run_claude` and assertions
-4. Add to test list in `run-skill-tests.sh`
-5. Make executable: `chmod +x test-<skill-name>.sh`
+## 新增测试的方法
 
-## Timeout Considerations
+1. 新建测试文件：`test-<skill-name>.sh`
+2. 引入 `test-helpers.sh`
+3. 使用 `run_claude` 和断言编写测试
+4. 把它加入 `run-skill-tests.sh` 的测试列表
+5. 赋可执行权限：`chmod +x test-<skill-name>.sh`
 
-- Default timeout: 5 minutes per test
-- Claude Code may take time to respond
-- Adjust with `--timeout` if needed
-- Tests should be focused to avoid long runs
+## Timeout 说明
 
-## Debugging Failed Tests
+- 默认超时：每个测试 5 分钟
+- Claude Code 可能需要一定时间响应
+- 如有需要，可以通过 `--timeout` 调整
+- 测试本身应尽量聚焦，避免跑得过久
 
-With `--verbose`, you'll see full Claude output:
+## 调试失败测试
+
+使用 `--verbose` 可以看到完整 Claude 输出：
+
 ```bash
 ./run-skill-tests.sh --verbose --test test-subagent-driven-development.sh
 ```
 
-Without verbose, only failures show output.
+如果不加 `--verbose`，只有失败时才会显示输出。
 
-## CI/CD Integration
+## CI/CD 集成
 
-To run in CI:
+在 CI 中运行：
+
 ```bash
-# Run with explicit timeout for CI environments
+# 为 CI 环境设置明确超时
 ./run-skill-tests.sh --timeout 900
 
-# Exit code 0 = success, non-zero = failure
+# 退出码 0 = 成功，非 0 = 失败
 ```
 
-## Notes
+## 备注
 
-- Tests verify skill *instructions*, not full execution
-- Full workflow tests would be very slow
-- Focus on verifying key skill requirements
-- Tests should be deterministic
-- Avoid testing implementation details
+- 这些测试验证的是 skill **指令**，不是完整执行过程
+- 完整工作流测试会非常慢
+- 重点是验证关键 skill 要求
+- 测试应尽量保持确定性
+- 避免测试具体实现细节

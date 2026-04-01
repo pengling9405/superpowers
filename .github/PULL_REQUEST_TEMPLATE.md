@@ -1,87 +1,68 @@
 <!--
-BEFORE SUBMITTING: Read every word of this template. PRs that leave
-sections blank, contain multiple unrelated changes, or show no evidence
-of human involvement will be closed without review.
+提交前请完整读完这个模板。凡是留空、混入多个无关改动，或看不出有人类参与痕迹的 PR，都会被直接关闭，不进入评审。
 -->
 
-## What problem are you trying to solve?
-<!-- Describe the specific problem you encountered. If this was a session
-     issue, include: what you were doing, what went wrong, the model's
-     exact failure mode, and ideally a transcript or session log.
+## 你想解决什么问题？
+<!-- 描述你遇到的具体问题。如果这是一次 session 问题，请写清楚：你当时在做什么、哪里出了问题、模型具体是怎么失败的，最好附上对话记录或 session 日志。
 
-     "Improving" something is not a problem statement. What broke? What
-     failed? What was the user experience that motivated this? -->
+     “改进一下某东西” 不是问题陈述。到底什么坏了？什么失败了？触发这次改动的用户体验问题是什么？ -->
 
-## What does this PR change?
-<!-- 1-3 sentences. What, not why — the "why" belongs above. -->
+## 这个 PR 改了什么？
+<!-- 用 1 到 3 句话说明。这里只写改了什么，不写为什么，为什么在上面那一节。 -->
 
-## Is this change appropriate for the core library?
-<!-- Superpowers core contains general-purpose skills and infrastructure
-     that benefit all users. Ask yourself:
+## 这项改动适合进核心库吗？
+<!-- Superpowers core 存放的是能让所有用户受益的通用 skills 和基础设施。请先问自己：
 
-     - Would this be useful to someone working on a completely different
-       kind of project than yours?
-     - Is this project-specific, team-specific, or tool-specific?
-     - Does this integrate or promote a third-party service?
+     - 这项改动对一个做完全不同项目的人也有用吗？
+     - 这是不是某个项目、团队或工具专属的需求？
+     - 这是否在集成或推广某个第三方服务？
 
-     If your change is a new skill for a specific domain, workflow tool,
-     or third-party integration, it belongs in its own plugin — not here.
-     See the plugin development docs for how to publish it separately. -->
+     如果你的改动是面向某个特定领域、某个工作流工具，或某个第三方集成的新 skill，它应该放到独立插件里，而不是提交到这里。如何单独发布，请查看插件开发文档。 -->
 
-## What alternatives did you consider?
-<!-- What other approaches did you try or evaluate before landing on this
-     one? Why were they worse? If you didn't consider alternatives, say so
-     — but know that's a red flag. -->
+## 你考虑过哪些替代方案？
+<!-- 在决定采用这个方案前，你还尝试或评估过什么？为什么它们更差？如果你根本没有考虑替代方案，请直接说明，但要知道这是一个明显的风险信号。 -->
 
-## Does this PR contain multiple unrelated changes?
-<!-- If yes: stop. Split it into separate PRs. Bundled PRs will be closed.
-     If you believe the changes are related, explain the dependency. -->
+## 这个 PR 是否包含多个无关改动？
+<!-- 如果是，先停下来，拆成多个独立 PR。打包式 PR 会被直接关闭。如果你认为这些改动相关，请解释它们的依赖关系。 -->
 
-## Existing PRs
-- [ ] I have reviewed all open AND closed PRs for duplicates or prior art
-- Related PRs: <!-- #number, #number, or "none found" -->
+## 已有 PR
+- [ ] 我已经检查过所有打开和关闭的 PR，确认没有重复或已有先例
+- Related PRs: <!-- #number, #number，或 "none found" -->
 
-<!-- If a related closed PR exists, explain what's different about your
-     approach and why it should succeed where the other didn't. -->
+<!-- 如果存在相关但已关闭的 PR，请说明你的方案有什么不同，以及为什么它能成功而之前的方案没能成功。 -->
 
-## Environment tested
+## 已测试环境
 
 | Harness (e.g. Claude Code, Cursor) | Harness version | Model | Model version/ID |
 |-------------------------------------|-----------------|-------|------------------|
 |                                     |                 |       |                  |
 
-## Evaluation
-- What was the initial prompt you (or your human partner) used to start
-  the session that led to this change?
-- How many eval sessions did you run AFTER making the change?
-- How did outcomes change compared to before the change?
+## 评估
+- 你（或你的协作者）最初用什么 prompt 开启了这次会话，并最终产出了这个改动？
+- 你在改动完成后跑了多少次 eval session？
+- 与改动之前相比，结果有什么变化？
 
-<!-- "It works" is not evaluation. Describe the before/after difference
-     you observed across multiple sessions. -->
+<!-- “It works” 不叫评估。请描述你在多次会话中观察到的前后差异。 -->
 
-## Rigor
+## 严谨性
 
-- [ ] If this is a skills change: I used `superpowers:writing-skills` and
-      completed adversarial pressure testing (paste results below)
-- [ ] This change was tested adversarially, not just on the happy path
-- [ ] I did not modify carefully-tuned content (Red Flags table,
-      rationalizations, "human partner" language) without extensive evals
-      showing the change is an improvement
+- [ ] 如果这是 skill 改动：我使用了 `superpowers:writing-skills`，并完成了对抗式压力测试（请在下方贴结果）
+- [ ] 这项改动经过了对抗式测试，而不只是 happy path
+- [ ] 我没有在缺少充分 eval 证明改进效果的情况下，修改那些精调过的内容（如 Red Flags 表、rationalizations、“human partner” 相关措辞）
 
-<!-- If you changed wording in skills that shape agent behavior, show your
-     eval methodology and results. These are not prose — they are code. -->
+<!-- 如果你改了会塑造 agent 行为的 skill 文案，请展示你的 eval 方法和结果。这些内容不是普通 prose，它们就是代码。 -->
 
-## Human review
-- [ ] A human has reviewed the COMPLETE proposed diff before submission
+## 人工审查
+- [ ] 在提交前，完整 diff 已由人类审查过
 
 <!--
-STOP. If the checkbox above is not checked, do not submit this PR.
+停下。如果上面的复选框没有勾选，就不要提交这个 PR。
 
-PRs will be closed without review if they:
-- Show no evidence of human involvement
-- Contain multiple unrelated changes
-- Promote or integrate third-party services or tools
-- Submit project-specific or personal configuration as core changes
-- Leave required sections blank or use placeholder text
-- Modify behavior-shaping content without eval evidence
+出现以下情况的 PR 会被直接关闭，不进入评审：
+- 看不出有人类参与
+- 包含多个无关改动
+- 推广或集成第三方服务或工具
+- 把项目专属或个人配置当成核心改动提交
+- 必填部分留空，或使用占位文字
+- 在没有 eval 证据的情况下修改会影响行为的内容
 -->

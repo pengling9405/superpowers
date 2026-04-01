@@ -1,20 +1,20 @@
-# Svelte Todo List - Design
+# Svelte Todo List - 设计
 
-## Overview
+## 概览
 
-A simple todo list application built with Svelte. Supports creating, completing, and deleting todos with localStorage persistence.
+一个用 Svelte 构建的简单 Todo List 应用。支持创建、完成、删除 todo，并通过 `localStorage` 持久化。
 
-## Features
+## 功能
 
-- Add new todos
-- Mark todos as complete/incomplete
-- Delete todos
-- Filter by: All / Active / Completed
-- Clear all completed todos
-- Persist to localStorage
-- Show count of remaining items
+- 添加新 todo
+- 标记 todo 为完成 / 未完成
+- 删除 todo
+- 按条件筛选：All / Active / Completed
+- 清空所有已完成项
+- 持久化到 `localStorage`
+- 显示剩余未完成项数量
 
-## User Interface
+## 用户界面
 
 ```
 ┌─────────────────────────────────────────┐
@@ -31,40 +31,40 @@ A simple todo list application built with Svelte. Supports creating, completing,
 └─────────────────────────────────────────┘
 ```
 
-## Components
+## 组件
 
 ```
 src/
-  App.svelte           # Main app, state management
+  App.svelte           # 主应用，负责状态管理
   lib/
-    TodoInput.svelte   # Text input + Add button
-    TodoList.svelte    # List container
-    TodoItem.svelte    # Single todo with checkbox, text, delete
-    FilterBar.svelte   # Filter buttons + clear completed
-    store.ts           # Svelte store for todos
-    storage.ts         # localStorage persistence
+    TodoInput.svelte   # 文本输入框 + Add 按钮
+    TodoList.svelte    # 列表容器
+    TodoItem.svelte    # 单个 todo，包含 checkbox、文本和删除按钮
+    FilterBar.svelte   # 筛选按钮 + clear completed
+    store.ts           # Svelte store，保存 todos
+    storage.ts         # localStorage 持久化
 ```
 
-## Data Model
+## 数据模型
 
 ```typescript
 interface Todo {
   id: string;        // UUID
-  text: string;      // Todo text
+  text: string;      // Todo 文本
   completed: boolean;
 }
 
 type Filter = 'all' | 'active' | 'completed';
 ```
 
-## Acceptance Criteria
+## 验收标准
 
-1. Can add a todo by typing and pressing Enter or clicking Add
-2. Can toggle todo completion by clicking checkbox
-3. Can delete a todo by clicking X button
-4. Filter buttons show correct subset of todos
-5. "X items left" shows count of incomplete todos
-6. "Clear completed" removes all completed todos
-7. Todos persist across page refresh (localStorage)
-8. Empty state shows helpful message
-9. All tests pass
+1. 可以通过输入文本后按 Enter，或点击 Add 来新增 todo
+2. 可以通过点击 checkbox 切换完成状态
+3. 可以通过点击 X 按钮删除 todo
+4. 筛选按钮能正确显示对应子集
+5. “X items left” 能正确显示未完成 todo 数量
+6. “Clear completed” 会移除所有已完成 todo
+7. 刷新页面后 todo 仍然存在（`localStorage`）
+8. 空状态会显示有帮助的提示
+9. 所有测试通过
