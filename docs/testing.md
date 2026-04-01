@@ -1,10 +1,10 @@
-# Testing Superpowers Skills
+# 测试 Superpowers Skills
 
 This document describes how to test Superpowers skills, particularly the integration tests for complex skills like `subagent-driven-development`.
 
-## Overview
+## 概览
 
-Testing skills that involve subagents, workflows, and complex interactions requires running actual Claude Code sessions in headless mode and verifying their behavior through session transcripts.
+测试 skills that involve subagents, 工作流, and complex interactions requires running actual Claude Code sessions in headless mode and verifying their behavior through session transcripts.
 
 ## Test Structure
 
@@ -46,21 +46,21 @@ The integration test verifies the `subagent-driven-development` skill correctly:
 1. **Plan Loading**: Reads the plan once at the beginning
 2. **Full Task Text**: Provides complete task descriptions to subagents (doesn't make them read files)
 3. **Self-Review**: Ensures subagents perform self-review before reporting
-4. **Review Order**: Runs spec compliance review before code quality review
+4. **Review Order**: Runs spec 遵循率 review before code 质量 review
 5. **Review Loops**: Uses review loops when issues are found
-6. **Independent Verification**: Spec reviewer reads code independently, doesn't trust implementer reports
+6. **Independent 验证**: Spec reviewer reads code independently, doesn't trust implementer reports
 
 ### How It Works
 
-1. **Setup**: Creates a temporary Node.js project with a minimal implementation plan
+1. **配置方式**: Creates a temporary Node.js project with a minimal implementation plan
 2. **Execution**: Runs Claude Code in headless mode with the skill
-3. **Verification**: Parses the session transcript (`.jsonl` file) to verify:
+3. **验证**: Parses the session transcript (`.jsonl` file) to verify:
    - Skill tool was invoked
    - Subagents were dispatched (Task tool)
-   - TodoWrite was used for tracking
+   - TodoWrite was used for 跟踪
    - Implementation files were created
    - Tests pass
-   - Git commits show proper workflow
+   - Git commits show proper 工作流
 4. **Token Analysis**: Shows token usage breakdown by subagent
 
 ### Test Output
@@ -161,7 +161,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 - **Main session usage**: Token usage by the coordinator (you or main Claude instance)
 - **Per-subagent breakdown**: Each Task invocation with:
   - Agent ID
-  - Description (extracted from prompt)
+  - 说明 (extracted from prompt)
   - Message count
   - Input/output tokens
   - Cache usage
@@ -179,7 +179,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 
 ### Skills Not Loading
 
-**Problem**: Skill not found when running headless tests
+**问题**: Skill not found when running headless tests
 
 **Solutions**:
 1. Ensure you're running FROM the superpowers directory: `cd /path/to/superpowers && tests/...`
@@ -188,7 +188,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 
 ### Permission Errors
 
-**Problem**: Claude blocked from writing files or accessing directories
+**问题**: Claude blocked from writing files or accessing directories
 
 **Solutions**:
 1. Use `--permission-mode bypassPermissions` flag
@@ -197,7 +197,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 
 ### Test Timeouts
 
-**Problem**: Test takes too long and times out
+**问题**: Test takes too long and times out
 
 **Solutions**:
 1. Increase timeout: `timeout 1800 claude ...` (30 minutes)
@@ -206,7 +206,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 
 ### Session File Not Found
 
-**Problem**: Can't find session transcript after test run
+**问题**: Can't find session transcript after test run
 
 **Solutions**:
 1. Check the correct project directory in `~/.claude/projects/`
@@ -253,7 +253,7 @@ fi
 python3 "$SCRIPT_DIR/analyze-token-usage.py" "$SESSION_FILE"
 ```
 
-### Best Practices
+### 最佳实践
 
 1. **Always cleanup**: Use trap to cleanup temp directories
 2. **Parse transcripts**: Don't grep user-facing output - parse the `.jsonl` session file

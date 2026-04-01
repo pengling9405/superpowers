@@ -4,7 +4,7 @@
 **Author:** Bot & Jesse
 **Status:** Design Complete, Awaiting Implementation
 
-## Overview
+## 概览
 
 Add full superpowers support for OpenCode.ai using a native OpenCode plugin architecture that shares core functionality with the existing Codex implementation.
 
@@ -16,7 +16,7 @@ OpenCode.ai is a coding agent similar to Claude Code and Codex. Previous attempt
 
 - **Claude Code**: Native Anthropic plugin system + file-based skills
 - **Codex**: No plugin system → bootstrap markdown + CLI script
-- **OpenCode**: JavaScript/TypeScript plugins with event hooks and custom tools API
+- **OpenCode**: JavaScript/TypeScript plugins with 事件 hooks and custom tools API
 
 ### OpenCode's Agent System
 
@@ -30,10 +30,10 @@ OpenCode.ai is a coding agent similar to Claude Code and Codex. Previous attempt
 ### High-Level Structure
 
 1. **Shared Core Module** (`lib/skills-core.js`)
-   - Common skill discovery and parsing logic
+   - 常见 skill discovery and parsing logic
    - Used by both Codex and OpenCode implementations
 
-2. **Platform-Specific Wrappers**
+2. **平台-Specific Wrappers**
    - Codex: CLI script (`.codex/superpowers-codex`)
    - OpenCode: Plugin module (`.opencode/plugin/superpowers.js`)
 
@@ -43,7 +43,7 @@ OpenCode.ai is a coding agent similar to Claude Code and Codex. Previous attempt
 
 ### Code Reuse Strategy
 
-Extract common functionality from `.codex/superpowers-codex` into shared module:
+Extract 常见 functionality from `.codex/superpowers-codex` into shared module:
 
 ```javascript
 // lib/skills-core.js
@@ -118,14 +118,14 @@ Lists all available skills with metadata.
 
 ### Session Startup Hook
 
-When a new session starts (`session.started` event):
+When a new session starts (`session.started` 事件):
 
 1. **Inject using-superpowers content**
    - Full content of the using-superpowers skill
-   - Establishes mandatory workflows
+   - Establishes mandatory 工作流
 
 2. **Run find_skills automatically**
-   - Display full list of available skills upfront
+   - 展示 full list of available skills upfront
    - Include skill directories for each
 
 3. **Inject tool mapping instructions**
@@ -242,8 +242,8 @@ superpowers/
 
 2. Create `.opencode/INSTALL.md`
    - Installation instructions
-   - Directory setup
-   - Configuration guidance
+   - Directory 配置方式
+   - Configuration 指导
 
 3. Test OpenCode implementation
    - Verify session startup bootstrap
@@ -258,7 +258,7 @@ superpowers/
 3. Update RELEASE-NOTES
 4. Test both Codex and OpenCode work correctly
 
-## Next Steps
+## Next 步骤
 
 1. **Create isolated workspace** (using git worktrees)
    - Branch: `feature/opencode-support`
@@ -274,8 +274,8 @@ superpowers/
    - Phase 2: Build OpenCode plugin
    - Phase 3: Documentation and polish
 
-4. **Testing strategy**
-   - Manual testing with real OpenCode installation
+4. **测试 strategy**
+   - Manual 测试 with real OpenCode installation
    - Verify skill loading, directories, scripts work
    - Test both Codex and OpenCode side-by-side
    - Verify tool mappings work correctly
@@ -285,9 +285,9 @@ superpowers/
    - Test in clean environment
    - Merge to main
 
-## Benefits
+## 收益
 
-- **Code reuse**: Single source of truth for skill discovery/parsing
+- **Code reuse**: Single 来源 of truth for skill discovery/parsing
 - **Maintainability**: Bug fixes apply to both platforms
 - **Extensibility**: Easy to add future platforms (Cursor, Windsurf, etc.)
 - **Native integration**: Uses OpenCode's plugin system properly

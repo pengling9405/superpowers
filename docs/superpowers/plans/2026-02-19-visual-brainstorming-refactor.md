@@ -1,10 +1,10 @@
 # Visual Brainstorming Refactor Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
 **Goal:** Refactor visual brainstorming from blocking TUI feedback model to non-blocking "Browser Displays, Terminal Commands" architecture.
 
-**Architecture:** Browser becomes an interactive display; terminal stays the conversation channel. Server writes user events to a per-screen `.events` file that Claude reads on its next turn. Eliminates `wait-for-feedback.sh` and all `TaskOutput` blocking.
+**Architecture:** Browser becomes an interactive 展示; terminal stays the conversation channel. Server writes user events to a per-screen `.events` file that Claude reads on its next turn. Eliminates `wait-for-feedback.sh` and all `TaskOutput` blocking.
 
 **Tech Stack:** Node.js (Express, ws, chokidar), vanilla HTML/CSS/JS
 
@@ -98,7 +98,7 @@ git commit -m "Replace feedback footer with selection indicator bar in brainstor
 
 - [ ] **Step 1: Write failing test for `.events` file writing**
 
-Add to `tests/brainstorm-server/server.test.js` after Test 4 area — a new test that sends a WebSocket event with a `choice` field and verifies `.events` file is written:
+Add to `tests/brainstorm-server/server.test.js` after Test 4 area — a new test that sends a WebSocket 事件 with a `choice` field and verifies `.events` file is written:
 
 ```javascript
     // Test: Choice events written to .events file
@@ -216,7 +216,7 @@ Delete the `window.send` function (lines 120-129) — was tied to the removed Se
 
 Delete the form submission handler (lines 57-71) and the input change handler (lines 73-89) including the `inputTimeout` variable.
 
-- [ ] **Step 4: Remove `pageshow` event listener**
+- [ ] **Step 4: Remove `pageshow` 事件 listener**
 
 Delete the `pageshow` listener we added earlier (no textarea to clear anymore).
 
@@ -356,9 +356,9 @@ git commit -m "Update brainstorm server tests for new template structure and hel
 **Files:**
 - Delete: `lib/brainstorm-server/wait-for-feedback.sh`
 
-- [ ] **Step 1: Verify no other files import or reference `wait-for-feedback.sh`**
+- [ ] **Step 1: Verify no other files import or 参考 `wait-for-feedback.sh`**
 
-Search the codebase:
+搜索 the codebase:
 ```bash
 grep -r "wait-for-feedback" /Users/drewritter/prime-rad/superpowers/ --include="*.js" --include="*.md" --include="*.sh" --include="*.json"
 ```
@@ -446,9 +446,9 @@ Replace with:
 When the user clicks options in the browser, their interactions are recorded to `$SCREEN_DIR/.events` (one JSON object per line). The file is cleared automatically when you push a new screen.
 
 ```jsonl
-{"type":"click","choice":"a","text":"Option A - Simple Layout","timestamp":1706000101}
-{"type":"click","choice":"c","text":"Option C - Complex Grid","timestamp":1706000108}
-{"type":"click","choice":"b","text":"Option B - Hybrid","timestamp":1706000115}
+{"类型":"click","choice":"a","text":"Option A - Simple Layout","timestamp":1706000101}
+{"类型":"click","choice":"c","text":"Option C - Complex Grid","timestamp":1706000108}
+{"类型":"click","choice":"b","text":"Option B - Hybrid","timestamp":1706000115}
 ```
 
 The full event stream shows the user's exploration path — they may click multiple options before settling. The last `choice` event is typically the final selection, but the pattern of clicks can reveal hesitation or preferences worth asking about.
@@ -458,15 +458,15 @@ If `.events` doesn't exist, the user didn't interact with the browser — use on
 
 - [ ] **Step 5: Update "Writing Content Fragments" description (line 65)**
 
-Remove "feedback footer" reference:
+Remove "feedback footer" 参考:
 
 ```markdown
 Write just the content that goes inside the page. The server wraps it in the frame template automatically (header, theme CSS, selection indicator, and all interactive infrastructure).
 ```
 
-- [ ] **Step 6: Update Reference section (lines 200-203)**
+- [ ] **Step 6: Update 参考 section (lines 200-203)**
 
-Remove the helper.js reference description about "JS API" — the API is now minimal. Keep the path reference:
+Remove the helper.js 参考 description about "JS API" — the API is now minimal. Keep the path 参考:
 
 ```markdown
 ## Reference
@@ -484,7 +484,7 @@ git commit -m "Rewrite visual-companion.md for non-blocking browser-displays-ter
 
 ---
 
-### Task 7: Final verification
+### Task 7: Final 验证
 
 - [ ] **Step 1: Run full test suite**
 

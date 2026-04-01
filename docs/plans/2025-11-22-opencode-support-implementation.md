@@ -4,7 +4,7 @@
 
 **Goal:** Add full superpowers support for OpenCode.ai with a native JavaScript plugin that shares core functionality with the existing Codex implementation.
 
-**Architecture:** Extract common skill discovery/parsing logic into `lib/skills-core.js`, refactor Codex to use it, then build OpenCode plugin using their native plugin API with custom tools and session hooks.
+**Architecture:** Extract 常见 skill discovery/parsing logic into `lib/skills-core.js`, refactor Codex to use it, then build OpenCode plugin using their native plugin API with custom tools and session hooks.
 
 **Tech Stack:** Node.js, JavaScript, OpenCode Plugin API, Git worktrees
 
@@ -16,7 +16,7 @@
 
 **Files:**
 - Create: `lib/skills-core.js`
-- Reference: `.codex/superpowers-codex` (lines 40-74)
+- 参考: `.codex/superpowers-codex` (lines 40-74)
 
 **Step 1: Create lib/skills-core.js with extractFrontmatter function**
 
@@ -98,7 +98,7 @@ git commit -m "feat: create shared skills core module with frontmatter parser"
 
 **Files:**
 - Modify: `lib/skills-core.js`
-- Reference: `.codex/superpowers-codex` (lines 97-136)
+- 参考: `.codex/superpowers-codex` (lines 97-136)
 
 **Step 1: Add findSkillsInDir function to skills-core.js**
 
@@ -180,7 +180,7 @@ git commit -m "feat: add skill discovery function to core module"
 
 **Files:**
 - Modify: `lib/skills-core.js`
-- Reference: `.codex/superpowers-codex` (lines 212-280)
+- 参考: `.codex/superpowers-codex` (lines 212-280)
 
 **Step 1: Add resolveSkillPath function**
 
@@ -259,7 +259,7 @@ git commit -m "feat: add skill path resolution with shadowing support"
 
 **Files:**
 - Modify: `lib/skills-core.js`
-- Reference: `.codex/superpowers-codex` (lines 16-38)
+- 参考: `.codex/superpowers-codex` (lines 16-38)
 
 **Step 1: Add checkForUpdates function**
 
@@ -903,7 +903,7 @@ git commit -m "docs: add opencode installation guide"
 
 **Step 1: Add OpenCode section**
 
-Find the section about supported platforms (search for "Codex" in the file), and add after it:
+Find the section about supported platforms (搜索 for "Codex" in the file), and add after it:
 
 ```markdown
 ### OpenCode
@@ -933,14 +933,14 @@ git commit -m "docs: add opencode support to readme"
 
 ---
 
-### Task 15: Update Release Notes
+### Task 15: Update Release 说明
 
 **Files:**
 - Modify: `RELEASE-NOTES.md`
 
 **Step 1: Add entry for OpenCode support**
 
-At the top of the file (after the header), add:
+At the top of the file (after the 请求头), add:
 
 ```markdown
 ## [Unreleased]
@@ -977,7 +977,7 @@ git commit -m "docs: add opencode support to release notes"
 
 ---
 
-## Phase 5: Final Verification
+## Phase 5: Final 验证
 
 ### Task 16: Test Codex Still Works
 
@@ -1001,7 +1001,7 @@ Expected: Shows bootstrap content with instructions
 
 **Step 4: If all tests pass, record success**
 
-No commit needed - this is verification only.
+No commit needed - this is 验证 only.
 
 ---
 
@@ -1023,7 +1023,7 @@ Expected: All files exist
 
 **Step 2: Verify directory structure**
 
-Run: `tree -L 2 .opencode/` (or `find .opencode -type f` if tree not available)
+Run: `tree -L 2 .opencode/` (or `find .opencode -type f` if tree 不可用)
 Expected:
 ```
 .opencode/
@@ -1034,7 +1034,7 @@ Expected:
 
 **Step 3: If structure correct, proceed**
 
-No commit needed - this is verification only.
+No commit needed - this is 验证 only.
 
 ---
 
@@ -1059,8 +1059,8 @@ Create a completion summary showing:
 - Total commits made
 - Files created: `lib/skills-core.js`, `.opencode/plugin/superpowers.js`, `.opencode/INSTALL.md`
 - Files modified: `.codex/superpowers-codex`, `README.md`, `RELEASE-NOTES.md`
-- Testing performed: Codex commands verified
-- Ready for: Testing with actual OpenCode installation
+- 测试 performed: Codex commands verified
+- Ready for: 测试 with actual OpenCode installation
 
 **Step 4: Report completion**
 
@@ -1071,9 +1071,9 @@ Present summary to user and offer to:
 
 ---
 
-## Testing Guide (Manual - Requires OpenCode)
+## 测试 Guide (Manual - Requires OpenCode)
 
-These steps require OpenCode to be installed and are not part of the automated implementation:
+These 步骤 require OpenCode to be installed and are not part of the automated implementation:
 
 1. **Install skills**: Follow `.opencode/INSTALL.md`
 2. **Start OpenCode session**: Verify bootstrap appears

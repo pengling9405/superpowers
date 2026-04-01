@@ -1,10 +1,10 @@
 # Zero-Dependency Brainstorm Server Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
 **Goal:** Replace the brainstorm server's vendored node_modules with a single zero-dependency `server.js` using Node built-ins.
 
-**Architecture:** Single file with WebSocket protocol (RFC 6455 text frames), HTTP server (`http` module), and file watching (`fs.watch`). Exports protocol functions for unit testing when required as a module.
+**Architecture:** Single file with WebSocket protocol (RFC 6455 text frames), HTTP server (`http` module), and file watching (`fs.watch`). Exports protocol functions for unit 测试 when required as a module.
 
 **Tech Stack:** Node.js built-ins only: `http`, `crypto`, `fs`, `path`
 
@@ -51,9 +51,9 @@ function computeAcceptKey(clientKey) {
 - [ ] **Step 2: Implement encodeFrame**
 
 Server frames are never masked. Three length encodings:
-- payload < 126: 2-byte header (FIN+opcode, length)
-- 126-65535: 4-byte header (FIN+opcode, 126, 16-bit length)
-- &gt; 65535: 10-byte header (FIN+opcode, 127, 64-bit length)
+- payload < 126: 2-byte 请求头 (FIN+opcode, length)
+- 126-65535: 4-byte 请求头 (FIN+opcode, 126, 16-bit length)
+- &gt; 65535: 10-byte 请求头 (FIN+opcode, 127, 64-bit length)
 
 ```js
 function encodeFrame(opcode, payload) {

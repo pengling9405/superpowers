@@ -1,8 +1,8 @@
-# Cross-Platform Polyglot Hooks for Claude Code
+# Cross-平台 Polyglot Hooks for Claude Code
 
 Claude Code plugins need hooks that work on Windows, macOS, and Linux. This document explains the polyglot wrapper technique that makes this possible.
 
-## The Problem
+## The 问题
 
 Claude Code runs hook commands through the system's default shell:
 - **Windows**: CMD.exe
@@ -91,7 +91,7 @@ Note: The path must be quoted because `${CLAUDE_PLUGIN_ROOT}` may contain spaces
 - Standard bash or sh shell
 - The `.cmd` file must have execute permission (`chmod +x`)
 
-## Writing Cross-Platform Hook Scripts
+## Writing Cross-平台 Hook Scripts
 
 Your actual hook logic goes in the `.sh` file. To ensure it works on Windows (via Git Bash):
 
@@ -105,7 +105,7 @@ Your actual hook logic goes in the `.sh` file. To ensure it works on Windows (vi
 - External commands that may not be in PATH (sed, awk, grep)
 - If you must use them, they're available in Git Bash but ensure PATH is set up (use `bash -l`)
 
-### Example: JSON Escaping Without sed/awk
+### 示例: JSON Escaping Without sed/awk
 
 Instead of:
 ```bash

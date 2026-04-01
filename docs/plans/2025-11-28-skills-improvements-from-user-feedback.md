@@ -2,7 +2,7 @@
 
 **Date:** 2025-11-28
 **Status:** Draft
-**Source:** Two Claude instances using superpowers in real development scenarios
+**来源:** Two Claude instances using superpowers in real development scenarios
 
 ---
 
@@ -10,11 +10,11 @@
 
 Two Claude instances provided detailed feedback from actual development sessions. Their feedback reveals **systematic gaps** in current skills that allowed preventable bugs to ship despite following the skills.
 
-**Critical insight:** These are problem reports, not just solution proposals. The problems are real; the solutions need careful evaluation.
+**Critical insight:** These are 问题 reports, not just solution proposals. The problems are real; the solutions need careful evaluation.
 
 **Key themes:**
-1. **Verification gaps** - We verify operations succeed but not that they achieve intended outcomes
-2. **Process hygiene** - Background processes accumulate and interfere across subagents
+1. **验证 gaps** - We verify 操作 succeed but not that they achieve intended outcomes
+2. **流程 hygiene** - Background processes accumulate and interfere across subagents
 3. **Context optimization** - Subagents get too much irrelevant information
 4. **Self-reflection missing** - No prompt to critique own work before handoff
 5. **Mock safety** - Mocks can drift from interfaces without detection
@@ -24,7 +24,7 @@ Two Claude instances provided detailed feedback from actual development sessions
 
 ## Problems Identified
 
-### Problem 1: Configuration Change Verification Gap
+### 问题 1: Configuration Change 验证 Gap
 
 **What happened:**
 - Subagent tested "OpenAI integration"
@@ -34,18 +34,18 @@ Two Claude instances provided detailed feedback from actual development sessions
 - **BUT** response contained `"model": "claude-sonnet-4-20250514"` - was actually using Anthropic
 
 **Root cause:**
-`verification-before-completion` checks operations succeed but not that outcomes reflect intended configuration changes.
+`verification-before-completion` checks 操作 succeed but not that outcomes reflect intended configuration changes.
 
 **Impact:** High - False confidence in integration tests, bugs ship to production
 
-**Example failure pattern:**
+**示例 failure pattern:**
 - Switch LLM provider → verify status 200 but don't check model name
 - Enable feature flag → verify no errors but don't check feature is active
 - Change environment → verify deployment succeeds but don't check environment vars
 
 ---
 
-### Problem 2: Background Process Accumulation
+### 问题 2: Background 流程 Accumulation
 
 **What happened:**
 - Multiple subagents dispatched during session
@@ -58,16 +58,16 @@ Two Claude instances provided detailed feedback from actual development sessions
 **Root cause:**
 Subagents are stateless - don't know about previous subagents' processes. No cleanup protocol.
 
-**Impact:** Medium-High - Tests hit wrong server, false passes/failures, debugging confusion
+**Impact:** Medium-High - Tests hit wrong server, false passes/failures, 调试 confusion
 
 ---
 
-### Problem 3: Context Bloat in Subagent Prompts
+### 问题 3: Context Bloat in Subagent Prompts
 
 **What happened:**
 - Standard approach: give subagent full plan file to read
 - Experiment: give only task + pattern + file + verify command
-- Result: Faster, more focused, single-attempt completion more common
+- Result: Faster, more focused, single-attempt completion more 常见
 
 **Root cause:**
 Subagents waste tokens and attention on irrelevant plan sections.
@@ -90,7 +90,7 @@ in its metadata should result in the container running with `--privileged` flag.
 
 ---
 
-### Problem 4: No Self-Reflection Before Handoff
+### 问题 4: No Self-Reflection Before Handoff
 
 **What happened:**
 - Added self-reflection prompt: "Look at your work with fresh eyes - what could be better?"
@@ -105,7 +105,7 @@ Implementers don't naturally step back and critique their own work before report
 
 ---
 
-### Problem 5: Mock-Interface Drift
+### 问题 5: Mock-Interface Drift
 
 **What happened:**
 ```typescript
@@ -132,12 +132,12 @@ Mock derived from what buggy code calls, not from interface definition. TypeScri
 
 **Impact:** High - Tests give false confidence, runtime crashes
 
-**Why testing-anti-patterns didn't prevent this:**
-The skill covers testing mock behavior and mocking without understanding, but not the specific pattern of "derive mock from interface, not implementation."
+**Why 测试-anti-patterns didn't prevent this:**
+The skill covers 测试 mock behavior and mocking without understanding, but not the specific pattern of "derive mock from interface, not implementation."
 
 ---
 
-### Problem 6: Code Reviewer File Access
+### 问题 6: Code Reviewer File Access
 
 **What happened:**
 - Code reviewer subagent dispatched
@@ -152,12 +152,12 @@ Reviewer prompts don't include explicit file reading instructions.
 
 ---
 
-### Problem 7: Fix Workflow Latency
+### 问题 7: Fix 工作流 Latency
 
 **What happened:**
 - Implementer identifies bug during self-reflection
 - Implementer knows the fix
-- Current workflow: report → I dispatch fixer → fixer fixes → I verify
+- Current 工作流: report → I dispatch fixer → fixer fixes → I verify
 - Extra round-trip adds latency without adding value
 
 **Root cause:**
@@ -167,15 +167,15 @@ Rigid separation between implementer and fixer roles when implementer has alread
 
 ---
 
-### Problem 8: Skills Not Being Read
+### 问题 8: Skills Not Being Read
 
 **What happened:**
 - `testing-anti-patterns` skill exists
 - Neither human nor subagents read it before writing tests
-- Would have prevented some issues (though not all - see Problem 5)
+- Would have prevented some issues (though not all - see 问题 5)
 
 **Root cause:**
-No enforcement that subagents read relevant skills. No prompt includes skill reading.
+No enforcement that subagents read 相关技能. No prompt includes skill reading.
 
 **Impact:** Medium - Skill investment wasted if not used
 
@@ -183,7 +183,7 @@ No enforcement that subagents read relevant skills. No prompt includes skill rea
 
 ## Proposed Improvements
 
-### 1. verification-before-completion: Add Configuration Change Verification
+### 1. 验证-before-completion: Add Configuration Change 验证
 
 **Add new section:**
 
@@ -237,11 +237,11 @@ Forces verification of INTENT, not just operation success.
 **Add new section:**
 
 ```markdown
-## Process Hygiene for E2E Tests
+## 流程 Hygiene for E2E Tests
 
 When dispatching subagents that start services (servers, databases, message queues):
 
-### Problem
+### 问题
 
 Subagents are stateless - they don't know about processes started by previous subagents. Background processes persist and can interfere with later tests.
 
@@ -260,7 +260,7 @@ AFTER tests complete:
 2. Verify cleanup: pgrep -f "<service-pattern>" || echo "Cleanup successful"
 ```
 
-### Example
+### 示例
 
 ```
 Task: Run E2E test of API server
@@ -279,7 +279,7 @@ After tests:
 
 - Stale processes serve requests with wrong config
 - Port conflicts cause silent failures
-- Process accumulation slows system
+- 流程 accumulation slows system
 - Confusing test results (hitting wrong server)
 ```
 
@@ -325,7 +325,7 @@ Verification: [exact command to run]
 **Use lean context when:**
 - Task follows existing pattern (add similar test, implement similar feature)
 - Task is self-contained (doesn't need context from other tasks)
-- Pattern reference is sufficient (e.g., "follow TestE2E_FeatureOptionValidation")
+- Pattern 参考 is sufficient (e.g., "follow TestE2E_FeatureOptionValidation")
 
 **Use full plan when:**
 - Task has dependencies on other tasks
@@ -337,7 +337,7 @@ Verification: [exact command to run]
 ```
 Lean context prompt:
 
-"You are adding a test for privileged mode in devcontainer features.
+"You are adding a test for privileged mode in devcontainer 特性.
 
 File: pkg/runner/e2e_test.go
 Pattern: Follow TestE2E_FeatureOptionValidation (at end of file)
@@ -506,8 +506,8 @@ Directly addresses the failure pattern from feedback.
 ```markdown
 BEFORE writing any tests:
 
-1. Read testing-anti-patterns skill:
-   Use Skill tool: superpowers:testing-anti-patterns
+1. Read 测试-anti-patterns skill:
+   Use Skill tool: superpowers:测试-anti-patterns
 
 2. Apply gate functions from that skill when:
    - Writing mocks
@@ -540,7 +540,7 @@ Subagent performs self-reflection, then:
 
 IF self-reflection identifies fixable issues:
   1. Fix the issues
-  2. Re-run verification
+  2. Re-run 验证
   3. Report: "Initial implementation + self-reflection fix"
 
 ELSE:
@@ -549,7 +549,7 @@ ELSE:
 Include in report:
 - Self-reflection findings
 - Whether fixes were applied
-- Final verification results
+- Final 验证 results
 ```
 
 **Why this works:**
@@ -567,12 +567,12 @@ Slightly more complex prompt, but faster end-to-end.
 1. **verification-before-completion: Configuration change verification**
    - Clear addition, doesn't change existing content
    - Addresses high-impact problem (false confidence in tests)
-   - File: `skills/verification-before-completion/SKILL.md`
+   - File: `skills/验证-before-completion/SKILL.md`
 
 2. **testing-anti-patterns: Mock-interface drift**
    - Adds new anti-pattern, doesn't modify existing
    - Addresses high-impact problem (runtime crashes)
-   - File: `skills/testing-anti-patterns/SKILL.md`
+   - File: `skills/测试-anti-patterns/SKILL.md`
 
 3. **requesting-code-review: Explicit file reading**
    - Simple addition to template
@@ -622,27 +622,27 @@ Slightly more complex prompt, but faster end-to-end.
    - Should it only apply to complex tasks?
    - How do we prevent "reflection fatigue" where it becomes rote?
 
-3. **Process hygiene:**
+3. **流程 hygiene:**
    - Should this be in subagent-driven-development or a separate skill?
-   - Does it apply to other workflows beyond E2E tests?
-   - How do we handle cases where process SHOULD persist (dev servers)?
+   - Does it apply to other 工作流 beyond E2E tests?
+   - How do we handle cases where 流程 SHOULD persist (dev servers)?
 
 4. **Skills reading enforcement:**
-   - Should we require ALL subagents to read relevant skills?
+   - Should we require ALL subagents to read 相关技能?
    - How do we keep prompts from becoming too long?
    - Risk of over-documenting and losing focus?
 
 ---
 
-## Success Metrics
+## Success 指标
 
 How do we know these improvements work?
 
-1. **Configuration verification:**
+1. **Configuration 验证:**
    - Zero instances of "test passed but wrong config was used"
-   - Jesse doesn't say "that's not actually testing what you think"
+   - Jesse doesn't say "that's not actually 测试 what you think"
 
-2. **Process hygiene:**
+2. **流程 hygiene:**
    - Zero instances of "test hit wrong server"
    - No port conflict errors during E2E test runs
 
@@ -655,7 +655,7 @@ How do we know these improvements work?
    - Qualitative: Do fewer bugs make it to code review?
 
 5. **Skills reading:**
-   - Subagent reports reference skill gate functions
+   - Subagent reports 参考 skill gate functions
    - Fewer anti-pattern violations in code review
 
 ---
@@ -663,28 +663,28 @@ How do we know these improvements work?
 ## Risks and Mitigations
 
 ### Risk: Prompt Bloat
-**Problem:** Adding all these requirements makes prompts overwhelming
+**问题:** Adding all these requirements makes prompts overwhelming
 **Mitigation:**
 - Phase implementation (don't add everything at once)
 - Make some additions conditional (E2E hygiene only for E2E tests)
 - Consider templates for different task types
 
 ### Risk: Analysis Paralysis
-**Problem:** Too much reflection/verification slows execution
+**问题:** Too much reflection/验证 slows execution
 **Mitigation:**
 - Keep gate functions quick (seconds, not minutes)
 - Make lean context opt-in initially
 - Monitor task completion times
 
 ### Risk: False Sense of Security
-**Problem:** Following checklist doesn't guarantee correctness
+**问题:** Following checklist doesn't guarantee correctness
 **Mitigation:**
 - Emphasize gate functions are minimums, not maximums
 - Keep "use judgment" language in skills
-- Document that skills catch common failures, not all failures
+- Document that skills catch 常见 failures, not all failures
 
 ### Risk: Skill Divergence
-**Problem:** Different skills give conflicting advice
+**问题:** Different skills give conflicting advice
 **Mitigation:**
 - Review changes across all skills for consistency
 - Document how skills interact (Integration sections)
@@ -695,17 +695,17 @@ How do we know these improvements work?
 ## Recommendation
 
 **Proceed with Phase 1 immediately:**
-- verification-before-completion: Configuration change verification
-- testing-anti-patterns: Mock-interface drift
+- 验证-before-completion: Configuration change 验证
+- 测试-anti-patterns: Mock-interface drift
 - requesting-code-review: Explicit file reading
 
 **Test Phase 2 with Jesse before finalizing:**
 - Get feedback on self-reflection impact
-- Validate process hygiene approach
+- Validate 流程 hygiene approach
 - Confirm skills reading requirement is worth overhead
 
 **Hold Phase 3 pending validation:**
-- Lean context needs real-world testing
-- Implementer-fix workflow change needs careful evaluation
+- Lean context needs real-world 测试
+- Implementer-fix 工作流 change needs careful evaluation
 
 These changes address real problems documented by users while minimizing risk of making skills worse.

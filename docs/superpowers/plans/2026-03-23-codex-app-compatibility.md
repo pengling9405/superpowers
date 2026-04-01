@@ -1,6 +1,6 @@
 # Codex App Compatibility Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
 **Goal:** Make `using-git-worktrees`, `finishing-a-development-branch`, and related skills work in the Codex App's sandboxed worktree environment without breaking existing behavior.
 
@@ -17,25 +17,25 @@
 | File | Responsibility | Action |
 |---|---|---|
 | `skills/using-git-worktrees/SKILL.md` | Worktree creation + isolation | Add Step 0 detection + sandbox fallback |
-| `skills/finishing-a-development-branch/SKILL.md` | Branch finishing workflow | Add Step 1.5 detection + cleanup guard |
+| `skills/finishing-a-development-branch/SKILL.md` | Branch finishing 工作流 | Add Step 1.5 detection + cleanup guard |
 | `skills/subagent-driven-development/SKILL.md` | Plan execution with subagents | Update Integration description |
 | `skills/executing-plans/SKILL.md` | Plan execution inline | Update Integration description |
-| `skills/using-superpowers/references/codex-tools.md` | Codex platform reference | Add detection + finishing docs |
+| `skills/using-superpowers/references/codex-tools.md` | Codex 平台 参考 | Add detection + finishing docs |
 
 ---
 
 ### Task 1: Add Step 0 to `using-git-worktrees`
 
 **Files:**
-- Modify: `skills/using-git-worktrees/SKILL.md:14-15` (insert after Overview, before Directory Selection Process)
+- Modify: `skills/using-git-worktrees/SKILL.md:14-15` (insert after 概览, before Directory Selection 流程)
 
 - [ ] **Step 1: Read the current skill file**
 
-Read `skills/using-git-worktrees/SKILL.md` in full. Identify the exact insertion point: after the "Announce at start" line (line 14) and before "## Directory Selection Process" (line 16).
+Read `skills/using-git-worktrees/SKILL.md` in full. Identify the exact insertion point: after the "Announce at start" line (line 14) and before "## Directory Selection 流程" (line 16).
 
 - [ ] **Step 2: Insert Step 0 section**
 
-Insert the following between the Overview section and "## Directory Selection Process":
+Insert the following between the 概览 section and "## Directory Selection 流程":
 
 ```markdown
 ## Step 0: Check if Already in an Isolated Workspace
@@ -44,7 +44,7 @@ Before creating a worktree, check if one already exists:
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+GIT_COMMON=$(cd "$(git rev-parse --git-常见-dir)" 2>/dev/null && pwd -P)
 BRANCH=$(git branch --show-current)
 ```
 
@@ -66,8 +66,8 @@ After reporting, STOP. Do not continue to Directory Selection or Creation Steps.
 - [ ] **Step 3: Verify the insertion**
 
 Read the file again. Confirm:
-- Step 0 appears between Overview and Directory Selection Process
-- The rest of the file (Directory Selection, Safety Verification, Creation Steps, etc.) is unchanged
+- Step 0 appears between 概览 and Directory Selection 流程
+- The rest of the file (Directory Selection, Safety 验证, Creation 步骤, etc.) is unchanged
 - No duplicate sections or broken markdown
 
 - [ ] **Step 4: Commit**
@@ -138,7 +138,7 @@ Insert the following between Step 1 and Step 2:
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+GIT_COMMON=$(cd "$(git rev-parse --git-常见-dir)" 2>/dev/null && pwd -P)
 BRANCH=$(git branch --show-current)
 ```
 
@@ -183,7 +183,7 @@ Proceed to Step 2 and present the 4-option menu as normal.
 
 Read the file again. Confirm:
 - Step 1.5 appears between Step 1 and Step 2
-- Steps 2-5 are unchanged
+- 步骤 2-5 are unchanged
 - Path A handoff includes commit SHA and data loss warning
 - Paths B and C proceed to Step 2 normally
 
@@ -237,7 +237,7 @@ Replace the Step 5 section with:
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+GIT_COMMON=$(cd "$(git rev-parse --git-常见-dir)" 2>/dev/null && pwd -P)
 ```
 
 If `GIT_DIR` differs from `GIT_COMMON`: skip worktree removal — the host environment owns this workspace.
@@ -257,14 +257,14 @@ git worktree remove <worktree-path>
 **For Option 3:** Keep worktree.
 ```
 
-Note: the original text said "For Options 1, 2, 4" but the Quick Reference table and Common Mistakes section say "Options 1 & 4 only." This edit aligns Step 5 with those sections.
+Note: the original text said "For Options 1, 2, 4" but the Quick 参考 table and 常见 Mistakes section say "Options 1 & 4 only." This edit aligns Step 5 with those sections.
 
 - [ ] **Step 3: Verify the replacement**
 
 Read Step 5. Confirm:
 - Cleanup guard (re-detection) appears first
 - Existing removal logic preserved for non-externally-managed worktrees
-- "Options 1 and 4" (not "1, 2, 4") matches Quick Reference and Common Mistakes
+- "Options 1 and 4" (not "1, 2, 4") matches Quick 参考 and 常见 Mistakes
 
 - [ ] **Step 4: Commit**
 
@@ -345,7 +345,7 @@ environment with read-only git commands before proceeding:
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+GIT_COMMON=$(cd "$(git rev-parse --git-常见-dir)" 2>/dev/null && pwd -P)
 BRANCH=$(git branch --show-current)
 ```
 
@@ -520,7 +520,7 @@ worktree, detached HEAD, and cleanup guard scenarios."
 
 ---
 
-### Task 8: Final verification
+### Task 8: Final 验证
 
 **Files:**
 - Read: all 5 modified skill files
@@ -561,4 +561,4 @@ If test runner exists:
 ./tests/claude-code/test-subagent-driven-development-integration.sh 2>/dev/null || echo "SDD integration test not available in this environment"
 ```
 
-Note: these tests require Claude Code with `--dangerously-skip-permissions`. If not available, document that regression tests should be run manually.
+Note: these tests require Claude Code with `--dangerously-skip-permissions`. If 不可用, document that regression tests should be run manually.

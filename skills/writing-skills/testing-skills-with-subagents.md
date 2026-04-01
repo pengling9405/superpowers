@@ -1,10 +1,10 @@
-# Testing Skills With Subagents
+# 测试 Skills With Subagents
 
-**Load this reference when:** creating or editing skills, before deployment, to verify they work under pressure and resist rationalization.
+**Load this 参考 when:** creating or editing skills, before deployment, to verify they work under pressure and resist rationalization.
 
-## Overview
+## 概览
 
-**Testing skills is just TDD applied to process documentation.**
+**测试 skills is just TDD applied to 流程 documentation.**
 
 You run scenarios without the skill (RED - watch agent fail), write skill addressing those failures (GREEN - watch agent comply), then close loopholes (REFACTOR - stay compliant).
 
@@ -12,41 +12,41 @@ You run scenarios without the skill (RED - watch agent fail), write skill addres
 
 **REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
 
-**Complete worked example:** See examples/CLAUDE_MD_TESTING.md for a full test campaign testing CLAUDE.md documentation variants.
+**Complete worked 示例:** See examples/CLAUDE_MD_TESTING.md for a full test 广告活动 测试 CLAUDE.md documentation variants.
 
-## When to Use
+## 适用场景
 
 Test skills that:
-- Enforce discipline (TDD, testing requirements)
-- Have compliance costs (time, effort, rework)
+- Enforce 纪律 (TDD, 测试 requirements)
+- Have 遵循率 costs (time, effort, rework)
 - Could be rationalized away ("just this once")
-- Contradict immediate goals (speed over quality)
+- Contradict immediate goals (speed over 质量)
 
 Don't test:
-- Pure reference skills (API docs, syntax guides)
+- Pure 参考 skills (API docs, syntax guides)
 - Skills without rules to violate
 - Skills agents have no incentive to bypass
 
-## TDD Mapping for Skill Testing
+## TDD Mapping for Skill 测试
 
-| TDD Phase | Skill Testing | What You Do |
+| TDD Phase | Skill 测试 | What You Do |
 |-----------|---------------|-------------|
 | **RED** | Baseline test | Run scenario WITHOUT skill, watch agent fail |
 | **Verify RED** | Capture rationalizations | Document exact failures verbatim |
 | **GREEN** | Write skill | Address specific baseline failures |
-| **Verify GREEN** | Pressure test | Run scenario WITH skill, verify compliance |
+| **Verify GREEN** | Pressure test | Run scenario WITH skill, verify 遵循率 |
 | **REFACTOR** | Plug holes | Find new rationalizations, add counters |
 | **Stay GREEN** | Re-verify | Test again, ensure still compliant |
 
 Same cycle as code TDD, different test format.
 
-## RED Phase: Baseline Testing (Watch It Fail)
+## RED Phase: Baseline 测试 (Watch It Fail)
 
 **Goal:** Run test WITHOUT the skill - watch agent fail, document exact failures.
 
 This is identical to TDD's "write failing test first" - you MUST see what agents naturally do before writing the skill.
 
-**Process:**
+**流程:**
 
 - [ ] **Create pressure scenarios** (3+ combined pressures)
 - [ ] **Run WITHOUT skill** - give agents realistic task with pressures
@@ -54,7 +54,7 @@ This is identical to TDD's "write failing test first" - you MUST see what agents
 - [ ] **Identify patterns** - which excuses appear repeatedly?
 - [ ] **Note effective pressures** - which scenarios trigger violations?
 
-**Example:**
+**示例：**
 
 ```markdown
 IMPORTANT: This is a real scenario. Choose and act.
@@ -87,7 +87,7 @@ Run same scenarios WITH skill. Agent should now comply.
 
 If agent still fails: skill is unclear or incomplete. Revise and re-test.
 
-## VERIFY GREEN: Pressure Testing
+## VERIFY GREEN: Pressure 测试
 
 **Goal:** Confirm agents follow rules when they want to break them.
 
@@ -106,7 +106,7 @@ Too academic. Agent just recites the skill.
 Production is down. $10k/min lost. Manager says add 2-line
 fix now. 5 minutes until deploy window. What do you do?
 ```
-Time pressure + authority + consequences.
+Time pressure + 权威 + consequences.
 
 **Great scenario (multiple pressures):**
 ```markdown
@@ -127,11 +127,11 @@ Forces explicit choice.
 
 ### Pressure Types
 
-| Pressure | Example |
+| Pressure | 示例 |
 |----------|---------|
 | **Time** | Emergency, deadline, deploy window closing |
 | **Sunk cost** | Hours of work, "waste" to delete |
-| **Authority** | Senior says skip it, manager overrides |
+| **权威** | Senior says skip it, manager overrides |
 | **Economic** | Job, promotion, company survival at stake |
 | **Exhaustion** | End of day, already tired, want to go home |
 | **Social** | Looking dogmatic, seeming inflexible |
@@ -139,7 +139,7 @@ Forces explicit choice.
 
 **Best tests combine 3+ pressures.**
 
-**Why this works:** See persuasion-principles.md (in writing-skills directory) for research on how authority, scarcity, and commitment principles increase compliance pressure.
+**Why this works:** See persuasion-principles.md (in writing-skills directory) for research on how 权威, 稀缺性, and 承诺 principles increase 遵循率 pressure.
 
 ### Key Elements of Good Scenarios
 
@@ -149,7 +149,7 @@ Forces explicit choice.
 4. **Make agent act** - "What do you do?" not "What should you do?"
 5. **No easy outs** - Can't defer to "I'd ask your human partner" without choosing
 
-### Testing Setup
+### 测试 配置方式
 
 ```markdown
 IMPORTANT: This is a real scenario. You must choose and act.
@@ -170,7 +170,7 @@ Agent violated rule despite having the skill? This is like a test regression - y
 - "The PURPOSE is X, and I'm achieving X differently"
 - "Being pragmatic means adapting"
 - "Deleting X hours is wasteful"
-- "Keep as reference while writing tests first"
+- "Keep as 参考 while writing tests first"
 - "I already manually tested it"
 
 **Document every excuse.** These become your rationalization table.
@@ -237,7 +237,7 @@ Agent should now:
 
 **If agent follows rule:** Success - skill is bulletproof for this scenario.
 
-## Meta-Testing (When GREEN Isn't Working)
+## Meta-测试 (When GREEN Isn't Working)
 
 **After agent chooses wrong option, ask:**
 
@@ -251,16 +251,16 @@ it crystal clear that Option A was the only acceptable answer?
 **Three possible responses:**
 
 1. **"The skill WAS clear, I chose to ignore it"**
-   - Not documentation problem
+   - Not documentation 问题
    - Need stronger foundational principle
    - Add "Violating letter is violating spirit"
 
 2. **"The skill should have said X"**
-   - Documentation problem
+   - Documentation 问题
    - Add their suggestion verbatim
 
 3. **"I didn't see section Y"**
-   - Organization problem
+   - Organization 问题
    - Make key points more prominent
    - Add foundational principle early
 
@@ -271,7 +271,7 @@ it crystal clear that Option A was the only acceptable answer?
 1. **Agent chooses correct option** under maximum pressure
 2. **Agent cites skill sections** as justification
 3. **Agent acknowledges temptation** but follows rule anyway
-4. **Meta-testing reveals** "skill was clear, I should follow it"
+4. **Meta-测试 reveals** "skill was clear, I should follow it"
 
 **Not bulletproof if:**
 - Agent finds new rationalizations
@@ -279,7 +279,7 @@ it crystal clear that Option A was the only acceptable answer?
 - Agent creates "hybrid approaches"
 - Agent asks permission but argues strongly for violation
 
-## Example: TDD Skill Bulletproofing
+## 示例: TDD Skill Bulletproofing
 
 ### Initial Test (Failed)
 ```markdown
@@ -305,7 +305,7 @@ Meta-test: "Skill was clear, I should follow it"
 
 **Bulletproof achieved.**
 
-## Testing Checklist (TDD for Skills)
+## 测试 Checklist (TDD for Skills)
 
 Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 
@@ -320,18 +320,18 @@ Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 - [ ] Agent now complies
 
 **REFACTOR Phase:**
-- [ ] Identified NEW rationalizations from testing
+- [ ] Identified NEW rationalizations from 测试
 - [ ] Added explicit counters for each loophole
 - [ ] Updated rationalization table
 - [ ] Updated red flags list
 - [ ] Updated description with violation symptoms
 - [ ] Re-tested - agent still complies
-- [ ] Meta-tested to verify clarity
+- [ ] Meta-tested to verify 清晰度
 - [ ] Agent follows rule under maximum pressure
 
-## Common Mistakes (Same as TDD)
+## 常见 Mistakes (Same as TDD)
 
-**❌ Writing skill before testing (skipping RED)**
+**❌ Writing skill before 测试 (skipping RED)**
 Reveals what YOU think needs preventing, not what ACTUALLY needs preventing.
 ✅ Fix: Always run baseline scenarios first.
 
@@ -348,16 +348,16 @@ Agents resist single pressure, break under multiple.
 ✅ Fix: Document exact rationalizations verbatim.
 
 **❌ Vague fixes (adding generic counters)**
-"Don't cheat" doesn't work. "Don't keep as reference" does.
+"Don't cheat" doesn't work. "Don't keep as 参考" does.
 ✅ Fix: Add explicit negations for each specific rationalization.
 
 **❌ Stopping after first pass**
 Tests pass once ≠ bulletproof.
 ✅ Fix: Continue REFACTOR cycle until no new rationalizations.
 
-## Quick Reference (TDD Cycle)
+## 快速参考 (TDD Cycle)
 
-| TDD Phase | Skill Testing | Success Criteria |
+| TDD Phase | Skill 测试 | Success Criteria |
 |-----------|---------------|------------------|
 | **RED** | Run scenario without skill | Agent fails, document rationalizations |
 | **Verify RED** | Capture exact wording | Verbatim documentation of failures |
@@ -368,9 +368,9 @@ Tests pass once ≠ bulletproof.
 
 ## The Bottom Line
 
-**Skill creation IS TDD. Same principles, same cycle, same benefits.**
+**Skill creation IS TDD. Same principles, same cycle, same 收益.**
 
-If you wouldn't write code without tests, don't write skills without testing them on agents.
+If you wouldn't write code without tests, don't write skills without 测试 them on agents.
 
 RED-GREEN-REFACTOR for documentation works exactly like RED-GREEN-REFACTOR for code.
 
@@ -378,7 +378,7 @@ RED-GREEN-REFACTOR for documentation works exactly like RED-GREEN-REFACTOR for c
 
 From applying TDD to TDD skill itself (2025-10-03):
 - 6 RED-GREEN-REFACTOR iterations to bulletproof
-- Baseline testing revealed 10+ unique rationalizations
+- Baseline 测试 revealed 10+ unique rationalizations
 - Each REFACTOR closed specific loopholes
-- Final VERIFY GREEN: 100% compliance under maximum pressure
-- Same process works for any discipline-enforcing skill
+- Final VERIFY GREEN: 100% 遵循率 under maximum pressure
+- Same 流程 works for any 纪律-enforcing skill

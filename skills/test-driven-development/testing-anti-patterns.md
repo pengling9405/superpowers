@@ -1,8 +1,8 @@
-# Testing Anti-Patterns
+# 测试 Anti-Patterns
 
-**Load this reference when:** writing or changing tests, adding mocks, or tempted to add test-only methods to production code.
+**Load this 参考 when:** writing or changing tests, adding mocks, or tempted to add test-only methods to production code.
 
-## Overview
+## 概览
 
 Tests must verify real behavior, not mock behavior. Mocks are a means to isolate, not the thing being tested.
 
@@ -18,7 +18,7 @@ Tests must verify real behavior, not mock behavior. Mocks are a means to isolate
 3. NEVER mock without understanding dependencies
 ```
 
-## Anti-Pattern 1: Testing Mock Behavior
+## Anti-Pattern 1: 测试 Mock Behavior
 
 **The violation:**
 ```typescript
@@ -34,7 +34,7 @@ test('renders sidebar', () => {
 - Test passes when mock is present, fails when it's not
 - Tells you nothing about real behavior
 
-**your human partner's correction:** "Are we testing the behavior of a mock?"
+**your human partner's correction:** "Are we 测试 the behavior of a mock?"
 
 **The fix:**
 ```typescript
@@ -235,7 +235,7 @@ BEFORE creating mock responses:
 ```
 
 **Why this is wrong:**
-- Testing is part of implementation, not optional follow-up
+- 测试 is part of implementation, not optional follow-up
 - TDD would have caught this
 - Can't claim complete without tests
 
@@ -251,7 +251,7 @@ TDD cycle:
 ## When Mocks Become Too Complex
 
 **Warning signs:**
-- Mock setup longer than test logic
+- Mock 配置方式 longer than test logic
 - Mocking everything to make test pass
 - Mocks missing methods real components have
 - Test breaks when mock changes
@@ -263,14 +263,14 @@ TDD cycle:
 ## TDD Prevents These Anti-Patterns
 
 **Why TDD helps:**
-1. **Write test first** → Forces you to think about what you're actually testing
+1. **Write test first** → Forces you to think about what you're actually 测试
 2. **Watch it fail** → Confirms test tests real behavior, not mocks
 3. **Minimal implementation** → No test-only methods creep in
 4. **Real dependencies** → You see what the test actually needs before mocking
 
-**If you're testing mock behavior, you violated TDD** - you added mocks without watching test fail against real code first.
+**If you're 测试 mock behavior, you violated TDD** - you added mocks without watching test fail against real code first.
 
-## Quick Reference
+## 快速参考
 
 | Anti-Pattern | Fix |
 |--------------|-----|
@@ -285,7 +285,7 @@ TDD cycle:
 
 - Assertion checks for `*-mock` test IDs
 - Methods only called in test files
-- Mock setup is >50% of test
+- Mock 配置方式 is >50% of test
 - Test fails when you remove mock
 - Can't explain why mock is needed
 - Mocking "just to be safe"
@@ -294,6 +294,6 @@ TDD cycle:
 
 **Mocks are tools to isolate, not things to test.**
 
-If TDD reveals you're testing mock behavior, you've gone wrong.
+If TDD reveals you're 测试 mock behavior, you've gone wrong.
 
 Fix: Test real behavior or question why you're mocking at all.

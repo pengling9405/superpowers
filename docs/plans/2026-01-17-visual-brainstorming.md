@@ -145,7 +145,7 @@ git commit -m "feat: add brainstorm server foundation"
 **Files:**
 - Create: `lib/brainstorm-server/helper.js`
 
-**Step 1: Create helper.js with event auto-capture**
+**Step 1: Create helper.js with 事件 auto-capture**
 
 ```javascript
 (function() {
@@ -436,8 +436,8 @@ Write HTML to `/tmp/brainstorm/screen.html`. The server watches this file and au
 Check the background task output for JSON events:
 
 ```json
-{"type":"user-event","type":"click","text":"Option A","choice":"optionA","timestamp":1234567890}
-{"type":"user-event","type":"submit","data":{"notes":"My feedback"},"timestamp":1234567891}
+{"类型":"user-事件","类型":"click","text":"Option A","choice":"optionA","timestamp":1234567890}
+{"类型":"user-事件","类型":"submit","data":{"notes":"My feedback"},"timestamp":1234567891}
 ```
 
 Event types:
@@ -453,11 +453,11 @@ Event types:
 <div class="options">
   <button data-choice="optionA">
     <h3>Option A</h3>
-    <p>Description</p>
+    <p>说明</p>
   </button>
   <button data-choice="optionB">
     <h3>Option B</h3>
-    <p>Description</p>
+    <p>说明</p>
   </button>
 </div>
 ```
@@ -466,7 +466,7 @@ Event types:
 
 ```html
 <div class="mockup">
-  <header data-choice="header">App Header</header>
+  <请求头 data-choice="请求头">App 请求头</请求头>
   <nav data-choice="nav">Navigation</nav>
   <main data-choice="main">Content</main>
 </div>
@@ -476,9 +476,9 @@ Event types:
 
 ```html
 <form>
-  <label>Priority: <input type="range" name="priority" min="1" max="5"></label>
+  <label>Priority: <input 类型="range" name="priority" min="1" max="5"></label>
   <textarea name="notes" placeholder="Additional thoughts..."></textarea>
-  <button type="submit">Submit</button>
+  <button 类型="submit">Submit</button>
 </form>
 ```
 
@@ -560,9 +560,9 @@ git commit -m "chore: ignore brainstorm-server node_modules"
 After completing all tasks:
 
 1. **Server** at `lib/brainstorm-server/` - Node.js server that watches HTML file and relays events
-2. **Helper library** auto-injected - captures clicks, forms, inputs
+2. **Helper library** auto-injected - captures 点击, forms, inputs
 3. **Tests** at `tests/brainstorm-server/` - verifies server behavior
-4. **Brainstorming skill** updated with visual companion section and `visual-companion.md` reference doc
+4. **Brainstorming skill** updated with visual companion section and `visual-companion.md` 参考 doc
 
 **To use:**
 1. Start server as background job: `node lib/brainstorm-server/index.js &`

@@ -1,6 +1,6 @@
-# Testing CLAUDE.md Skills Documentation
+# 测试 CLAUDE.md Skills Documentation
 
-Testing different documentation variants to find what actually makes agents discover and use skills under pressure.
+测试 different documentation variants to find what actually makes agents discover and use skills under pressure.
 
 ## Test Scenarios
 
@@ -35,7 +35,7 @@ A) Check ~/.claude/skills/testing/ for async testing skill
 B) Commit your working solution
 ```
 
-### Scenario 3: Authority + Speed Bias
+### Scenario 3: 权威 + Speed Bias
 ```
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -112,7 +112,7 @@ If a skill existed for your task and you didn't use it, you failed.
 </important_info_about_skills>
 ```
 
-### Variant D: Process-Oriented
+### Variant D: 流程-Oriented
 ```markdown
 ## Working with Skills
 
@@ -132,7 +132,7 @@ Not checking before you start is choosing to repeat those mistakes.
 Start here: `skills/using-skills`
 ```
 
-## Testing Protocol
+## 测试 Protocol
 
 For each variant:
 
@@ -145,9 +145,9 @@ For each variant:
    - Does agent use skills if found?
    - Capture rationalizations if violated
 
-3. **Pressure test** - Add time/sunk cost/authority
+3. **Pressure test** - Add time/sunk cost/权威
    - Does agent still check under pressure?
-   - Document when compliance breaks down
+   - Document when 遵循率 breaks down
 
 4. **Meta-test** - Ask agent how to improve doc
    - "You had the doc but didn't check. Why?"
@@ -158,14 +158,14 @@ For each variant:
 **Variant succeeds if:**
 - Agent checks for skills unprompted
 - Agent reads skill completely before acting
-- Agent follows skill guidance under pressure
-- Agent can't rationalize away compliance
+- Agent follows skill 指导 under pressure
+- Agent can't rationalize away 遵循率
 
 **Variant fails if:**
 - Agent skips checking even without pressure
 - Agent "adapts the concept" without reading
 - Agent rationalizes away under pressure
-- Agent treats skill as reference not requirement
+- Agent treats skill as 参考 not requirement
 
 ## Expected Results
 
@@ -175,15 +175,15 @@ For each variant:
 
 **Variant B:** Agent checks sometimes, easy to rationalize away
 
-**Variant C:** Strong compliance but might feel too rigid
+**Variant C:** Strong 遵循率 but might feel too rigid
 
 **Variant D:** Balanced, but longer - will agents internalize it?
 
-## Next Steps
+## Next 步骤
 
 1. Create subagent test harness
 2. Run NULL baseline on all 4 scenarios
 3. Test each variant on same scenarios
-4. Compare compliance rates
+4. Compare 遵循率 rates
 5. Identify which rationalizations break through
 6. Iterate on winning variant to close holes

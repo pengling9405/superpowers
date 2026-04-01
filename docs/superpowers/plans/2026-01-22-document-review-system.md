@@ -47,8 +47,8 @@ Task tool (general-purpose):
     | Completeness | TODOs, placeholders, "TBD", incomplete sections |
     | Coverage | Missing error handling, edge cases, integration points |
     | Consistency | Internal contradictions, conflicting requirements |
-    | Clarity | Ambiguous requirements |
-    | YAGNI | Unrequested features, over-engineering |
+    | 清晰度 | Ambiguous requirements |
+    | YAGNI | Unrequested 特性, over-engineering |
 
     ## CRITICAL
 
@@ -57,7 +57,7 @@ Task tool (general-purpose):
     - Sections saying "to be defined later" or "will spec when X is done"
     - Sections noticeably less detailed than others
 
-    ## Output Format
+    ## 输出格式
 
     ## Spec Review
 
@@ -76,7 +76,7 @@ Task tool (general-purpose):
 - [ ] **Step 2:** Verify the file was created correctly
 
 Run: `cat skills/brainstorming/spec-document-reviewer-prompt.md | head -20`
-Expected: Shows the header and purpose section
+Expected: Shows the 请求头 and purpose section
 
 - [ ] **Step 3:** Commit
 
@@ -157,27 +157,27 @@ Task tool (general-purpose):
     You are a plan document reviewer. Verify this plan chunk is complete and ready for implementation.
 
     **Plan chunk to review:** [PLAN_FILE_PATH] - Chunk N only
-    **Spec for reference:** [SPEC_FILE_PATH]
+    **Spec for 参考:** [SPEC_FILE_PATH]
 
     ## What to Check
 
     | Category | What to Look For |
     |----------|------------------|
-    | Completeness | TODOs, placeholders, incomplete tasks, missing steps |
+    | Completeness | TODOs, placeholders, incomplete tasks, missing 步骤 |
     | Spec Alignment | Chunk covers relevant spec requirements, no scope creep |
-    | Task Decomposition | Tasks atomic, clear boundaries, steps actionable |
-    | Task Syntax | Checkbox syntax (`- [ ]`) on tasks and steps |
+    | Task Decomposition | Tasks atomic, clear boundaries, 步骤 actionable |
+    | Task Syntax | Checkbox syntax (`- [ ]`) on tasks and 步骤 |
     | Chunk Size | Each chunk under 1000 lines |
 
     ## CRITICAL
 
     Look especially hard for:
     - Any TODO markers or placeholder text
-    - Steps that say "similar to X" without actual content
+    - 步骤 that say "similar to X" without actual content
     - Incomplete task definitions
-    - Missing verification steps or expected outputs
+    - Missing 验证 步骤 or expected outputs
 
-    ## Output Format
+    ## 输出格式
 
     ## Plan Review - Chunk N
 
@@ -196,7 +196,7 @@ Task tool (general-purpose):
 - [ ] **Step 2:** Verify the file was created
 
 Run: `cat skills/writing-plans/plan-document-reviewer-prompt.md | head -20`
-Expected: Shows the header and purpose section
+Expected: Shows the 请求头 and purpose section
 
 - [ ] **Step 3:** Commit
 
@@ -267,22 +267,22 @@ git commit -m "feat: add plan review loop and checkbox syntax to writing-plans s
 
 ---
 
-## Chunk 3: Update Plan Document Header
+## Chunk 3: Update Plan Document 请求头
 
-This chunk updates the plan document header template to reference the new checkbox syntax requirements.
+This chunk updates the plan document 请求头 template to 参考 the new checkbox syntax requirements.
 
-### Task 5: Update Plan Header Template in Writing-Plans Skill
+### Task 5: Update Plan 请求头 Template in Writing-Plans Skill
 
 **Files:**
 - Modify: `skills/writing-plans/SKILL.md`
 
-- [ ] **Step 1:** Read current plan header template
+- [ ] **Step 1:** Read current plan 请求头 template
 
 Run: `grep -A 20 "Plan Document Header" skills/writing-plans/SKILL.md`
 
-- [ ] **Step 2:** Update the header template to reference checkbox syntax
+- [ ] **Step 2:** Update the 请求头 template to 参考 checkbox syntax
 
-The plan header should note that tasks and steps use checkbox syntax. Update the header comment:
+The plan 请求头 should note that tasks and 步骤 use checkbox syntax. Update the 请求头 comment:
 
 ```markdown
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Tasks and steps use checkbox (`- [ ]`) syntax for tracking.
@@ -291,7 +291,7 @@ The plan header should note that tasks and steps use checkbox syntax. Update the
 - [ ] **Step 3:** Verify the change
 
 Run: `grep -A 5 "For agentic workers:" skills/writing-plans/SKILL.md`
-Expected: Shows updated header with checkbox syntax mention
+Expected: Shows updated 请求头 with checkbox syntax mention
 
 - [ ] **Step 4:** Commit
 
