@@ -1,118 +1,118 @@
-# Zero-Dependency Brainstorm Server
+# 零依赖 Brainstorm Server
 
-Replace the brainstorm companion server's vendored node_modules (express, ws, chokidar — 714 tracked files) with a single zero-dependency `server.js` using only Node.js built-ins.
+用一个只依赖 Node.js 内建模块的 `server.js` 替换 brainstorm companion server 当前 vendored 的 `node_modules`（`express`、`ws`、`chokidar`，共 714 个被跟踪文件）。
 
-## Motivation
+## 动机
 
-Vendoring node_modules into the git repo creates a supply chain risk: frozen dependencies don't get security patches, 714 files of third-party code are committed without audit, and modifications to vendored code look like normal commits. While the actual risk is low (localhost-only dev server), eliminating it is straightforward.
+把 `node_modules` 直接 vendoring 进 git 仓库，会带来供应链风险：冻结的依赖不会自动拿到安全补丁，714 个第三方文件在没有审计的前提下进入仓库，而且对 vendored 代码的修改在提交历史里看起来就像正常业务代码。虽然实际风险不高（因为它只是 localhost-only 的开发服务器），但移除这些依赖其实很直接。
 
-## Architecture
+## 架构
 
-A single `server.js` file (~250-300 lines) using `http`, `crypto`, `fs`, and `path`. The file serves two roles:
+一个单独的 `server.js` 文件（约 250 到 300 行），只使用 `http`、`crypto`、`fs` 和 `path`。它承担两个角色：
 
-- **When run directly** (`node server.js`): starts the HTTP/WebSocket server
-- **When required** (`require('./server.js')`): exports WebSocket protocol functions for unit testing
+- **直接运行时**（`node server.js`）：启动 HTTP / WebSocket 服务器
+- **被 `require` 时**（`require('./server.js')`）：导出 WebSocket 协议函数，供单元测试使用
 
-### WebSocket Protocol
+### WebSocket 协议
 
-Implements RFC 6455 for text frames only:
+只实现 RFC 6455 的文本帧：
 
-**Handshake:** Compute `Sec-WebSocket-Accept` from client's `Sec-WebSocket-Key` using SHA-1 + the RFC 6455 magic GUID. Return 101 Switching Protocols.
+**握手：** 使用客户端的 `Sec-WebSocket-Key` 加上 RFC 6455 规定的 magic GUID 做 SHA-1，计算出 `Sec-WebSocket-Accept`。返回 `101 Switching Protocols`。
 
-**Frame decoding (client to server):** Handle three masked length encodings:
-- Small: payload < 126 bytes
-- Medium: 126-65535 bytes (16-bit extended)
-- Large: > 65535 bytes (64-bit extended)
+**帧解码（客户端 → 服务端）：** 处理三种被 mask 的长度编码：
+- 小帧：payload < 126 字节
+- 中帧：126-65535 字节（16 位扩展长度）
+- 大帧：> 65535 字节（64 位扩展长度）
 
-XOR-unmask payload using 4-byte mask key. Return `{ opcode, payload, bytesConsumed }` or `null` for incomplete buffers. Reject unmasked frames.
+用 4 字节 mask key 对 payload 做 XOR 解码。返回 `{ opcode, payload, bytesConsumed }`，如果缓冲区还不完整则返回 `null`。拒绝未加 mask 的帧。
 
-**Frame encoding (server to client):** Unmasked frames with the same three length encodings.
+**帧编码（服务端 → 客户端）：** 使用未加 mask 的帧，长度编码方式与上面一致。
 
-**Opcodes handled:** TEXT (0x01), CLOSE (0x08), PING (0x09), PONG (0x0A). Unrecognized opcodes get a close frame with status 1003 (Unsupported Data).
+**支持的 opcode：** TEXT（0x01）、CLOSE（0x08）、PING（0x09）、PONG（0x0A）。对未知 opcode 返回状态码 1003（Unsupported Data）的 close frame。
 
-**Deliberately skipped:** Binary frames, fragmented messages, extensions (permessage-deflate), subprotocols. These are unnecessary for small JSON text messages between localhost clients. Extensions and subprotocols are negotiated in the handshake — by not advertising them, they are never active.
+**明确不做：** 二进制帧、分片消息、扩展（如 permessage-deflate）、subprotocol。这些对 localhost 间的小型 JSON 文本消息没有必要。扩展和 subprotocol 都是在握手阶段协商的，只要不声明支持，它们就永远不会启用。
 
-**Buffer accumulation:** Each connection maintains a buffer. On `data`, append and loop `decodeFrame` until it returns null or buffer is empty.
+**缓冲累积：** 每个连接维护自己的 buffer。收到 `data` 时，把数据 append 进去，并循环调用 `decodeFrame`，直到它返回 `null` 或 buffer 被清空。
 
-### HTTP Server
+### HTTP 服务器
 
-Three routes:
+三个路由：
 
-1. **`GET /`** — Serve newest `.html` from screen directory by mtime. Detect full documents vs fragments, wrap fragments in frame template, inject helper.js. Return `text/html`. When no `.html` files exist, serve a hardcoded waiting page ("Waiting for Claude to push a screen...") with helper.js injected.
-2. **`GET /files/*`** — Serve static files from screen directory with MIME type lookup from a hardcoded extension map (html, css, js, png, jpg, gif, svg, json). Return 404 if not found.
-3. **Everything else** — 404.
+1. **`GET /`** - 按 mtime 返回 screen 目录里最新的 `.html`。如果是完整 HTML 文档就直接返回；如果只是 fragment，就用 frame template 包起来，并注入 `helper.js`。返回 `text/html`。如果当前没有任何 `.html` 文件，就返回一个硬编码等待页（“Waiting for Claude to push a screen...”），同样注入 `helper.js`。
+2. **`GET /files/*`** - 从 screen 目录中静态提供文件，MIME type 通过一个硬编码扩展名表决定（html、css、js、png、jpg、gif、svg、json）。找不到返回 404。
+3. **其他所有请求** - 404。
 
-WebSocket upgrade handled via the `'upgrade'` event on the HTTP server, separate from the request handler.
+WebSocket upgrade 通过 HTTP server 的 `'upgrade'` 事件处理，和普通 request handler 分开。
 
-### Configuration
+### 配置
 
-Environment variables (all optional):
+环境变量（全部可选）：
 
-- `BRAINSTORM_PORT` — port to bind (default: random high port 49152-65535)
-- `BRAINSTORM_HOST` — interface to bind (default: `127.0.0.1`)
-- `BRAINSTORM_URL_HOST` — hostname for the URL in startup JSON (default: `localhost` when host is `127.0.0.1`, otherwise same as host)
-- `BRAINSTORM_DIR` — screen directory path (default: `/tmp/brainstorm`)
+- `BRAINSTORM_PORT` - 绑定端口（默认：随机高位端口 49152-65535）
+- `BRAINSTORM_HOST` - 绑定地址（默认：`127.0.0.1`）
+- `BRAINSTORM_URL_HOST` - 启动 JSON 中用于生成 URL 的主机名（默认：当 host 是 `127.0.0.1` 时使用 `localhost`，否则与 host 相同）
+- `BRAINSTORM_DIR` - screen 目录路径（默认：`/tmp/brainstorm`）
 
-### Startup Sequence
+### 启动顺序
 
-1. Create `SCREEN_DIR` if it doesn't exist (`mkdirSync` recursive)
-2. Load frame template and helper.js from `__dirname`
-3. Start HTTP server on configured host/port
-4. Start `fs.watch` on `SCREEN_DIR`
-5. On successful listen, log `server-started` JSON to stdout: `{ type, port, host, url_host, url, screen_dir }`
-6. Write the same JSON to `SCREEN_DIR/.server-info` so agents can find connection details when stdout is hidden (background execution)
+1. 如果 `SCREEN_DIR` 不存在，就用递归 `mkdirSync` 创建
+2. 从 `__dirname` 加载 frame template 和 `helper.js`
+3. 在配置好的 host / port 上启动 HTTP server
+4. 对 `SCREEN_DIR` 启动 `fs.watch`
+5. 成功监听后，把 `server-started` JSON 打到 stdout：`{ type, port, host, url_host, url, screen_dir }`
+6. 同时把这份 JSON 写入 `SCREEN_DIR/.server-info`，这样在后台执行、stdout 不可见时，agent 仍能找到连接信息
 
-### Application-Level WebSocket Messages
+### 应用层 WebSocket 消息
 
-When a TEXT frame arrives from a client:
+当收到客户端发送的 TEXT frame 时：
 
-1. Parse as JSON. If parsing fails, log to stderr and continue.
-2. Log to stdout as `{ source: 'user-event', ...event }`.
-3. If the event contains a `choice` property, append the JSON to `SCREEN_DIR/.events` (one line per event).
+1. 解析成 JSON。如果解析失败，写到 stderr，然后继续。
+2. 把它作为 `{ source: 'user-event', ...event }` 记录到 stdout。
+3. 如果事件里带有 `choice` 字段，就把 JSON append 到 `SCREEN_DIR/.events`（每行一个事件）。
 
-### File Watching
+### 文件监听
 
-`fs.watch(SCREEN_DIR)` replaces chokidar. On HTML file events:
+用 `fs.watch(SCREEN_DIR)` 替代 chokidar。对于 HTML 文件事件：
 
-- On new file (`rename` event for a file that exists): delete `.events` file if present (`unlinkSync`), log `screen-added` to stdout as JSON
-- On file change (`change` event): log `screen-updated` to stdout as JSON (do NOT clear `.events`)
-- Both events: send `{ type: 'reload' }` to all connected WebSocket clients
+- 新文件（`rename` 且文件存在）：如果 `.events` 文件存在就删掉（`unlinkSync`），并把 `screen-added` 作为 JSON 打到 stdout
+- 文件变更（`change`）：把 `screen-updated` 作为 JSON 打到 stdout（**不要**清空 `.events`）
+- 两类事件都要向所有已连接的 WebSocket 客户端广播 `{ type: 'reload' }`
 
-Debounce per-filename with ~100ms timeout to prevent duplicate events (common on macOS and Linux).
+按文件名做约 100ms 的 debounce，避免 macOS / Linux 上常见的重复事件。
 
-### Error Handling
+### 错误处理
 
-- Malformed JSON from WebSocket clients: log to stderr, continue
-- Unhandled opcodes: close with status 1003
-- Client disconnects: remove from broadcast set
-- `fs.watch` errors: log to stderr, continue
-- No graceful shutdown logic — shell scripts handle process lifecycle via SIGTERM
+- 来自 WebSocket 客户端的非法 JSON：写 stderr，继续
+- 未支持的 opcode：以状态码 1003 关闭
+- 客户端断开：从广播集合中移除
+- `fs.watch` 出错：写 stderr，继续
+- 不做优雅退出逻辑，进程生命周期由 shell 脚本通过 SIGTERM 管理
 
-## What Changes
+## 改动内容
 
-| Before | After |
+| 之前 | 之后 |
 |---|---|
-| `index.js` + `package.json` + `package-lock.json` + 714 `node_modules` files | `server.js` (single file) |
-| express, ws, chokidar dependencies | none |
-| No static file serving | `/files/*` serves from screen directory |
+| `index.js` + `package.json` + `package-lock.json` + 714 个 `node_modules` 文件 | `server.js`（单文件） |
+| 依赖 express、ws、chokidar | 无依赖 |
+| 没有静态文件服务 | `/files/*` 可直接从 screen 目录提供文件 |
 
-## What Stays the Same
+## 保持不变的部分
 
-- `helper.js` — no changes
-- `frame-template.html` — no changes
-- `start-server.sh` — one-line update: `index.js` to `server.js`
-- `stop-server.sh` — no changes
-- `visual-companion.md` — no changes
-- All existing server behavior and external contract
+- `helper.js` - 不改
+- `frame-template.html` - 不改
+- `start-server.sh` - 只做一行更新：把 `index.js` 改成 `server.js`
+- `stop-server.sh` - 不改
+- `visual-companion.md` - 不改
+- 所有现有对外行为和外部契约保持一致
 
-## Platform Compatibility
+## 平台兼容性
 
-- `server.js` uses only cross-platform Node built-ins
-- `fs.watch` is reliable for single flat directories on macOS, Linux, and Windows
-- Shell scripts require bash (Git Bash on Windows, which is required for Claude Code)
+- `server.js` 只依赖跨平台的 Node.js built-ins
+- 对于单层目录监听，`fs.watch` 在 macOS、Linux 和 Windows 上都足够可靠
+- shell 脚本需要 bash（Windows 上依赖 Git Bash，而这本来就是 Claude Code 的要求）
 
-## Testing
+## 测试
 
-**Unit tests** (`ws-protocol.test.js`): Test WebSocket frame encoding/decoding, handshake computation, and protocol edge cases directly by requiring `server.js` exports.
+**单元测试**（`ws-protocol.test.js`）：通过 `require server.js` 导出的函数，直接测试 WebSocket 帧编码 / 解码、握手计算以及协议边界情况。
 
-**Integration tests** (`server.test.js`): Test full server behavior — HTTP serving, WebSocket communication, file watching, brainstorming workflow. Uses `ws` npm package as a test-only client dependency (not shipped to end users).
+**集成测试**（`server.test.js`）：测试完整服务行为，包括 HTTP 返回、WebSocket 通信、文件监听以及 brainstorming 工作流。使用 `ws` npm 包作为仅测试期客户端依赖（不会分发给最终用户）。

@@ -1,43 +1,43 @@
-# Visual Brainstorming Refactor: Browser Displays, Terminal Commands
+# Visual Brainstorming 重构：浏览器负责展示，终端负责命令
 
-**Date:** 2026-02-19
-**Status:** Approved
-**Scope:** `lib/brainstorm-server/`, `skills/brainstorming/visual-companion.md`, `tests/brainstorm-server/`
+**日期：** 2026-02-19  
+**状态：** Approved  
+**范围：** `lib/brainstorm-server/`、`skills/brainstorming/visual-companion.md`、`tests/brainstorm-server/`
 
-## Problem
+## 问题
 
-During visual brainstorming, Claude runs `wait-for-feedback.sh` as a background task and blocks on `TaskOutput(block=true, timeout=600s)`. This seizes the TUI entirely — the user cannot type to Claude while visual brainstorming is running. The browser becomes the only input channel.
+在 visual brainstorming 流程里，Claude 会把 `wait-for-feedback.sh` 作为后台任务运行，然后阻塞在 `TaskOutput(block=true, timeout=600s)`。这会直接占住整个 TUI，用户无法继续在终端里跟 Claude 交互，浏览器反而变成了唯一输入通道。
 
-Claude Code's execution model is turn-based. There is no way for Claude to listen on two channels simultaneously within a single turn. The blocking `TaskOutput` pattern was the wrong primitive — it simulates event-driven behavior the platform doesn't support.
+Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法同时监听两个输入通道。阻塞式 `TaskOutput` 用错了原语，它试图模拟平台本身并不支持的事件驱动行为。
 
-## Design
+## 设计
 
-### Core Model
+### 核心模型
 
-**Browser = interactive display.** Shows mockups, lets the user click to select options. Selections are recorded server-side.
+**Browser = 交互式展示层。** 用来展示 mockup，也让用户点击选择选项。选择结果由服务端记录。
 
-**Terminal = conversation channel.** Always unblocked, always available. The user talks to Claude here.
+**Terminal = 对话通道。** 永远不阻塞，永远可用。用户继续在这里和 Claude 对话。
 
-### The Loop
+### 循环
 
-1. Claude writes an HTML file to the session directory
-2. Server detects it via chokidar, pushes WebSocket reload to the browser (unchanged)
-3. Claude ends its turn — tells the user to check the browser and respond in the terminal
-4. User looks at browser, optionally clicks to select an option, then types feedback in the terminal
-5. On the next turn, Claude reads `$SCREEN_DIR/.events` for the browser interaction stream (clicks, selections), merges with the terminal text
-6. Iterate or advance
+1. Claude 把 HTML 文件写到 session 目录
+2. 服务端通过 chokidar 检测到变更，并向浏览器推送 WebSocket reload（这一点保持不变）
+3. Claude 结束当前 turn，并提示用户去浏览器看结果，再回到终端反馈
+4. 用户查看浏览器，可选地点击某个选项，然后在终端输入反馈
+5. 下一轮 turn 中，Claude 读取 `$SCREEN_DIR/.events` 里的浏览器交互事件流（点击、选择等），再与终端文本合并
+6. 继续迭代，或推进到下一步
 
-No background tasks. No `TaskOutput` blocking. No polling scripts.
+没有后台任务。没有 `TaskOutput` 阻塞。没有轮询脚本。
 
-### Key Deletion: `wait-for-feedback.sh`
+### 关键删除项：`wait-for-feedback.sh`
 
-Deleted entirely. Its purpose was to bridge "server logs events to stdout" and "Claude needs to receive those events." The `.events` file replaces this — the server writes user interaction events directly, and Claude reads them with whatever file-reading mechanism the platform provides.
+整个删除。它原本的职责是把“服务端把事件打到 stdout”和“Claude 需要接收到这些事件”之间桥接起来。现在 `.events` 文件替代了它：服务端直接把用户交互事件写进去，而 Claude 用平台现有的文件读取机制去读它就行。
 
-### Key Addition: `.events` File (Per-Screen Event Stream)
+### 关键新增项：`.events` 文件（每个 screen 的事件流）
 
-The server writes all user interaction events to `$SCREEN_DIR/.events`, one JSON object per line. This gives Claude the full interaction stream for the current screen — not just the final selection, but the user's exploration path (clicked A, then B, settled on C).
+服务端会把所有用户交互事件写入 `$SCREEN_DIR/.events`，格式为 JSONL，每行一个 JSON 对象。这意味着 Claude 能拿到当前 screen 的完整交互流，而不只是最后一次选择。它可以看到用户的探索路径，比如先点 A，再点 B，最后停在 C。
 
-Example contents after a user explores options:
+示例：
 
 ```jsonl
 {"type":"click","choice":"a","text":"Option A - Preset-First Wizard","timestamp":1706000101}
@@ -45,118 +45,118 @@ Example contents after a user explores options:
 {"type":"click","choice":"b","text":"Option B - Hybrid Approach","timestamp":1706000115}
 ```
 
-- Append-only within a screen. Each user event is appended as a new line.
-- The file is cleared (deleted) when chokidar detects a new HTML file (new screen pushed), preventing stale events from carrying over.
-- If the file doesn't exist when Claude reads it, no browser interaction occurred — Claude uses only the terminal text.
-- The file contains only user events (`click`, etc.) — not server lifecycle events (`server-started`, `screen-added`). This keeps it small and focused.
-- Claude can read the full stream to understand the user's exploration pattern, or just look at the last `choice` event for the final selection.
+- 在单个 screen 生命周期内，这个文件只追加，不覆盖
+- 当 chokidar 检测到新的 HTML 文件（新 screen）时，就删除 `.events` 文件，避免旧事件串进来
+- 如果 Claude 读取时文件不存在，说明用户没有发生浏览器交互，此时只使用终端文本
+- 文件里只保留用户事件（如 `click`），不记录 `server-started`、`screen-added` 这类服务端生命周期事件，保持小而聚焦
+- Claude 可以读取完整事件流来理解用户探索过程，也可以只看最后一次 `choice` 事件作为最终选择
 
-## Changes by File
+## 各文件改动
 
-### `index.js` (server)
+### `index.js`（服务端）
 
-**A. Write user events to `.events` file.**
+**A. 把用户事件写入 `.events` 文件。**
 
-In the WebSocket `message` handler, after logging the event to stdout: append the event as a JSON line to `$SCREEN_DIR/.events` via `fs.appendFileSync`. Only write user interaction events (those with `source: 'user-event'`), not server lifecycle events.
+在 WebSocket `message` handler 里，在把事件打到 stdout 之后，使用 `fs.appendFileSync` 把事件以 JSON 行形式追加到 `$SCREEN_DIR/.events`。只写用户交互事件（也就是 `source: 'user-event'`），不要写服务端生命周期事件。
 
-**B. Clear `.events` on new screen.**
+**B. 在新 screen 出现时清空 `.events`。**
 
-In the chokidar `add` handler (new `.html` file detected), delete `$SCREEN_DIR/.events` if it exists. This is the definitive "new screen" signal — better than clearing on GET `/` which fires on every reload.
+在 chokidar 的 `add` handler 里（检测到新的 `.html` 文件），如果 `$SCREEN_DIR/.events` 存在，就删掉它。新 screen 的出现才是清空事件流的准确信号，比在 GET `/` 时清空靠谱得多，因为 `/` 每次 reload 都会触发。
 
-**C. Replace `wrapInFrame` content injection.**
+**C. 替换 `wrapInFrame` 的内容注入方式。**
 
-The current regex anchors on `<div class="feedback-footer">`, which is being removed. Replace with a comment placeholder: remove the existing default content inside `#claude-content` (the `<h2>Visual Brainstorming</h2>` and subtitle paragraph) and replace with a single `<!-- CONTENT -->` marker. Content injection becomes `frameTemplate.replace('<!-- CONTENT -->', content)`. Simpler and won't break if template formatting changes.
+现有逻辑是靠 `<div class="feedback-footer">` 做正则锚点，但这个 footer 将被移除。改为在 `#claude-content` 内原本默认内容的位置（`<h2>Visual Brainstorming</h2>` 和说明段落）放入单一占位符：`<!-- CONTENT -->`。然后通过 `frameTemplate.replace('<!-- CONTENT -->', content)` 注入内容。这样更简单，也不依赖模板格式细节。
 
-### `frame-template.html` (UI frame)
+### `frame-template.html`（UI 外壳）
 
-**Remove:**
-- The `feedback-footer` div (textarea, Send button, label, `.feedback-row`)
-- Associated CSS (`.feedback-footer`, `.feedback-footer label`, `.feedback-row`, textarea and button styles within it)
+**移除：**
+- `feedback-footer` div（textarea、Send 按钮、label、`.feedback-row`）
+- 对应 CSS（`.feedback-footer`、其 label、`.feedback-row` 以及内部 textarea / button 样式）
 
-**Add:**
-- `<!-- CONTENT -->` placeholder inside `#claude-content`, replacing the default text
-- A selection indicator bar where the footer was, with two states:
-  - Default: "Click an option above, then return to the terminal"
-  - After selection: "Option B selected — return to terminal to continue"
-- CSS for the indicator bar (subtle, similar visual weight to the existing header)
+**新增：**
+- 在 `#claude-content` 内部加入 `<!-- CONTENT -->` 占位符，替换现有默认文案
+- 在原 footer 所在区域加入一个“选择状态条”，两种状态：
+  - 默认：`Click an option above, then return to the terminal`
+  - 选择后：`Option B selected — return to terminal to continue`
+- 为状态条新增 CSS，视觉权重保持克制，接近现有 header
 
-**Keep unchanged:**
-- Header bar with "Brainstorm Companion" title and connection status
-- `.main` wrapper and `#claude-content` container
-- All component CSS (`.options`, `.cards`, `.mockup`, `.split`, `.pros-cons`, placeholders, mock elements)
-- Dark/light theme variables and media query
+**保持不变：**
+- 顶部 header（"Brainstorm Companion" 标题和连接状态）
+- `.main` 包裹层和 `#claude-content` 容器
+- 所有组件 CSS（`.options`、`.cards`、`.mockup`、`.split`、`.pros-cons`、placeholder、mock 元素）
+- 深浅色主题变量与 media query
 
-### `helper.js` (client-side script)
+### `helper.js`（客户端脚本）
 
-**Remove:**
-- `sendToClaude()` function and the "Sent to Claude" page takeover
-- `window.send()` function (was tied to the removed Send button)
-- Form submission handler — no purpose without the feedback textarea, adds log noise
-- Input change handler — same reason
-- `pageshow` event listener (was added to fix textarea persistence — no textarea anymore)
+**移除：**
+- `sendToClaude()` 函数，以及 “Sent to Claude” 的整页替换逻辑
+- `window.send()`（它原本绑定到已删除的 Send 按钮）
+- 表单提交 handler，没有 textarea 后已经没有意义，只会制造噪声
+- input change handler，同理
+- `pageshow` 事件监听（之前是为了解决 textarea 状态残留）
 
-**Keep:**
-- WebSocket connection, reconnect logic, event queue
-- Reload handler (`window.location.reload()` on server push)
-- `window.toggleSelect()` for selection highlighting
-- `window.selectedChoice` tracking
-- `window.brainstorm.send()` and `window.brainstorm.choice()` — these are distinct from the removed `window.send()`. They call `sendEvent` which logs to the server via WebSocket. Useful for custom full-document pages.
+**保留：**
+- WebSocket 连接、重连逻辑、事件队列
+- reload handler（收到服务端推送后执行 `window.location.reload()`）
+- `window.toggleSelect()`，负责选择高亮
+- `window.selectedChoice` 状态追踪
+- `window.brainstorm.send()` 和 `window.brainstorm.choice()`，它们和已删除的 `window.send()` 不是一回事。二者调用 `sendEvent`，把事件通过 WebSocket 写回服务端，对完整 HTML 页面仍然有用
 
-**Narrow:**
-- Click handler: capture only `[data-choice]` clicks, not all buttons/links. The broad capture was needed when the browser was a feedback channel; now it's just for selection tracking.
+**收窄：**
+- click handler 只捕获 `[data-choice]` 点击，不再拦所有按钮 / 链接。旧版需要这样做，是因为浏览器还承担反馈输入；现在它只负责选择状态追踪
 
-**Add:**
-- On `data-choice` click, update the selection indicator bar text to show which option was selected.
+**新增：**
+- 当用户点击 `data-choice` 元素时，同时更新状态条文案，展示当前选中的选项
 
-**Remove from `window.brainstorm` API:**
-- `brainstorm.sendToClaude` — no longer exists
+**从 `window.brainstorm` API 中移除：**
+- `brainstorm.sendToClaude`，因为它已经不存在
 
-### `visual-companion.md` (skill instructions)
+### `visual-companion.md`（skill 指令）
 
-**Rewrite "The Loop" section** to the non-blocking flow described above. Remove all references to:
+把 “The Loop” 一节改写成上面描述的非阻塞流程，并删除以下所有内容：
 - `wait-for-feedback.sh`
-- `TaskOutput` blocking
-- Timeout/retry logic (600s timeout, 30-minute cap)
-- "User Feedback Format" section describing `send-to-claude` JSON
+- `TaskOutput` 阻塞
+- timeout / retry 逻辑（600 秒 timeout、30 分钟上限）
+- 描述 `send-to-claude` JSON 的 “User Feedback Format” 一节
 
-**Replace with:**
-- The new loop (write HTML → end turn → user responds in terminal → read `.events` → iterate)
-- `.events` file format documentation
-- Guidance that the terminal message is the primary feedback; `.events` provides the full browser interaction stream for additional context
+**替换成：**
+- 新循环（写 HTML → 结束 turn → 用户在终端反馈 → 读取 `.events` → 继续）
+- `.events` 文件格式说明
+- 明确终端消息是主反馈来源，而 `.events` 只是额外提供浏览器交互上下文
 
-**Keep:**
-- Server startup/shutdown instructions
-- Content fragment vs full document guidance
-- CSS class reference and available components
-- Design tips (scale fidelity to the question, 2-4 options per screen, etc.)
+**保留：**
+- 服务端启动 / 关闭说明
+- fragment 与 full document 的使用说明
+- CSS class 参考与可用组件
+- 设计建议（根据问题复杂度调整保真度、每屏 2 到 4 个选项等）
 
 ### `wait-for-feedback.sh`
 
-**Deleted entirely.**
+**完全删除。**
 
 ### `tests/brainstorm-server/server.test.js`
 
-Tests that need updating:
-- Test asserting `feedback-footer` presence in fragment responses — update to assert the selection indicator bar or `<!-- CONTENT -->` replacement
-- Test asserting `helper.js` contains `send` — update to reflect narrowed API
-- Test asserting `sendToClaude` CSS variable usage — remove (function no longer exists)
+需要更新的测试：
+- 之前断言 fragment 响应里有 `feedback-footer`，现在应改成断言有新的选择状态条，或 `<!-- CONTENT -->` 已被替换
+- 之前断言 `helper.js` 中存在 `send`，现在应改为新的 API 形态
+- 之前断言 `sendToClaude` 对 CSS 变量有依赖，这部分要删（函数已不存在）
 
-## Platform Compatibility
+## 平台兼容性
 
-The server code (`index.js`, `helper.js`, `frame-template.html`) is fully platform-agnostic — pure Node.js and browser JavaScript. No Claude Code-specific references. Already proven to work on Codex via background terminal interaction.
+服务端代码（`index.js`、`helper.js`、`frame-template.html`）完全平台无关，只使用纯 Node.js 和浏览器 JavaScript。已经在 Codex 的后台终端交互场景下验证可用。
 
-The skill instructions (`visual-companion.md`) are the platform-adaptive layer. Each platform's Claude uses its own tools to start the server, read `.events`, etc. The non-blocking model works naturally across platforms since it doesn't depend on any platform-specific blocking primitive.
+skill 指令（`visual-companion.md`）才是平台适配层。各个平台上的 Claude 用自己的工具去启动服务、读取 `.events` 等。由于新模型不依赖任何平台专属阻塞原语，所以天然更适合跨平台。
 
-## What This Enables
+## 这次改动带来的能力
 
-- **TUI always responsive** during visual brainstorming
-- **Mixed input** — click in browser + type in terminal, naturally merged
-- **Graceful degradation** — browser down or user doesn't open it? Terminal still works
-- **Simpler architecture** — no background tasks, no polling scripts, no timeout management
-- **Cross-platform** — same server code works on Claude Code, Codex, and any future platform
+- **TUI 始终可用**，visual brainstorming 期间用户仍可继续在终端输入
+- **混合输入**，浏览器点击 + 终端文字可以自然合并
+- **优雅退化**，即使浏览器没打开或用户不使用它，终端工作流仍然完整
+- **结构更简单**，不再有后台任务、轮询脚本和 timeout 管理
+- **跨平台**，同一套服务端代码可跑在 Claude Code、Codex 和未来平台上
 
-## What This Drops
+## 这次改动放弃了什么
 
-- **Pure-browser feedback workflow** — user must return to the terminal to continue. The selection indicator bar guides them, but it's one extra step compared to the old click-Send-and-wait flow.
-- **Inline text feedback from browser** — the textarea is gone. All text feedback goes through the terminal. This is intentional — the terminal is a better text input channel than a small textarea in a frame.
-- **Immediate response on browser Send** — the old system had Claude respond the moment the user clicked Send. Now there's a gap while the user switches to the terminal. In practice this is seconds, and the user gets to add context in their terminal message.
+- **纯浏览器反馈工作流**：用户必须回到终端继续，不能像旧版那样点击 Send 后原地等待。状态条会引导用户，但确实多了一步
+- **浏览器内文本反馈**：textarea 被删除，所有文字反馈都回到终端。这是刻意的，因为终端比一个小 textarea 更适合长文本输入
+- **点击后立即得到 Claude 响应**：旧系统用户点 Send 后 Claude 会立刻接上；新系统中用户需要切回终端再发消息。实际通常只多几秒，而且用户反而可以顺手补充更多上下文
