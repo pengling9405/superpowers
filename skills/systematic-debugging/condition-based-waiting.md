@@ -1,12 +1,12 @@
-# Condition-Based Waiting
+# 基于条件的等待
 
-## Overview
+## 概览
 
-Flaky tests often guess at timing with arbitrary delays. This creates race conditions where tests pass on fast machines but fail under load or in CI.
+脆弱的测试经常通过拍脑袋的固定延迟来赌时序。这很容易制造 race condition，结果就是在快机器上能过，在负载高或 CI 环境里就挂。
 
-**Core principle:** Wait for the actual condition you care about, not a guess about how long it takes.
+**核心原则：** 等待你真正关心的条件成立，而不是猜测它大概需要多久。
 
-## When to Use
+## 什么时候使用
 
 ```dot
 digraph when_to_use {
@@ -21,43 +21,43 @@ digraph when_to_use {
 }
 ```
 
-**Use when:**
-- Tests have arbitrary delays (`setTimeout`, `sleep`, `time.sleep()`)
-- Tests are flaky (pass sometimes, fail under load)
-- Tests timeout when run in parallel
-- Waiting for async operations to complete
+**适用场景：**
+- 测试里有随意设置的延迟（`setTimeout`、`sleep`、`time.sleep()`）
+- 测试有 flaky 问题（有时通过，在负载下失败）
+- 测试并行运行时经常超时
+- 需要等待异步操作完成
 
-**Don't use when:**
-- Testing actual timing behavior (debounce, throttle intervals)
-- Always document WHY if using arbitrary timeout
+**不适用场景：**
+- 你测试的本来就是时序行为本身（例如 debounce、throttle 间隔）
+- 如果必须用任意 timeout，一定要写清楚为什么
 
-## Core Pattern
+## 核心模式
 
 ```typescript
-// ❌ BEFORE: Guessing at timing
+// ❌ 之前：靠猜时序
 await new Promise(r => setTimeout(r, 50));
 const result = getResult();
 expect(result).toBeDefined();
 
-// ✅ AFTER: Waiting for condition
+// ✅ 之后：等待条件成立
 await waitFor(() => getResult() !== undefined);
 const result = getResult();
 expect(result).toBeDefined();
 ```
 
-## Quick Patterns
+## 常见模式
 
-| Scenario | Pattern |
-|----------|---------|
-| Wait for event | `waitFor(() => events.find(e => e.type === 'DONE'))` |
-| Wait for state | `waitFor(() => machine.state === 'ready')` |
-| Wait for count | `waitFor(() => items.length >= 5)` |
-| Wait for file | `waitFor(() => fs.existsSync(path))` |
-| Complex condition | `waitFor(() => obj.ready && obj.value > 10)` |
+| 场景 | 模式 |
+|------|------|
+| 等待事件 | `waitFor(() => events.find(e => e.type === 'DONE'))` |
+| 等待状态 | `waitFor(() => machine.state === 'ready')` |
+| 等待数量 | `waitFor(() => items.length >= 5)` |
+| 等待文件 | `waitFor(() => fs.existsSync(path))` |
+| 复杂条件 | `waitFor(() => obj.ready && obj.value > 10)` |
 
-## Implementation
+## 实现
 
-Generic polling function:
+通用轮询函数：
 ```typescript
 async function waitFor<T>(
   condition: () => T | undefined | null | false,
@@ -74,42 +74,42 @@ async function waitFor<T>(
       throw new Error(`Timeout waiting for ${description} after ${timeoutMs}ms`);
     }
 
-    await new Promise(r => setTimeout(r, 10)); // Poll every 10ms
+    await new Promise(r => setTimeout(r, 10)); // 每 10ms 轮询一次
   }
 }
 ```
 
-See `condition-based-waiting-example.ts` in this directory for complete implementation with domain-specific helpers (`waitForEvent`, `waitForEventCount`, `waitForEventMatch`) from actual debugging session.
+完整实现见当前目录下的 `condition-based-waiting-example.ts`，其中包含来自真实调试会话的领域辅助函数，例如 `waitForEvent`、`waitForEventCount`、`waitForEventMatch`。
 
-## Common Mistakes
+## 常见错误
 
-**❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU
-**✅ Fix:** Poll every 10ms
+**❌ 轮询过快：** `setTimeout(check, 1)`，浪费 CPU  
+**✅ 修正：** 每 10ms 轮询一次
 
-**❌ No timeout:** Loop forever if condition never met
-**✅ Fix:** Always include timeout with clear error
+**❌ 没有 timeout：** 如果条件永远达不到，就会死循环  
+**✅ 修正：** 总是加上 timeout，并配清晰错误信息
 
-**❌ Stale data:** Cache state before loop
-**✅ Fix:** Call getter inside loop for fresh data
+**❌ 使用陈旧数据：** 在循环前就把状态缓存下来  
+**✅ 修正：** 在循环内部调用 getter，保证拿到新值
 
-## When Arbitrary Timeout IS Correct
+## 什么时候任意 Timeout 才是对的
 
 ```typescript
-// Tool ticks every 100ms - need 2 ticks to verify partial output
-await waitForEvent(manager, 'TOOL_STARTED'); // First: wait for condition
-await new Promise(r => setTimeout(r, 200));   // Then: wait for timed behavior
-// 200ms = 2 ticks at 100ms intervals - documented and justified
+// 工具每 100ms tick 一次，需要 2 个 tick 才能验证部分输出
+await waitForEvent(manager, 'TOOL_STARTED'); // 先等待触发条件成立
+await new Promise(r => setTimeout(r, 200));   // 再等待预期时序行为发生
+// 200ms = 100ms 间隔下的 2 个 tick，原因清楚且有说明
 ```
 
-**Requirements:**
-1. First wait for triggering condition
-2. Based on known timing (not guessing)
-3. Comment explaining WHY
+**要求：**
+1. 先等待触发条件成立
+2. 必须基于已知时序，而不是瞎猜
+3. 注释里写清楚 WHY
 
-## Real-World Impact
+## 真实收益
 
-From debugging session (2025-10-03):
-- Fixed 15 flaky tests across 3 files
-- Pass rate: 60% → 100%
-- Execution time: 40% faster
-- No more race conditions
+来自一次调试会话（2025-10-03）的结果：
+- 修复了 3 个文件中的 15 个 flaky tests
+- 通过率：60% → 100%
+- 执行时间：快了 40%
+- race condition 不再出现

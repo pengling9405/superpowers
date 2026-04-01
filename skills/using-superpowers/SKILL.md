@@ -1,47 +1,47 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+description: 在任何对话开始时使用，用来建立如何查找和使用 skills 的规则，并要求在任何响应之前（包括澄清问题）先调用 Skill tool
 ---
 
 <SUBAGENT-STOP>
-If you were dispatched as a subagent to execute a specific task, skip this skill.
+如果你是作为 subagent 被派发来执行某个具体任务的，请跳过这个 skill。
 </SUBAGENT-STOP>
 
 <EXTREMELY-IMPORTANT>
-If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+如果你觉得哪怕只有 1% 的可能某个 skill 适用于当前任务，你也绝对必须调用它。
 
-IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+只要有 skill 适用于你的任务，你就没有选择权。你必须使用它。
 
-This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+这不是可以商量的事。不是可选项。你不能靠自我合理化绕过去。
 </EXTREMELY-IMPORTANT>
 
-## Instruction Priority
+## 指令优先级
 
-Superpowers skills override default system prompt behavior, but **user instructions always take precedence**:
+Superpowers skills 会覆盖默认 system prompt 的行为，但 **用户指令始终优先**：
 
-1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
-2. **Superpowers skills** — override default system behavior where they conflict
-3. **Default system prompt** — lowest priority
+1. **用户的明确指令**（`CLAUDE.md`、`GEMINI.md`、`AGENTS.md`、直接请求）——最高优先级
+2. **Superpowers skills** —— 在与默认 system 行为冲突时覆盖它
+3. **默认 system prompt** —— 最低优先级
 
-If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+如果 `CLAUDE.md`、`GEMINI.md` 或 `AGENTS.md` 写着 “不要用 TDD”，而某个 skill 却说 “总是使用 TDD”，那就遵循用户指令。控制权在用户手里。
 
-## How to Access Skills
+## 如何访问 Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+**在 Claude Code 中：** 使用 `Skill` tool。调用某个 skill 时，它的内容会被加载并直接呈现给你，照着执行即可。不要用 `Read` tool 去读 skill 文件。
 
-**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+**在 Gemini CLI 中：** skills 通过 `activate_skill` tool 激活。Gemini 会在会话启动时加载 skill metadata，并在需要时激活完整内容。
 
-**In other environments:** Check your platform's documentation for how skills are loaded.
+**在其他环境中：** 请查看平台文档，确认 skills 是如何加载的。
 
-## Platform Adaptation
+## 平台适配
 
-Skills use Claude Code tool names. Non-CC platforms: see `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.
+skills 使用 Claude Code 的工具名。非 Claude Code 平台请查看 `references/codex-tools.md`（Codex）里的工具对应关系。Gemini CLI 用户会通过 `GEMINI.md` 自动加载工具映射。
 
-# Using Skills
+# 使用 Skills
 
-## The Rule
+## 规则
 
-**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+**在任何响应或行动之前，先调用相关或被请求的 skill。** 只要有 1% 的可能性某个 skill 适用，你就应该先调用它来确认。如果调用后发现这个 skill 不适合当前情况，那可以不用继续执行它。
 
 ```dot
 digraph skill_flow {
@@ -73,43 +73,43 @@ digraph skill_flow {
 }
 ```
 
-## Red Flags
+## 红旗信号
 
-These thoughts mean STOP—you're rationalizing:
+一旦你脑中冒出下面这些念头，就该停下来了，因为你正在给自己找借口：
 
-| Thought | Reality |
-|---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying questions. |
-| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
-| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
-| "Let me gather information first" | Skills tell you HOW to gather information. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
-| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+| 想法 | 现实 |
+|------|------|
+| “这只是个简单问题” | 问题也是任务，先检查 skill。 |
+| “我得先拿到更多上下文” | skill 检查发生在澄清问题之前。 |
+| “我先探索一下代码库” | skill 会告诉你怎么探索，先检查。 |
+| “我先快速看下 git / 文件” | 文件没有会话上下文，还是先检查 skill。 |
+| “我先收集点信息再说” | skill 会告诉你怎么收集信息。 |
+| “这不需要正式的 skill” | 只要有 skill，就要用。 |
+| “这个 skill 我记得” | skill 会演化，读当前版本。 |
+| “这不算一个任务” | 只要有动作，就是任务。先检查 skill。 |
+| “这个 skill 太重了” | 简单问题经常会变复杂。先用它。 |
+| “我先做这一件小事” | 先检查，再做任何事。 |
+| “这样感觉很高效” | 没纪律的行动会浪费时间，skill 是防护栏。 |
+| “我知道这是什么意思” | 知道概念 ≠ 使用 skill。先调用。 |
 
-## Skill Priority
+## Skill 优先级
 
-When multiple skills could apply, use this order:
+当多个 skill 都可能适用时，使用下面这个顺序：
 
-1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1. **先用流程型 skills**（如 brainstorming、debugging），它们决定你该如何接近问题
+2. **再用实现型 skills**（如 frontend-design、mcp-builder），它们指导具体执行
 
-"Let's build X" → brainstorming first, then implementation skills.
-"Fix this bug" → debugging first, then domain-specific skills.
+“Let's build X” → 先 brainstorming，再实现型 skill。  
+“Fix this bug” → 先 debugging，再领域专属 skill。
 
-## Skill Types
+## Skill 类型
 
-**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+**Rigid**（如 TDD、debugging）：严格执行，不要擅自弱化纪律。
 
-**Flexible** (patterns): Adapt principles to context.
+**Flexible**（如 patterns）：根据上下文调整原则。
 
-The skill itself tells you which.
+具体属于哪类，以 skill 本身的说明为准。
 
-## User Instructions
+## 用户指令
 
-Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+用户指令告诉你的是 WHAT，而不是 HOW。像 “Add X” 或 “Fix Y” 这种要求，并不意味着你可以跳过工作流。
