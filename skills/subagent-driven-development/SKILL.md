@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Use when executing implementation plans with independent tasks in the current session
+description: "适用于在当前会话中根据实现计划拆分并行且相互独立的任务。"
 ---
 
 # Subagent-Driven Development
@@ -99,7 +99,7 @@ Use the least powerful model that can handle each role to conserve cost and incr
 - Touches multiple files with integration concerns → standard model
 - Requires design judgment or broad codebase understanding → most capable model
 
-## Handling Implementer Status
+## Handling Implementer 状态
 
 Implementer subagents report one of four statuses. Handle each appropriately:
 

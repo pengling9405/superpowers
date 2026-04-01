@@ -1,4 +1,4 @@
-# Visual Brainstorming Refactor Implementation Plan
+# Visual Brainstorming Refactor 实现 计划
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
@@ -25,7 +25,7 @@
 
 ---
 
-## Chunk 1: Server, Template, Client, Tests, Skill
+## Chunk 1: Server, Template, Client, Tests, 技能
 
 ### Task 1: Update `frame-template.html`
 
@@ -91,7 +91,7 @@ git commit -m "Replace feedback footer with selection indicator bar in brainstor
 
 ---
 
-### Task 2: Update `index.js` — content injection and `.events` file
+### Task 2: Update `index.js` — 内容 injection and `.events` file
 
 **Files:**
 - Modify: `lib/brainstorm-server/index.js`
@@ -519,5 +519,5 @@ Expected: No hits outside of release notes and the spec/plan docs (which are his
 
 ```bash
 git status
-# Review untracked/modified files, stage specific files as needed, commit if clean
+# 审查 untracked/modified files, stage specific files as needed, commit if clean
 ```

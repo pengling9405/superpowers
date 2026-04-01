@@ -1,4 +1,4 @@
-# Persuasion Principles for Skill Design
+# Persuasion Principles for 技能 设计
 
 ## 概览
 

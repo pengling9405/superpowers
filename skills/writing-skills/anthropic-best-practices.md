@@ -1,4 +1,4 @@
-# Skill authoring best practices
+# 技能 authoring best practices
 
 > Learn how to write effective Skills that Claude can discover and use successfully.
 
@@ -108,7 +108,7 @@ Do not modify the command or add additional flags.
 * **Narrow bridge with cliffs on both sides**: There's only one safe way forward. Provide specific guardrails and exact instructions (low freedom). Example: database migrations that must run in exact sequence.
 * **Open field with no hazards**: Many paths lead to success. Give general direction and trust Claude to find the best route (high freedom). Example: code reviews where context determines the best approach.
 
-### Test with all models you plan to use
+### 测试 with all models you 计划 to use
 
 Skills act as additions to models, so effectiveness depends on the underlying model. Test your Skill with all the models you plan to use it with.
 
@@ -120,7 +120,7 @@ Skills act as additions to models, so effectiveness depends on the underlying mo
 
 What works perfectly for Opus might need more detail for Haiku. If you plan to use your Skill across multiple models, aim for instructions that work well with all of them.
 
-## Skill structure
+## 技能 structure
 
 <Note>
   **YAML Frontmatter**: The SKILL.md frontmatter requires two fields:
@@ -223,7 +223,7 @@ The complete Skill directory structure might look like this:
 
 @@CODE14@@
 
-#### Pattern 1: High-level guide with references
+#### 模式 1: High-level guide with references
 
 @@CODE15@@python
 import pdfplumber
@@ -233,7 +233,7 @@ with pdfplumber.open("file.pdf") as pdf:
 
 Claude loads FORMS.md, 参考.md, or EXAMPLES.md only when needed.
 
-#### Pattern 2: Domain-specific organization
+#### 模式 2: Domain-specific organization
 
 For Skills with multiple domains, organize content by domain to avoid loading irrelevant context. When a user asks about sales 指标, Claude only needs to read sales-related schemas, not finance or 营销 data. This keeps token usage low and context focused.
 
@@ -268,7 +268,7 @@ grep -i "API usage" 参考/产品.md
 ```
 ````
 
-#### Pattern 3: Conditional details
+#### 模式 3: Conditional details
 
 Show basic content, link to advanced content:
 
@@ -302,7 +302,7 @@ Claude can then read the complete file or jump to specific sections as needed.
 
 For details on how this filesystem-based architecture enables progressive disclosure, see the [Runtime environment](#runtime-environment) section in the Advanced section below.
 
-## Workflows and feedback loops
+## 工作流s and feedback loops
 
 ### Use workflows for complex tasks
 
@@ -324,7 +324,7 @@ This 示例 shows how 工作流 apply to analysis tasks that don't require code.
 **示例 2: PDF form filling 工作流** (for Skills with code):
 
 ````markdown  theme={null}
-## PDF form filling workflow
+## PDF form filling 工作流
 
 Copy this checklist and check off items as you complete them:
 
@@ -384,7 +384,7 @@ This shows the validation loop pattern using reference documents instead of scri
 
 The validation loop catches errors early.
 
-## Content guidelines
+## 内容 guidelines
 
 ### Avoid time-sensitive information
 
@@ -420,7 +420,7 @@ Consistency helps Claude understand and follow instructions.
 
 ## Common patterns
 
-### Template pattern
+### Template 模式
 
 Provide templates for output format. Match the level of strictness to your needs.
 
@@ -429,7 +429,7 @@ Provide templates for output format. Match the level of strictness to your needs
 @@CODE32@@markdown
 # [Analysis Title]
 
-## Executive summary
+## Executive 摘要
 [One-paragraph overview of key findings]
 
 ## Key findings
@@ -445,14 +445,14 @@ Provide templates for output format. Match the level of strictness to your needs
 **For flexible 指导** (when adaptation is useful):
 
 ````markdown  theme={null}
-## Report structure
+## 报告 structure
 
 Here is a sensible default format, but use your best judgment based on the analysis:
 
 ```markdown
 # [Analysis Title]
 
-## Executive summary
+## Executive 摘要
 [概览]
 
 ## Key findings
@@ -465,7 +465,7 @@ Here is a sensible default format, but use your best judgment based on the analy
 Adjust sections as needed for the specific analysis type.
 ````
 
-### Examples pattern
+### Examples 模式
 
 For Skills where output quality depends on seeing examples, provide input/output pairs just like in regular prompting:
 
@@ -486,12 +486,12 @@ chore: update dependencies and refactor error handling
 
 示例 help Claude understand the desired style and level of detail more clearly than descriptions alone.
 
-### Conditional 工作流 pattern
+### Conditional 工作流 模式
 
 Guide Claude through decision points:
 
 ```markdown  theme={null}
-## Document modification workflow
+## Document modification 工作流
 
 1. Determine the modification type:
 
@@ -516,7 +516,7 @@ Guide Claude through decision points:
 
 ## Evaluation and iteration
 
-### Build evaluations first
+### 构建 evaluations first
 
 **Create evaluations BEFORE writing extensive documentation.** This ensures your Skill solves real problems rather than documenting imagined ones.
 
@@ -549,7 +549,7 @@ This approach ensures you're solving actual problems rather than anticipating re
   This 示例 demonstrates a data-driven evaluation with a simple 测试 rubric. We do not currently provide a built-in way to run these evaluations. Users can create their own evaluation system. Evaluations are your 来源 of truth for measuring Skill effectiveness.
 </Note>
 
-### Develop Skills iteratively with Claude
+### Develop 技能 iteratively with Claude
 
 The most effective Skill development 流程 involves Claude itself. Work with one instance of Claude ("Claude A") to create a Skill that will be used by other instances ("Claude B"). Claude A helps you design and refine instructions, while Claude B tests them in real tasks. This works because Claude models understand both how to write effective agent instructions and what information agents need.
 
@@ -605,7 +605,7 @@ The same hierarchical pattern continues when improving Skills. You alternate bet
 
 **Why this approach works**: Claude A understands agent needs, you provide domain expertise, Claude B reveals gaps through real usage, and iterative refinement improves Skills based on observed behavior rather than assumptions.
 
-### Observe how Claude navigates Skills
+### Observe how Claude navigates 技能
 
 As you iterate on Skills, pay attention to how Claude actually uses them in practice. Watch for:
 
@@ -644,7 +644,7 @@ import pdfplumber
 For scanned PDFs requiring OCR, use pdf2image with pytesseract instead."
 ````
 
-## Advanced: Skills with executable code
+## Advanced: 技能 with executable code
 
 The sections below focus on Skills that include executable scripts. If your Skill uses only markdown instructions, skip to [Checklist for effective Skills](#checklist-for-effective-skills).
 
@@ -791,7 +791,7 @@ When the user asks about revenue, Claude reads SKILL.md, sees the reference to `
 
 For complete details on the technical architecture, see [How Skills work](/en/docs/agents-and-tools/agent-skills/overview#how-skills-work) in the Skills overview.
 
-### MCP tool references
+### MCP 工具 references
 
 If your Skill uses MCP (Model Context Protocol) tools, always use fully qualified tool names to avoid "tool not found" errors.
 
@@ -827,7 +827,7 @@ The SKILL.md frontmatter requires `name` (64 characters max) and `description` (
 
 Keep SKILL.md body under 500 lines for optimal 表现. If your content exceeds this, split it into separate files using the progressive disclosure patterns described earlier. For architectural details, see the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#how-skills-work).
 
-## Checklist for effective Skills
+## Checklist for effective 技能
 
 Before sharing a Skill, verify:
 

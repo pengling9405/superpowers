@@ -10,7 +10,7 @@ Tests must verify real behavior, not mock behavior. Mocks are a means to isolate
 
 **Following strict TDD prevents these anti-patterns.**
 
-## The Iron Laws
+## 铁律s
 
 ```
 1. NEVER test mock behavior
@@ -18,7 +18,7 @@ Tests must verify real behavior, not mock behavior. Mocks are a means to isolate
 3. NEVER mock without understanding dependencies
 ```
 
-## Anti-Pattern 1: 测试 Mock Behavior
+## Anti-模式 1: 测试 Mock Behavior
 
 **The violation:**
 ```typescript
@@ -60,7 +60,7 @@ BEFORE asserting on any mock element:
   Test real behavior instead
 ```
 
-## Anti-Pattern 2: Test-Only Methods in Production
+## Anti-模式 2: 测试-Only Methods in Production
 
 **The violation:**
 ```typescript
@@ -115,7 +115,7 @@ BEFORE adding any method to production class:
     STOP - Wrong class for this method
 ```
 
-## Anti-Pattern 3: Mocking Without Understanding
+## Anti-模式 3: Mocking Without Understanding
 
 **The violation:**
 ```typescript
@@ -174,7 +174,7 @@ BEFORE mocking any method:
     - Mocking without understanding the dependency chain
 ```
 
-## Anti-Pattern 4: Incomplete Mocks
+## Anti-模式 4: Incomplete Mocks
 
 **The violation:**
 ```typescript
@@ -225,7 +225,7 @@ BEFORE creating mock responses:
   If uncertain: Include all documented fields
 ```
 
-## Anti-Pattern 5: Integration Tests as Afterthought
+## Anti-模式 5: Integration Tests as Afterthought
 
 **The violation:**
 ```

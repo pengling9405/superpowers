@@ -1,5 +1,5 @@
 ---
-name: Bug 报告
+name: Bug Report
 about: 某些行为没有按预期工作
 labels: bug
 ---

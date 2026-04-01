@@ -1,9 +1,9 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: "适用于实现任何功能或 bug 修复时，在编写实现代码之前使用。"
 ---
 
-# Test-Driven Development (TDD)
+# 测试-Driven Development (TDD)
 
 ## 概览
 
@@ -28,7 +28,7 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 Thinking "skip TDD just this once"? Stop. That's rationalization.
 
-## The Iron Law
+## 铁律
 
 ```
 NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
@@ -68,7 +68,7 @@ digraph tdd_cycle {
 }
 ```
 
-### RED - Write Failing Test
+### RED - Write Failing 测试
 
 Write one minimal test showing what should happen.
 
@@ -287,7 +287,7 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 
 **All of these mean: Delete code. Start over with TDD.**
 
-## 示例: Bug Fix
+## 示例: 缺陷 Fix
 
 **Bug:** Empty email accepted
 

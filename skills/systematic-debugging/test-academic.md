@@ -1,4 +1,4 @@
-# 学术测试：Systematic Debugging Skill
+# 学术测试：Systematic Debugging 技能
 
 你可以访问位于 `skills/debugging/systematic-debugging` 的 systematic debugging skill。
 

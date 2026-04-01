@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: 当任务完成、重大功能实现完毕，或准备合并前需要验证工作是否符合要求时使用
+description: "当任务完成、重要功能落地，或准备合并前需要验证工作是否符合要求时使用。"
 ---
 
 # 请求代码审查
@@ -9,7 +9,7 @@ description: 当任务完成、重大功能实现完毕，或准备合并前需�
 
 **核心原则：** 尽早 review，经常 review。
 
-## 什么时候请求 Review
+## 什么时候请求 审查
 
 **必须：**
 - 在 subagent-driven development 中，每完成一个 task 就 review 一次
@@ -21,7 +21,7 @@ description: 当任务完成、重大功能实现完毕，或准备合并前需�
 - 重构前（先做 baseline 检查）
 - 修复复杂 bug 之后
 
-## 如何发起 Review
+## 如何发起 审查
 
 **1. 先拿到 git SHA：**
 ```bash

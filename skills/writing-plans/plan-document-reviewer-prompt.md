@@ -1,4 +1,4 @@
-# Plan 文档审查 Prompt 模板
+# 计划 文档审查 Prompt 模板
 
 在派发 plan 文档审查 subagent 时使用这个模板。
 

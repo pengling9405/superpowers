@@ -1,6 +1,6 @@
 ---
 name: using-superpowers
-description: 在任何对话开始时使用，用来建立如何查找和使用 skills 的规则，并要求在任何响应之前（包括澄清问题）先调用 Skill tool
+description: "在任何对话开始时使用，用来建立如何查找和使用技能的规则，并要求在任何回应之前（包括澄清问题）先调用技能工具。"
 ---
 
 <SUBAGENT-STOP>
@@ -25,7 +25,7 @@ Superpowers skills 会覆盖默认 system prompt 的行为，但 **用户指令�
 
 如果 `CLAUDE.md`、`GEMINI.md` 或 `AGENTS.md` 写着 “不要用 TDD”，而某个 skill 却说 “总是使用 TDD”，那就遵循用户指令。控制权在用户手里。
 
-## 如何访问 Skills
+## 如何访问 技能
 
 **在 Claude Code 中：** 使用 `Skill` tool。调用某个 skill 时，它的内容会被加载并直接呈现给你，照着执行即可。不要用 `Read` tool 去读 skill 文件。
 
@@ -37,7 +37,7 @@ Superpowers skills 会覆盖默认 system prompt 的行为，但 **用户指令�
 
 skills 使用 Claude Code 的工具名。非 Claude Code 平台请查看 `references/codex-tools.md`（Codex）里的工具对应关系。Gemini CLI 用户会通过 `GEMINI.md` 自动加载工具映射。
 
-# 使用 Skills
+# 使用 技能
 
 ## 规则
 
@@ -92,7 +92,7 @@ digraph skill_flow {
 | “这样感觉很高效” | 没纪律的行动会浪费时间，skill 是防护栏。 |
 | “我知道这是什么意思” | 知道概念 ≠ 使用 skill。先调用。 |
 
-## Skill 优先级
+## 技能 优先级
 
 当多个 skill 都可能适用时，使用下面这个顺序：
 
@@ -102,7 +102,7 @@ digraph skill_flow {
 “Let's build X” → 先 brainstorming，再实现型 skill。  
 “Fix this bug” → 先 debugging，再领域专属 skill。
 
-## Skill 类型
+## 技能 类型
 
 **Rigid**（如 TDD、debugging）：严格执行，不要擅自弱化纪律。
 

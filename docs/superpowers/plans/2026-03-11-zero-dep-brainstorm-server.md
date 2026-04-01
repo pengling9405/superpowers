@@ -1,4 +1,4 @@
-# Zero-Dependency Brainstorm Server Implementation Plan
+# Zero-Dependency Brainstorm Server 实现 计划
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
@@ -445,7 +445,7 @@ git add skills/brainstorming/scripts/ .gitignore
 git commit -m "Remove vendored node_modules, swap to zero-dep server.js"
 ```
 
-### Task 4: Manual smoke test
+### Task 4: Manual smoke 测试
 
 - [ ] **Step 1: Start the server manually**
 

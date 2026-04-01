@@ -1,4 +1,4 @@
-# 创建日志：Systematic Debugging Skill
+# 创建日志：Systematic Debugging 技能
 
 这是一个关于如何提炼、结构化并加固关键 skill 的参考示例。
 

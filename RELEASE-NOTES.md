@@ -2,7 +2,7 @@
 
 ## v5.0.6 (2026-03-24)
 
-### Inline Self-Review Replaces Subagent Review Loops
+### Inline Self-审查 Replaces Subagent 审查 Loops
 
 The subagent review loop (dispatching a fresh agent to review plans/specs) doubled execution time (~25 min overhead) without measurably improving plan 质量. Regression 测试 across 5 versions with 5 trials each showed identical 质量 scores regardless of whether the review loop ran.
 
@@ -15,7 +15,7 @@ The subagent review loop (dispatching a fresh agent to review plans/specs) doubl
 
 - **Session directory restructured** — the brainstorm server session directory now contains two peer subdirectories: `content/` (HTML files served to the browser) and `state/` (events, server-info, pid, log). Previously, server state and user interaction data were stored alongside served content, making them accessible over HTTP. The `screen_dir` and `state_dir` paths are both included in the server-started JSON. (Reported by 吉田仁)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Owner-PID lifecycle fixes** — the brainstorm server's owner-PID monitoring had two bugs causing false shutdowns within 60 seconds: (1) EPERM from cross-user PIDs (Tailscale SSH, etc.) was treated as "流程 dead", and (2) on WSL the grandparent PID resolves to a short-lived subprocess that exits before the first lifecycle check. Fixed by treating EPERM as "alive" and validating the owner PID at startup — if it's already dead, monitoring is disabled and the server relies on the 30-minute idle timeout. This also removes the Windows/MSYS2-specific carve-out from `start-server.sh` since the server now handles it generically. (#879)
 - **writing-skills** — corrected false claim that SKILL.md frontmatter supports "only two fields"; now says "two required fields" and links to the agentskills.io specification for all supported fields (PR #882 by @arittr)
@@ -28,7 +28,7 @@ The subagent review loop (dispatching a fresh agent to review plans/specs) doubl
 
 ## v5.0.5 (2026-03-17)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Brainstorm server ESM fix** — renamed `server.js` → `server.cjs` so the brainstorming server starts correctly on Node.js 22+ where the root `package.json` `"type": "module"` caused `require()` to fail. (PR #784 by @sarbojitrana, fixes #774, #780, #783)
 - **Brainstorm owner-PID on Windows** — skip PID lifecycle monitoring on Windows/MSYS2 where the PID namespace is invisible to Node.js, preventing the server from self-terminating after 60 seconds. (#770, docs from PR #768 by @lucasyhzlu-debug)
@@ -40,7 +40,7 @@ The subagent review loop (dispatching a fresh agent to review plans/specs) doubl
 
 ## v5.0.4 (2026-03-16)
 
-### Review Loop Refinements
+### 审查 Loop Refinements
 
 Dramatically reduces token usage and speeds up spec and plan reviews by eliminating unnecessary review passes and tightening reviewer focus.
 
@@ -54,7 +54,7 @@ Dramatically reduces token usage and speeds up spec and plan reviews by eliminat
 - **One-line plugin install** — OpenCode plugin now auto-registers the skills directory via a `config` hook. No symlinks or `skills.paths` config needed. Install is just adding one line to `opencode.json`. (PR #753)
 - **Added `package.json`** so OpenCode can install superpowers as an npm package from git.
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Verify server actually stopped** — `stop-server.sh` now confirms the 流程 is dead before reporting success. SIGTERM + 2s wait + SIGKILL fallback. Reports failure if the 流程 survives. (PR #751)
 - **Generic agent language** — brainstorm companion waiting page now says "the agent" instead of "Claude".
@@ -65,7 +65,7 @@ Dramatically reduces token usage and speeds up spec and plan reviews by eliminat
 
 - **Cursor hooks** — added `hooks/hooks-cursor.json` with Cursor's camelCase format (`sessionStart`, `version: 1`) and updated `.cursor-plugin/plugin.json` to 参考 it. Fixed 平台 detection in `session-start` to check `CURSOR_PLUGIN_ROOT` first (Cursor may also set `CLAUDE_PLUGIN_ROOT`). (Based on PR #709)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Stop firing SessionStart hook on `--resume`** — the startup hook was re-injecting context on resumed sessions, which already have the context in their conversation history. The hook now fires only on `startup`, `clear`, and `compact`.
 - **Bash 5.3+ hook hang** — replaced heredoc (`cat <<EOF`) with `printf` in `hooks/session-start`. Fixes indefinite hang on macOS with Homebrew bash 5.3+ caused by a bash regression with large variable expansion in heredocs. (#572, #571)
@@ -93,7 +93,7 @@ Dramatically reduces token usage and speeds up spec and plan reviews by eliminat
 - **Liveness check** — skill verifies server is responsive before reusing an existing instance
 - **Encoding fix** — proper `<meta charset="utf-8">` on served HTML pages
 
-### Subagent Context Isolation
+### Subagent 背景 Isolation
 
 - All delegation skills (brainstorming, dispatching-parallel-agents, requesting-code-review, subagent-driven-development, writing-plans) now include context isolation principle
 - Subagents receive only the context they need, preventing context window pollution
@@ -137,7 +137,7 @@ Dramatically reduces token usage and speeds up spec and plan reviews by eliminat
 
 - `TodoWrite` → `todowrite` (was incorrectly mapped to `update_plan`); verified against OpenCode 来源
 
-### Bug Fixes
+### 缺陷 Fixes
 
 **Windows/Linux: single quotes break SessionStart hook** (#577, #529, #644, PR #585)
 
@@ -651,7 +651,7 @@ When multiple skills apply, 流程 skills (brainstorming, 调试) now explicitly
 - Updated `brainstorming` skill to require autonomous recon before questioning, encourage recommendation-driven decisions, and prevent agents from delegating prioritization back to humans.
 - Applied writing 清晰度 improvements to `brainstorming` skill following Strunk's "Elements of Style" principles (omitted needless words, converted negative to positive form, improved parallel construction).
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - Clarified `writing-skills` 指导 so it points to the correct agent-specific personal skill directories (`~/.claude/skills` for Claude Code, `~/.codex/skills` for Codex).
 
@@ -765,7 +765,7 @@ These changes address observed agent behavior where they rationalize around skil
 
 ## v3.1.1 (2025-10-17)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Fixed command syntax in README** (#44) - Updated all command references to use correct namespaced syntax (`/superpowers:brainstorm` instead of `/brainstorm`). Plugin-provided commands are automatically namespaced by Claude Code to avoid conflicts between plugins.
 
@@ -813,7 +813,7 @@ These changes address observed agent behavior where they rationalize around skil
 - Improved scannable table formats
 - All skills well under 500-line recommendation
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Re-added missing command redirects** - Restored `commands/brainstorm.md` and `commands/write-plan.md` that were accidentally removed in v3.0 migration
 - Fixed `defense-in-depth` name mismatch (was `Defense-in-Depth-Validation`)
@@ -836,13 +836,13 @@ We now use Anthropic's first-party skills system!
 
 ## v2.0.2 (2025-10-12)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Fixed false warning when local skills repo is ahead of upstream** - The initialization script was incorrectly warning "New skills available from upstream" when the local repository had commits ahead of upstream. The logic now correctly distinguishes between three git states: local behind (should update), local ahead (no warning), and diverged (should warn).
 
 ## v2.0.1 (2025-10-12)
 
-### Bug Fixes
+### 缺陷 Fixes
 
 - **Fixed session-start hook execution in plugin context** (#8, PR #9) - The hook was failing silently with "Plugin hook error" preventing skills context from loading. Fixed by:
   - Using `${BASH_SOURCE[0]:-$0}` fallback when BASH_SOURCE is unbound in Claude Code's execution context
@@ -864,7 +864,7 @@ Users experience seamless operation: the plugin handles cloning, forking, and up
 
 ## Breaking Changes
 
-### Skills Repository Separation
+### 技能 Repository Separation
 
 **The biggest change:** Skills no longer live in the plugin. They've been moved to a separate repository at [obra/superpowers-skills](https://github.com/obra/superpowers-skills).
 
@@ -890,7 +890,7 @@ If you have an existing installation:
 
 ## New 特性
 
-### Skills Repository Infrastructure
+### 技能 Repository Infrastructure
 
 **Automatic Clone & 配置方式** (`lib/initialize-skills.sh`)
 - Clones obra/superpowers-skills on first run
@@ -904,7 +904,7 @@ If you have an existing installation:
 - Notifies when manual sync needed (branch diverged)
 - Uses pulling-updates-from-skills-repository skill for manual sync
 
-### New Skills
+### New 技能
 
 **问题-Solving Skills** (`skills/problem-solving/`)
 - **collision-zone-thinking** - Force unrelated 概念 together for emergent insights
@@ -920,7 +920,7 @@ If you have an existing installation:
 **Architecture Skills** (`skills/architecture/`)
 - **preserving-productive-tensions** - Keep multiple valid approaches instead of forcing premature resolution
 
-### Skills Improvements
+### 技能 Improvements
 
 **using-skills (formerly getting-started)**
 - Renamed from getting-started to using-skills
@@ -967,7 +967,7 @@ If you have an existing installation:
 - `SUPERPOWERS_SKILLS_ROOT` set to `~/.config/superpowers/skills`
 - Used consistently throughout all paths
 
-## Bug Fixes
+## 缺陷 Fixes
 
 - Fixed duplicate upstream remote addition when forking
 - Fixed find-skills double "skills/" prefix in output
@@ -1017,7 +1017,7 @@ This release includes:
 - PR #2: Personal superpowers overlay system (later replaced)
 - Multiple skill refinements and documentation improvements
 
-## Upgrade Instructions
+## Upgrade 使用说明
 
 ### Fresh Install
 
@@ -1054,7 +1054,7 @@ The plugin handles everything automatically.
 
 ## What's Next
 
-### For Users
+### For 用户
 
 - Explore the new 问题-solving skills
 - Try the branch-based 工作流 for skill improvements

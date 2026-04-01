@@ -1,4 +1,4 @@
-# OpenCode Support Implementation Plan
+# OpenCode Support 实现 计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -10,7 +10,7 @@
 
 ---
 
-## Phase 1: Create Shared Core Module
+## 阶段 1: Create Shared Core Module
 
 ### Task 1: Extract Frontmatter Parsing
 
@@ -94,7 +94,7 @@ git commit -m "feat: create shared skills core module with frontmatter parser"
 
 ---
 
-### Task 2: Extract Skill Discovery Logic
+### Task 2: Extract 技能 Discovery Logic
 
 **Files:**
 - Modify: `lib/skills-core.js`
@@ -176,7 +176,7 @@ git commit -m "feat: add skill discovery function to core module"
 
 ---
 
-### Task 3: Extract Skill Resolution Logic
+### Task 3: Extract 技能 Resolution Logic
 
 **Files:**
 - Modify: `lib/skills-core.js`
@@ -328,7 +328,7 @@ git commit -m "feat: add git update checking to core module"
 
 ---
 
-## Phase 2: Refactor Codex to Use Shared Core
+## 阶段 2: Refactor Codex to Use Shared Core
 
 ### Task 5: Update Codex to Import Shared Core
 
@@ -440,7 +440,7 @@ git commit -m "refactor: use shared checkForUpdates in codex"
 
 ---
 
-## Phase 3: Build OpenCode Plugin
+## 阶段 3: 构建 OpenCode Plugin
 
 ### Task 9: Create OpenCode Plugin Directory Structure
 
@@ -496,7 +496,7 @@ git commit -m "feat: create opencode plugin scaffold"
 
 ---
 
-### Task 10: Implement use_skill Tool
+### Task 10: Implement use_skill 工具
 
 **Files:**
 - Modify: `.opencode/plugin/superpowers.js`
@@ -560,7 +560,7 @@ export const SuperpowersPlugin = async ({ project, client, $, directory, worktre
 
           // Format output similar to Claude Code's Skill tool
           return `# ${name || skill_name}
-# ${description || ''}
+# ${描述 || ''}
 # Supporting tools and docs are in ${skillDirectory}
 # ============================================
 
@@ -586,7 +586,7 @@ git commit -m "feat: implement use_skill tool for opencode"
 
 ---
 
-### Task 11: Implement find_skills Tool
+### Task 11: Implement find_skills 工具
 
 **Files:**
 - Modify: `.opencode/plugin/superpowers.js`
@@ -652,7 +652,7 @@ git commit -m "feat: implement find_skills tool for opencode"
 
 ---
 
-### Task 12: Implement Session Start Hook
+### Task 12: Implement 会话 Start Hook
 
 **Files:**
 - Modify: `.opencode/plugin/superpowers.js`
@@ -755,7 +755,7 @@ git commit -m "feat: implement session.started hook for opencode"
 
 ---
 
-## Phase 4: Documentation
+## 阶段 4: Documentation
 
 ### Task 13: Create OpenCode Installation Guide
 
@@ -775,10 +775,10 @@ git commit -m "feat: implement session.started hook for opencode"
 
 ## Installation Steps
 
-### 1. Install Superpowers Skills
+### 1. Install Superpowers 技能
 
 ```bash
-# Clone superpowers skills to OpenCode config directory
+# Clone superpowers 技能 to OpenCode config directory
 mkdir -p ~/.config/opencode/superpowers
 git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
 ```
@@ -808,7 +808,7 @@ You have superpowers.
 
 ## Usage
 
-### Finding Skills
+### Finding 技能
 
 Use the `find_skills` tool to list all available skills:
 
@@ -816,7 +816,7 @@ Use the `find_skills` tool to list all available skills:
 use find_skills tool
 ```
 
-### Loading a Skill
+### Loading a 技能
 
 Use the `use_skill` tool to load a specific skill:
 
@@ -824,7 +824,7 @@ Use the `use_skill` tool to load a specific skill:
 use use_skill tool with skill_name: "superpowers:brainstorming"
 ```
 
-### Personal Skills
+### Personal 技能
 
 Create your own skills in `~/.config/opencode/skills/`:
 
@@ -840,7 +840,7 @@ name: my-skill
 description: Use when [condition] - [what it does]
 ---
 
-# My Skill
+# My 技能
 
 [Your skill content here]
 ```
@@ -862,13 +862,13 @@ git pull
 2. Check OpenCode logs for errors
 3. Verify Node.js is installed: `node --version`
 
-### Skills not found
+### 技能 not found
 
 1. Verify skills directory exists: `ls ~/.config/opencode/superpowers/skills`
 2. Use `find_skills` tool to see what's discovered
 3. Check file structure: each skill should have a `SKILL.md` file
 
-### Tool mapping issues
+### 工具 mapping issues
 
 When a skill references a Claude Code tool you don't have:
 - `TodoWrite` → use `update_plan`
@@ -979,7 +979,7 @@ git commit -m "docs: add opencode support to release notes"
 
 ## Phase 5: Final 验证
 
-### Task 16: Test Codex Still Works
+### Task 16: 测试 Codex Still Works
 
 **Files:**
 - Test: `.codex/superpowers-codex`
@@ -1038,7 +1038,7 @@ No commit needed - this is 验证 only.
 
 ---
 
-### Task 18: Final Commit and Summary
+### Task 18: Final Commit and 摘要
 
 **Files:**
 - Check: `git status`

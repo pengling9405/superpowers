@@ -1,9 +1,9 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
+description: "适用于创建新技能、编辑现有技能，或在发布前验证技能是否正常工作。"
 ---
 
-# Writing Skills
+# Writing 技能
 
 ## 概览
 
@@ -19,7 +19,7 @@ You write test cases (pressure scenarios with subagents), watch them fail (basel
 
 **Official 指导:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
 
-## What is a Skill?
+## What is a 技能?
 
 A **skill** is a 参考 guide for proven techniques, patterns, or tools. Skills help future Claude instances find and apply effective approaches.
 
@@ -27,7 +27,7 @@ A **skill** is a 参考 guide for proven techniques, patterns, or tools. Skills 
 
 **Skills are NOT:** Narratives about how you solved a 问题 once
 
-## TDD Mapping for Skills
+## TDD Mapping for 技能
 
 | TDD Concept | Skill Creation |
 |-------------|----------------|
@@ -44,7 +44,7 @@ A **skill** is a 参考 guide for proven techniques, patterns, or tools. Skills 
 
 The entire skill creation 流程 follows RED-GREEN-REFACTOR.
 
-## When to Create a Skill
+## When to Create a 技能
 
 **Create when:**
 - Technique wasn't intuitively obvious to you
@@ -58,12 +58,12 @@ The entire skill creation 流程 follows RED-GREEN-REFACTOR.
 - Project-specific conventions (put in CLAUDE.md)
 - Mechanical constraints (if it's enforceable with regex/validation, automate it—save documentation for judgment calls)
 
-## Skill Types
+## 技能 Types
 
 ### Technique
 Concrete method with 步骤 to follow (condition-based-waiting, root-cause-tracing)
 
-### Pattern
+### 模式
 Way of thinking about problems (flatten-with-flags, test-invariants)
 
 ### 参考
@@ -90,7 +90,7 @@ skills/
 - Code patterns (< 50 lines)
 - Everything else
 
-## SKILL.md Structure
+## 技能.md Structure
 
 **Frontmatter (YAML):**
 - Two required fields: `name` and `description` (see [agentskills.io/specification](https://agentskills.io/specification) for all supported fields)
@@ -108,9 +108,9 @@ name: Skill-Name-With-Hyphens
 description: Use when [specific triggering conditions and symptoms]
 ---
 
-# Skill Name
+# 技能 Name
 
-## Overview
+## 概览
 What is this? Core principle in 1-2 sentences.
 
 ## When to Use
@@ -119,20 +119,20 @@ What is this? Core principle in 1-2 sentences.
 Bullet list with SYMPTOMS and use cases
 When NOT to use
 
-## Core Pattern (for techniques/patterns)
+## Core 模式 (for techniques/patterns)
 Before/after code comparison
 
 ## Quick Reference
 Table or bullets for scanning common operations
 
-## Implementation
+## 实现
 Inline code for simple patterns
 Link to file for heavy reference or reusable tools
 
 ## Common Mistakes
 What goes wrong + fixes
 
-## Real-World Impact (optional)
+## Real-World 影响 (optional)
 Concrete results
 ```
 
@@ -158,13 +158,13 @@ When the description was changed to just "Use when executing implementation plan
 **The trap:** 说明s that summarize 工作流 create a shortcut Claude will take. The skill body becomes documentation Claude skips.
 
 ```yaml
-# ❌ BAD: Summarizes workflow - Claude may follow this instead of reading skill
+# ❌ BAD: Summarizes 工作流 - Claude may follow this instead of reading 技能
 description: Use when executing plans - dispatches subagent per task with code review between tasks
 
 # ❌ BAD: Too much process detail
 description: Use for TDD - write test first, watch it fail, write minimal code, refactor
 
-# ✅ GOOD: Just triggering conditions, no workflow summary
+# ✅ GOOD: Just triggering conditions, no 工作流 摘要
 description: Use when executing implementation plans with independent tasks in the current session
 
 # ✅ GOOD: Triggering conditions only
@@ -186,13 +186,13 @@ description: For async testing
 # ❌ BAD: First person
 description: I can help you with async tests when they're flaky
 
-# ❌ BAD: Mentions technology but skill isn't specific to it
+# ❌ BAD: Mentions technology but 技能 isn't specific to it
 description: Use when tests use setTimeout/sleep and are flaky
 
-# ✅ GOOD: Starts with "Use when", describes problem, no workflow
+# ✅ GOOD: Starts with "适用于", describes problem, no 工作流
 description: Use when tests have race conditions, timing dependencies, or pass/fail inconsistently
 
-# ✅ GOOD: Technology-specific skill with explicit trigger
+# ✅ GOOD: Technology-specific 技能 with explicit trigger
 description: Use when using React Router and handling authentication redirects
 ```
 
@@ -223,7 +223,7 @@ Use words Claude would 搜索 for:
 
 **Move details to tool help:**
 ```bash
-# ❌ BAD: Document all flags in SKILL.md
+# ❌ BAD: Document all flags in 技能.md
 search-conversations supports --text, --both, --after DATE, --before DATE, --limit N
 
 # ✅ GOOD: Reference --help
@@ -232,22 +232,22 @@ search-conversations supports multiple modes and filters. Run --help for details
 
 **Use cross-references:**
 ```markdown
-# ❌ BAD: Repeat workflow details
+# ❌ BAD: Repeat 工作流 details
 When searching, dispatch subagent with template...
 [20 lines of repeated instructions]
 
-# ✅ GOOD: Reference other skill
+# ✅ GOOD: Reference other 技能
 Always use subagents (50-100x context savings). REQUIRED: Use [other-skill-name] for workflow.
 ```
 
 **Compress examples:**
 ```markdown
-# ❌ BAD: Verbose example (42 words)
+# ❌ BAD: Verbose 示例 (42 words)
 your human partner: "How did we handle authentication errors in React Router before?"
 You: I'll search past conversations for React Router authentication patterns.
 [Dispatch subagent with search query: "React Router authentication error handling 401"]
 
-# ✅ GOOD: Minimal example (20 words)
+# ✅ GOOD: Minimal 示例 (20 words)
 Partner: "How did we handle auth errors in React Router?"
 You: Searching...
 [Dispatch subagent → synthesis]
@@ -275,7 +275,7 @@ wc -w skills/path/SKILL.md
 - `creating-skills`, `testing-skills`, `debugging-with-logs`
 - Active, describes the action you're taking
 
-### 4. Cross-Referencing Other Skills
+### 4. Cross-Referencing Other 技能
 
 **When writing documentation that references other skills:**
 
@@ -346,14 +346,14 @@ You're good at porting - one great 示例 is enough.
 
 ## File Organization
 
-### Self-Contained Skill
+### Self-Contained 技能
 ```
 defense-in-depth/
   SKILL.md    # Everything inline
 ```
 When: All content fits, no heavy 参考 needed
 
-### Skill with Reusable Tool
+### 技能 with Reusable 工具
 ```
 condition-based-waiting/
   SKILL.md    # Overview + patterns
@@ -361,7 +361,7 @@ condition-based-waiting/
 ```
 When: Tool is reusable code, not just narrative
 
-### Skill with Heavy 参考
+### 技能 with Heavy 参考
 ```
 pptx/
   SKILL.md       # Overview + workflows
@@ -371,7 +371,7 @@ pptx/
 ```
 When: 参考 material too large for inline
 
-## The Iron Law (Same as TDD)
+## 铁律 (Same as TDD)
 
 ```
 NO SKILL WITHOUT A FAILING TEST FIRST
@@ -392,11 +392,11 @@ Edit skill without 测试? Same violation.
 
 **REQUIRED BACKGROUND:** The superpowers:test-driven-development skill explains why this matters. Same principles apply to documentation.
 
-## 测试 All Skill Types
+## 测试 All 技能 Types
 
 Different skill types need different test approaches:
 
-### 纪律-Enforcing Skills (rules/requirements)
+### 纪律-Enforcing 技能 (rules/requirements)
 
 **示例:** TDD, 验证-before-completion, designing-before-coding
 
@@ -408,7 +408,7 @@ Different skill types need different test approaches:
 
 **Success criteria:** Agent follows rule under maximum pressure
 
-### Technique Skills (how-to guides)
+### Technique 技能 (how-to guides)
 
 **示例:** condition-based-waiting, root-cause-tracing, defensive-programming
 
@@ -419,7 +419,7 @@ Different skill types need different test approaches:
 
 **Success criteria:** Agent successfully applies technique to new scenario
 
-### Pattern Skills (mental models)
+### 模式 技能 (mental models)
 
 **示例:** reducing-complexity, information-hiding 概念
 
@@ -430,7 +430,7 @@ Different skill types need different test approaches:
 
 **Success criteria:** Agent correctly identifies when/how to apply pattern
 
-### 参考 Skills (documentation/APIs)
+### 参考 技能 (documentation/APIs)
 
 **示例:** API documentation, command references, library guides
 
@@ -456,7 +456,7 @@ Different skill types need different test approaches:
 
 **All of these mean: Test before deploying. 没有例外.**
 
-## Bulletproofing Skills Against Rationalization
+## Bulletproofing 技能 Against Rationalization
 
 Skills that enforce 纪律 (like TDD) need to resist rationalization. Agents are smart and will find loopholes when under pressure.
 
@@ -494,7 +494,7 @@ Add foundational principle early:
 
 This cuts off entire class of "I'm following the spirit" rationalizations.
 
-### Build Rationalization Table
+### 构建 Rationalization Table
 
 Capture rationalizations from baseline 测试 (see 测试 section below). Every excuse agents make goes in the table:
 
@@ -530,11 +530,11 @@ Add to description: symptoms of when you're ABOUT to violate the rule:
 description: use when implementing any feature or bugfix, before writing implementation code
 ```
 
-## RED-GREEN-REFACTOR for Skills
+## RED-GREEN-REFACTOR for 技能
 
 Follow the TDD cycle:
 
-### RED: Write Failing Test (Baseline)
+### RED: Write Failing 测试 (Baseline)
 
 Run pressure scenario with subagent WITHOUT the skill. Document exact behavior:
 - What choices did they make?
@@ -543,7 +543,7 @@ Run pressure scenario with subagent WITHOUT the skill. Document exact behavior:
 
 This is "watch the test fail" - you must see what agents naturally do before writing the skill.
 
-### GREEN: Write Minimal Skill
+### GREEN: Write Minimal 技能
 
 Write skill that addresses those specific rationalizations. Don't add extra content for hypothetical cases.
 
@@ -580,7 +580,7 @@ step2 [label="read file"];
 helper1, helper2, step3, pattern4
 **Why bad:** Labels should have semantic meaning
 
-## STOP: Before Moving to Next Skill
+## STOP: Before Moving to Next 技能
 
 **After writing ANY skill, you MUST STOP and complete the deployment 流程.**
 
@@ -593,7 +593,7 @@ helper1, helper2, step3, pattern4
 
 Deploying untested skills = deploying untested code. It's a violation of 质量 standards.
 
-## Skill Creation Checklist (TDD Adapted)
+## 技能 Creation Checklist (TDD Adapted)
 
 **IMPORTANT: Use TodoWrite to create todos for EACH checklist item below.**
 

@@ -1,4 +1,4 @@
-# Codex App Compatibility Implementation Plan
+# Codex App Compatibility 实现 计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. 步骤 use checkbox (`- [ ]`) syntax for 跟踪.
 
@@ -120,7 +120,7 @@ Clarify that skill ensures a workspace exists, not that it always creates one."
 
 ---
 
-### Task 3: Add Step 1.5 to `finishing-a-development-branch`
+### Task 3: Add 步骤 1.5 to `finishing-a-development-branch`
 
 **Files:**
 - Modify: `skills/finishing-a-development-branch/SKILL.md:38` (insert after Step 1, before Step 2)
@@ -134,7 +134,7 @@ Read `skills/finishing-a-development-branch/SKILL.md` in full. Identify the inse
 Insert the following between Step 1 and Step 2:
 
 ```markdown
-### Step 1.5: Detect Environment
+### 步骤 1.5: Detect Environment
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
@@ -387,7 +387,7 @@ App's native finishing flow for skills that need to adapt."
 
 ---
 
-### Task 7: Automated test — environment detection
+### Task 7: Automated 测试 — environment detection
 
 **Files:**
 - Create: `tests/codex-app-compat/test-environment-detection.sh`
@@ -406,9 +406,9 @@ Create `tests/codex-app-compat/test-environment-detection.sh`:
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Test environment detection logic from PRI-823
+# 测试 environment detection logic from PRI-823
 # Tests the git-dir vs git-common-dir comparison used by
-# using-git-worktrees Step 0 and finishing-a-development-branch Step 1.5
+# using-git-worktrees Step 0 and finishing-a-development-分支 步骤 1.5
 
 PASS=0
 FAIL=0
@@ -554,10 +554,10 @@ Should show exactly 6 files changed (5 skill files + 1 test file). No other file
 
 If test runner exists:
 ```bash
-# Run skill-triggering tests
+# Run 技能-triggering tests
 ./tests/skill-triggering/run-all.sh 2>/dev/null || echo "Skill triggering tests not available in this environment"
 
-# Run SDD integration test
+# Run SDD integration 测试
 ./tests/claude-code/test-subagent-driven-development-integration.sh 2>/dev/null || echo "SDD integration test not available in this environment"
 ```
 

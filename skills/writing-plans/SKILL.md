@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: 当你已经有 spec 或多步骤任务需求，并且还没开始动代码时使用
+description: "当你已经有 spec 或多步骤任务需求，但还没有开始改代码时使用。"
 ---
 
 # 编写计划
@@ -47,7 +47,7 @@ description: 当你已经有 spec 或多步骤任务需求，并且还没开始�
 **每个 plan 都必须从下面这个头部开始：**
 
 ```markdown
-# [Feature Name] Implementation Plan
+# [功能 Name] 实现 计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 

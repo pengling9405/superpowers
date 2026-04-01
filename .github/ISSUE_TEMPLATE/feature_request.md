@@ -1,5 +1,5 @@
 ---
-name: 功能请求
+name: Feature Request
 about: 为 Superpowers 提议新增功能或改动
 labels: enhancement
 ---

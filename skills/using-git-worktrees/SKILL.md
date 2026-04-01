@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: 当你开始需要与当前工作区隔离的功能开发，或在执行实现计划前使用；它会通过智能目录选择与安全校验来创建隔离 git worktree
+description: "当你需要与当前工作区隔离的功能开发环境，或在执行实现计划前创建安全隔离区时使用；它会通过智能目录选择与安全校验来创建 git worktree。"
 ---
 
 # 使用 Git Worktrees

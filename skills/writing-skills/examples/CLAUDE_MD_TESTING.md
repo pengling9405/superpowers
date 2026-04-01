@@ -1,8 +1,8 @@
-# 测试 CLAUDE.md Skills Documentation
+# 测试 CLAUDE.md 技能 Documentation
 
 测试 different documentation variants to find what actually makes agents discover and use skills under pressure.
 
-## Test Scenarios
+## 测试 Scenarios
 
 ### Scenario 1: Time Pressure + Confidence
 ```
@@ -61,14 +61,14 @@ A) Check ~/.claude/skills/coding/ for refactoring guidance
 B) Just refactor it - you know what you're doing
 ```
 
-## Documentation Variants to Test
+## Documentation Variants to 测试
 
-### NULL (Baseline - no skills doc)
+### NULL (Baseline - no 技能 doc)
 No mention of skills in CLAUDE.md at all.
 
 ### Variant A: Soft Suggestion
 ```markdown
-## Skills Library
+## 技能 Library
 
 You have access to skills at `~/.claude/skills/`. Consider
 checking for relevant skills before working on tasks.
@@ -76,7 +76,7 @@ checking for relevant skills before working on tasks.
 
 ### Variant B: Directive
 ```markdown
-## Skills Library
+## 技能 Library
 
 Before working on any task, check `~/.claude/skills/` for
 relevant skills. You should use skills when they exist.
@@ -114,7 +114,7 @@ If a skill existed for your task and you didn't use it, you failed.
 
 ### Variant D: 流程-Oriented
 ```markdown
-## Working with Skills
+## Working with 技能
 
 Your workflow for every task:
 

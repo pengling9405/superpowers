@@ -30,7 +30,7 @@ rm -rf ~/.config/opencode/skills/superpowers
 # 如有需要，删除克隆下来的仓库
 rm -rf ~/.config/opencode/superpowers
 
-# 如果你曾为 superpowers 添加过 skills.paths，也要从 opencode.json 里删掉
+# 如果你曾为 superpowers 添加过 技能.paths，也要从 opencode.json 里删掉
 ```
 
 然后按上面的安装步骤重新配置。
@@ -64,7 +64,7 @@ use skill tool to load superpowers/brainstorming
 2. 确认 `opencode.json` 里的插件配置行正确
 3. 确保你使用的是较新的 OpenCode 版本
 
-### 找不到 Skills
+### 找不到 技能
 
 1. 用 `skill` 工具列出当前已发现的 skills
 2. 确认插件确实已加载（见上面）

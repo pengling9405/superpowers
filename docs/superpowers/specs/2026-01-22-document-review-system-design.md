@@ -27,7 +27,7 @@
 
 **输出格式：**
 ```
-## Spec Review
+## Spec 审查
 
 **Status:** Approved | Issues Found
 
@@ -42,7 +42,7 @@
 
 **派发机制：** 使用 `Task` tool，`subagent_type: general-purpose`。完整 reviewer prompt 由模板提供，由 brainstorming skill 的 controller 负责派发。
 
-## Plan 文档审查者
+## 计划 文档审查者
 
 **目的：** 验证 plan 是否完整、是否符合 spec，以及任务拆解是否合理。
 

@@ -111,7 +111,7 @@ Claude Code 的执行模型本质上是 turn-based。单个 turn 内没有办法
 **从 `window.brainstorm` API 中移除：**
 - `brainstorm.sendToClaude`，因为它已经不存在
 
-### `visual-companion.md`（skill 指令）
+### `visual-companion.md`（技能 指令）
 
 把 “The Loop” 一节改写成上面描述的非阻塞流程，并删除以下所有内容：
 - `wait-for-feedback.sh`

@@ -1,4 +1,4 @@
-# Visual Brainstorming Companion Implementation Plan
+# Visual Brainstorming Companion 实现 计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -404,7 +404,7 @@ git commit -m "test: add brainstorm server integration tests"
 
 ---
 
-## Task 4: Add Visual Companion to Brainstorming Skill
+## Task 4: Add Visual Companion to Brainstorming 技能
 
 **Files:**
 - Modify: `skills/brainstorming/SKILL.md`
@@ -431,7 +431,7 @@ Tell the user: "I've started a visual companion at http://localhost:3333 - open 
 
 Write HTML to `/tmp/brainstorm/screen.html`. The server watches this file and auto-refreshes the browser.
 
-## Reading User Responses
+## Reading 用户 Responses
 
 Check the background task output for JSON events:
 
@@ -555,7 +555,7 @@ git commit -m "chore: ignore brainstorm-server node_modules"
 
 ---
 
-## Summary
+## 摘要
 
 After completing all tasks:
 

@@ -1,5 +1,5 @@
 ---
-name: IDE / 平台支持请求
+name: IDE / Platform Support Request
 about: 请求支持新的 IDE、编辑器或 AI 编码工具
 labels: platform-support
 ---

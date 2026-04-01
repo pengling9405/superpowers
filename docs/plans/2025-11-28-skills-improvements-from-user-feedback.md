@@ -1,4 +1,4 @@
-# Skills Improvements from User Feedback
+# 技能 Improvements from 用户 Feedback
 
 **Date:** 2025-11-28
 **Status:** Draft
@@ -6,7 +6,7 @@
 
 ---
 
-## Executive Summary
+## Executive 摘要
 
 Two Claude instances provided detailed feedback from actual development sessions. Their feedback reveals **systematic gaps** in current skills that allowed preventable bugs to ship despite following the skills.
 
@@ -62,7 +62,7 @@ Subagents are stateless - don't know about previous subagents' processes. No cle
 
 ---
 
-### 问题 3: Context Bloat in Subagent Prompts
+### 问题 3: 背景 Bloat in Subagent Prompts
 
 **What happened:**
 - Standard approach: give subagent full plan file to read
@@ -167,7 +167,7 @@ Rigid separation between implementer and fixer roles when implementer has alread
 
 ---
 
-### 问题 8: Skills Not Being Read
+### 问题 8: 技能 Not Being Read
 
 **What happened:**
 - `testing-anti-patterns` skill exists
@@ -194,7 +194,7 @@ When testing changes to configuration, providers, feature flags, or environment:
 
 **Don't just verify the operation succeeded. Verify the output reflects the intended change.**
 
-### Common Failure Pattern
+### Common Failure 模式
 
 Operation succeeds because *some* valid config exists, but it's not the config you intended to test.
 
@@ -290,7 +290,7 @@ After tests:
 
 ---
 
-### 3. subagent-driven-development: Add Lean Context Option
+### 3. subagent-driven-development: Add Lean 背景 Option
 
 **Modify Step 2: Execute Task with Subagent**
 
@@ -301,7 +301,7 @@ Read that task carefully from [plan-file].
 
 **After:**
 ```
-## Context Approaches
+## 背景 Approaches
 
 **Full Plan (default):**
 Use when tasks are complex or have dependencies:
@@ -387,14 +387,14 @@ Adds ~30 seconds per task, but catches issues before review.
 
 ---
 
-### 5. requesting-code-review: Add Explicit File Reading
+### 5. requesting-code-审查: Add Explicit File Reading
 
 **Modify the code-reviewer template:**
 
 **Add at the beginning:**
 
 ```markdown
-## Files to Review
+## Files to 审查
 
 BEFORE analyzing, read these files:
 
@@ -416,12 +416,12 @@ Explicit instruction prevents "file not found" issues.
 
 ---
 
-### 6. testing-anti-patterns: Add Mock-Interface Drift Anti-Pattern
+### 6. testing-anti-patterns: Add Mock-Interface Drift Anti-模式
 
 **Add new Anti-Pattern 6:**
 
 ```markdown
-## Anti-Pattern 6: Mocks Derived from Implementation
+## Anti-模式 6: Mocks Derived from 实现
 
 **The violation:**
 ```typescript
@@ -499,7 +499,7 @@ Directly addresses the failure pattern from feedback.
 
 ---
 
-### 7. subagent-driven-development: Require Skills Reading for Test Subagents
+### 7. subagent-driven-development: Require 技能 Reading for 测试 Subagents
 
 **Add to prompt template when task involves testing:**
 
@@ -560,9 +560,9 @@ Slightly more complex prompt, but faster end-to-end.
 
 ---
 
-## Implementation Plan
+## 实现 计划
 
-### Phase 1: High-Impact, Low-Risk (Do First)
+### 阶段 1: High-影响, Low-Risk (Do First)
 
 1. **verification-before-completion: Configuration change verification**
    - Clear addition, doesn't change existing content
@@ -579,7 +579,7 @@ Slightly more complex prompt, but faster end-to-end.
    - Fixes concrete problem (reviewers can't find files)
    - File: `skills/requesting-code-review/SKILL.md`
 
-### Phase 2: Moderate Changes (Test Carefully)
+### 阶段 2: Moderate Changes (测试 Carefully)
 
 4. **subagent-driven-development: Process hygiene**
    - Adds new section, doesn't change workflow
@@ -596,7 +596,7 @@ Slightly more complex prompt, but faster end-to-end.
    - But ensures skills are actually used
    - File: `skills/subagent-driven-development/SKILL.md`
 
-### Phase 3: Optimization (Validate First)
+### 阶段 3: Optimization (Validate First)
 
 7. **subagent-driven-development: Lean context option**
    - Adds complexity (two approaches)
@@ -683,7 +683,7 @@ How do we know these improvements work?
 - Keep "use judgment" language in skills
 - Document that skills catch 常见 failures, not all failures
 
-### Risk: Skill Divergence
+### Risk: 技能 Divergence
 **问题:** Different skills give conflicting advice
 **Mitigation:**
 - Review changes across all skills for consistency

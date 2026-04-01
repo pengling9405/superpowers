@@ -1,4 +1,4 @@
-# Document Review System Implementation Plan
+# Document 审查 System 实现 计划
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan.
 
@@ -87,7 +87,7 @@ git commit -m "feat: add spec document reviewer prompt template"
 
 ---
 
-### Task 2: Add Review Loop to Brainstorming Skill
+### Task 2: Add 审查 Loop to Brainstorming 技能
 
 **Files:**
 - Modify: `skills/brainstorming/SKILL.md`
@@ -130,11 +130,11 @@ git commit -m "feat: add spec review loop to brainstorming skill"
 
 ---
 
-## Chunk 2: Plan Document Reviewer
+## Chunk 2: 计划 Document Reviewer
 
 This chunk adds the plan document reviewer to the writing-plans skill.
 
-### Task 3: Create Plan Document Reviewer Prompt Template
+### Task 3: Create 计划 Document Reviewer Prompt Template
 
 **Files:**
 - Create: `skills/writing-plans/plan-document-reviewer-prompt.md`
@@ -142,7 +142,7 @@ This chunk adds the plan document reviewer to the writing-plans skill.
 - [ ] **Step 1:** Create the reviewer prompt template file
 
 ```markdown
-# Plan Document Reviewer Prompt Template
+# 计划 Document Reviewer Prompt Template
 
 Use this template when dispatching a plan document reviewer subagent.
 
@@ -207,7 +207,7 @@ git commit -m "feat: add plan document reviewer prompt template"
 
 ---
 
-### Task 4: Add Review Loop to Writing-Plans Skill
+### Task 4: Add 审查 Loop to Writing-Plans 技能
 
 **Files:**
 - Modify: `skills/writing-plans/SKILL.md`
@@ -221,7 +221,7 @@ Run: `cat skills/writing-plans/SKILL.md`
 Add before the "Execution Handoff" section:
 
 ```markdown
-## Plan Review Loop
+## 计划 审查 Loop
 
 After completing each chunk of the plan:
 
@@ -267,11 +267,11 @@ git commit -m "feat: add plan review loop and checkbox syntax to writing-plans s
 
 ---
 
-## Chunk 3: Update Plan Document 请求头
+## Chunk 3: Update 计划 Document 请求头
 
 This chunk updates the plan document 请求头 template to 参考 the new checkbox syntax requirements.
 
-### Task 5: Update Plan 请求头 Template in Writing-Plans Skill
+### Task 5: Update 计划 请求头 Template in Writing-Plans 技能
 
 **Files:**
 - Modify: `skills/writing-plans/SKILL.md`

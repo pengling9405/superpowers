@@ -1,4 +1,4 @@
-# OpenCode Support Design
+# OpenCode Support 设计
 
 **Date:** 2025-11-22
 **Author:** Bot & Jesse
@@ -41,7 +41,7 @@ OpenCode.ai is a coding agent similar to Claude Code and Codex. Previous attempt
    - Core: `~/.config/opencode/superpowers/skills/` (or installed location)
    - Personal: `~/.config/opencode/skills/` (shadows core skills)
 
-### Code Reuse Strategy
+### Code Reuse 策略
 
 Extract 常见 functionality from `.codex/superpowers-codex` into shared module:
 
@@ -56,7 +56,7 @@ module.exports = {
 };
 ```
 
-### Skill Frontmatter Format
+### 技能 Frontmatter Format
 
 Current format (no `when_to_use` field):
 
@@ -67,7 +67,7 @@ description: Use when [condition] - [what it does]; [additional context]
 ---
 ```
 
-## OpenCode Plugin Implementation
+## OpenCode Plugin 实现
 
 ### Custom Tools
 
@@ -87,7 +87,7 @@ Loads a specific skill's content into the conversation (equivalent to Claude's S
     const skillDir = path.dirname(skillPath);
 
     return `# ${frontmatter.name}
-# ${frontmatter.description}
+# ${frontmatter.描述}
 # Supporting tools and docs are in ${skillDir}
 # ============================================
 
@@ -116,7 +116,7 @@ Lists all available skills with metadata.
 }
 ```
 
-### Session Startup Hook
+### 会话 Startup Hook
 
 When a new session starts (`session.started` 事件):
 
@@ -212,9 +212,9 @@ superpowers/
 └── skills/                       # Unchanged
 ```
 
-## Implementation Plan
+## 实现 计划
 
-### Phase 1: Refactor Shared Core
+### 阶段 1: Refactor Shared Core
 
 1. Create `lib/skills-core.js`
    - Extract frontmatter parsing from `.codex/superpowers-codex`
@@ -232,7 +232,7 @@ superpowers/
    - Verify use-skill command
    - Verify find-skills command
 
-### Phase 2: Build OpenCode Plugin
+### 阶段 2: 构建 OpenCode Plugin
 
 1. Create `.opencode/plugin/superpowers.js`
    - Import shared core from `../../lib/skills-core.js`
@@ -251,7 +251,7 @@ superpowers/
    - Verify find_skills tool works
    - Verify skill directories are accessible
 
-### Phase 3: Documentation & Polish
+### 阶段 3: Documentation & Polish
 
 1. Update README with OpenCode support
 2. Add OpenCode installation to main docs

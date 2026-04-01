@@ -1,4 +1,4 @@
-# Codex App Compatibility: Worktree and Finishing Skill Adaptation
+# Codex App Compatibility: Worktree and Finishing 技能 Adaptation
 
 Make superpowers skills work in the Codex App's sandboxed worktree environment without breaking existing Claude Code or Codex CLI behavior.
 
@@ -29,7 +29,7 @@ Additional findings:
 - The App's native finishing flow: Create branch → Commit modal → Commit and push / Commit and create PR
 - `network_access = true` config is silently broken on macOS (issue #10390)
 
-## Design: Read-Only Environment Detection
+## 设计: Read-Only Environment Detection
 
 Three read-only git commands detect the environment without side effects:
 
@@ -86,7 +86,7 @@ After reporting in Step 0, STOP. Do not continue to Directory Selection or Creat
 
 **Everything else unchanged:** Directory Selection, Safety 验证, Creation 步骤, Project 配置方式, Baseline Tests, Quick 参考, 常见 Mistakes, Red Flags.
 
-### 2. `finishing-a-development-branch/SKILL.md` — Add Step 1.5 + cleanup guard (~20 lines)
+### 2. `finishing-a-development-branch/SKILL.md` — Add 步骤 1.5 + cleanup guard (~20 lines)
 
 **Step 1.5: Detect Environment** (after Step 1 "Verify Tests", before Step 2 "Determine Base Branch")
 
@@ -203,7 +203,7 @@ names, commit messages, and PR descriptions for the user to copy.
 - The full worktree creation flow — preserved exactly for non-worktree environments
 - Subagent dispatch/review/iterate loop — unchanged (filesystem sharing confirmed)
 
-## Scope Summary
+## Scope 摘要
 
 | File | Change |
 |---|---|
@@ -219,9 +219,9 @@ names, commit messages, and PR descriptions for the user to copy.
 
 If a third skill needs the same detection pattern, extract it into a shared `references/environment-detection.md` file (Approach B). Not needed now — only 2 skills use it.
 
-## Test Plan
+## 测试 计划
 
-### Automated (run in Claude Code after implementation)
+### Automated (run in Claude Code after 实现)
 
 1. Normal repo detection — assert IN_LINKED_WORKTREE=false
 2. Linked worktree detection — `git worktree add` test worktree, assert IN_LINKED_WORKTREE=true

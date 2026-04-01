@@ -96,7 +96,7 @@ name: my-skill
 description: Use when [condition] - [what it does]
 ---
 
-# My Skill
+# My 技能
 
 [Your skill content here]
 ```
@@ -127,7 +127,7 @@ Windows 下可用 PowerShell 对应命令删除。
 
 ## 常见问题
 
-### Skills 没有显示出来
+### 技能 没有显示出来
 
 依次检查：
 

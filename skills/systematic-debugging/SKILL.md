@@ -1,9 +1,9 @@
 ---
-name: systematic-调试
-description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+name: systematic-debugging
+description: "适用于遇到任何缺陷、测试失败或异常行为时，在提出修复方案之前使用。"
 ---
 
-# Systematic 调试
+# 系统化调试
 
 ## 概览
 
@@ -13,7 +13,7 @@ Random fixes waste time and create new bugs. Quick patches mask underlying issue
 
 **Violating the letter of this 流程 is violating the spirit of 调试.**
 
-## The Iron Law
+## 铁律
 
 ```
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
@@ -43,11 +43,11 @@ Use for ANY technical issue:
 - You're in a hurry (rushing guarantees rework)
 - Manager wants it fixed NOW (systematic is faster than thrashing)
 
-## The Four Phases
+## 四个阶段
 
 You MUST complete each phase before proceeding to the next.
 
-### Phase 1: Root Cause Investigation
+### 阶段 1: 根因调查
 
 **BEFORE attempting ANY fix:**
 
@@ -119,7 +119,7 @@ You MUST complete each phase before proceeding to the next.
    - Keep tracing up until you find the 来源
    - Fix at 来源, not at symptom
 
-### Phase 2: Pattern Analysis
+### 阶段 2: 模式分析
 
 **Find the pattern before fixing:**
 
@@ -142,7 +142,7 @@ You MUST complete each phase before proceeding to the next.
    - What settings, config, environment?
    - What assumptions does it make?
 
-### Phase 3: Hypothesis and 测试
+### 阶段 3: 假设与测试
 
 **Scientific method:**
 
@@ -167,7 +167,7 @@ You MUST complete each phase before proceeding to the next.
    - Ask for help
    - Research more
 
-### Phase 4: Implementation
+### 阶段 4: 实现
 
 **Fix the root cause, not the symptom:**
 
@@ -287,7 +287,7 @@ These techniques are part of systematic 调试 and available in this directory:
 - **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
 - **superpowers:验证-before-completion** - Verify fix worked before claiming success
 
-## Real-World Impact
+## 真实影响
 
 From 调试 sessions:
 - Systematic approach: 15-30 minutes to fix

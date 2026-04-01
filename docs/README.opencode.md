@@ -28,14 +28,14 @@ rm -rf ~/.config/opencode/skills/superpowers
 # 如有需要，删除克隆下来的仓库
 rm -rf ~/.config/opencode/superpowers
 
-# 如果曾为 superpowers 添加过 skills.paths，也要从 opencode.json 中删掉
+# 如果曾为 superpowers 添加过 技能.paths，也要从 opencode.json 中删掉
 ```
 
 然后按上面的安装步骤重新配置。
 
 ## 使用
 
-### 查找 Skills
+### 查找 技能
 
 使用 OpenCode 原生的 `skill` 工具列出所有可用 skills：
 
@@ -43,13 +43,13 @@ rm -rf ~/.config/opencode/superpowers
 use skill tool to list skills
 ```
 
-### 加载 Skill
+### 加载 技能
 
 ```
 use skill tool to load superpowers/brainstorming
 ```
 
-### 个人 Skills
+### 个人 技能
 
 在 `~/.config/opencode/skills/` 下创建你自己的 skills：
 
@@ -65,12 +65,12 @@ name: my-skill
 description: Use when [condition] - [what it does]
 ---
 
-# 我的 Skill
+# 我的 技能
 
 [在这里写你的 skill 内容]
 ```
 
-### 项目 Skills
+### 项目 技能
 
 在项目内部的 `.opencode/skills/` 下创建项目专属 skills。
 
@@ -112,7 +112,7 @@ description: Use when [condition] - [what it does]
 2. 确认 `opencode.json` 里的插件配置行正确
 3. 确保你运行的是较新的 OpenCode 版本
 
-### 找不到 Skills
+### 找不到 技能
 
 1. 使用 OpenCode 的 `skill` 工具列出当前可用 skills
 2. 确认插件已经加载（见上文）

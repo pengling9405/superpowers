@@ -1,4 +1,4 @@
-# 测试 Skills With Subagents
+# 测试 技能 With Subagents
 
 **Load this 参考 when:** creating or editing skills, before deployment, to verify they work under pressure and resist rationalization.
 
@@ -27,7 +27,7 @@ Don't test:
 - Skills without rules to violate
 - Skills agents have no incentive to bypass
 
-## TDD Mapping for Skill 测试
+## TDD Mapping for 技能 测试
 
 | TDD Phase | Skill 测试 | What You Do |
 |-----------|---------------|-------------|
@@ -79,7 +79,7 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 
 **NOW you know exactly what the skill must prevent.**
 
-## GREEN Phase: Write Minimal Skill (Make It Pass)
+## GREEN Phase: Write Minimal 技能 (Make It Pass)
 
 Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
 
@@ -216,7 +216,7 @@ Write code before test? Delete it. Start over.
 - "I'm following the spirit not the letter"
 ```
 
-### 4. Update description
+### 4. Update 描述
 
 ```yaml
 description: Use when you wrote code before tests, when tempted to test after, or when manually testing seems faster.
@@ -264,7 +264,7 @@ it crystal clear that Option A was the only acceptable answer?
    - Make key points more prominent
    - Add foundational principle early
 
-## When Skill is Bulletproof
+## When 技能 is Bulletproof
 
 **Signs of bulletproof skill:**
 
@@ -279,9 +279,9 @@ it crystal clear that Option A was the only acceptable answer?
 - Agent creates "hybrid approaches"
 - Agent asks permission but argues strongly for violation
 
-## 示例: TDD Skill Bulletproofing
+## 示例: TDD 技能 Bulletproofing
 
-### Initial Test (Failed)
+### Initial 测试 (Failed)
 ```markdown
 Scenario: 200 lines done, forgot TDD, exhausted, dinner plans
 Agent chose: C (write tests after)
@@ -305,7 +305,7 @@ Meta-test: "Skill was clear, I should follow it"
 
 **Bulletproof achieved.**
 
-## 测试 Checklist (TDD for Skills)
+## 测试 Checklist (TDD for 技能)
 
 Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 
@@ -374,7 +374,7 @@ If you wouldn't write code without tests, don't write skills without 测试 them
 
 RED-GREEN-REFACTOR for documentation works exactly like RED-GREEN-REFACTOR for code.
 
-## Real-World Impact
+## Real-World 影响
 
 From applying TDD to TDD skill itself (2025-10-03):
 - 6 RED-GREEN-REFACTOR iterations to bulletproof

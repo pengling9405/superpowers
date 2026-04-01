@@ -133,7 +133,7 @@ escape_for_json() {
 }
 ```
 
-## Reusable Wrapper Pattern
+## Reusable Wrapper 模式
 
 For plugins with multiple hooks, you can create a generic wrapper that takes the script name as an argument:
 

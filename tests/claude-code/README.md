@@ -1,4 +1,4 @@
-# Claude Code Skills 测试
+# Claude Code 技能 测试
 
 使用 Claude Code CLI 对 superpowers skills 进行自动化测试。
 
@@ -40,7 +40,7 @@
 
 ## 测试结构
 
-### test-helpers.sh
+### 测试-helpers.sh
 
 skills 测试通用函数：
 - `run_claude "prompt" [timeout]` - 用 prompt 运行 Claude
@@ -70,7 +70,7 @@ source "$SCRIPT_DIR/test-helpers.sh"
 
 echo "=== Test: My Skill ==="
 
-# 向 Claude 询问这个 skill
+# 向 Claude 询问这个 技能
 output=$(run_claude "What does the my-skill skill do?" 30)
 
 # 验证响应
@@ -83,7 +83,7 @@ echo "=== All tests passed ==="
 
 ### 快速测试（默认运行）
 
-#### test-subagent-driven-development.sh
+#### 测试-subagent-driven-development.sh
 
 测试 skill 内容和要求（约 2 分钟）：
 - skill 是否能被加载与访问
@@ -96,7 +96,7 @@ echo "=== All tests passed ==="
 
 ### 集成测试（使用 `--integration`）
 
-#### test-subagent-driven-development-integration.sh
+#### 测试-subagent-driven-development-integration.sh
 
 完整工作流执行测试（约 10 到 30 分钟）：
 - 创建真实测试项目和 Node.js 配置

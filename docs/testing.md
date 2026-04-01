@@ -1,4 +1,4 @@
-# 测试 Superpowers Skills
+# 测试 Superpowers 技能
 
 This document describes how to test Superpowers skills, particularly the integration tests for complex skills like `subagent-driven-development`.
 
@@ -6,7 +6,7 @@ This document describes how to test Superpowers skills, particularly the integra
 
 测试 skills that involve subagents, 工作流, and complex interactions requires running actual Claude Code sessions in headless mode and verifying their behavior through session transcripts.
 
-## Test Structure
+## 测试 Structure
 
 ```
 tests/
@@ -24,7 +24,7 @@ tests/
 Integration tests execute real Claude Code sessions with actual skills:
 
 ```bash
-# Run the subagent-driven-development integration test
+# Run the subagent-driven-development integration 测试
 cd tests/claude-code
 ./test-subagent-driven-development-integration.sh
 ```
@@ -37,7 +37,7 @@ cd tests/claude-code
 - Claude Code must be installed and available as `claude` command
 - Local dev marketplace must be enabled: `"superpowers@superpowers-dev": true` in `~/.claude/settings.json`
 
-## Integration Test: subagent-driven-development
+## Integration 测试: subagent-driven-development
 
 ### What It Tests
 
@@ -63,7 +63,7 @@ The integration test verifies the `subagent-driven-development` skill correctly:
    - Git commits show proper 工作流
 4. **Token Analysis**: Shows token usage breakdown by subagent
 
-### Test Output
+### 测试 Output
 
 ```
 ========================================
@@ -134,7 +134,7 @@ TOTALS:
 STATUS: PASSED
 ```
 
-## Token Analysis Tool
+## Token Analysis 工具
 
 ### Usage
 
@@ -144,12 +144,12 @@ Analyze token usage from any Claude Code session:
 python3 tests/claude-code/analyze-token-usage.py ~/.claude/projects/<project-dir>/<session-id>.jsonl
 ```
 
-### Finding Session Files
+### Finding 会话 Files
 
 Session transcripts are stored in `~/.claude/projects/` with the working directory path encoded:
 
 ```bash
-# Example for /Users/jesse/Documents/GitHub/superpowers/superpowers
+# 示例 for /用户/jesse/Documents/GitHub/superpowers/superpowers
 SESSION_DIR="$HOME/.claude/projects/-Users-jesse-Documents-GitHub-superpowers-superpowers"
 
 # Find recent sessions
@@ -177,7 +177,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 
 ## Troubleshooting
 
-### Skills Not Loading
+### 技能 Not Loading
 
 **问题**: Skill not found when running headless tests
 
@@ -195,7 +195,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 2. Use `--add-dir /path/to/temp/dir` to grant access to test directories
 3. Check file permissions on test directories
 
-### Test Timeouts
+### 测试 Timeouts
 
 **问题**: Test takes too long and times out
 
@@ -204,7 +204,7 @@ ls -lt "$SESSION_DIR"/*.jsonl | head -5
 2. Check for infinite loops in skill logic
 3. Review subagent task complexity
 
-### Session File Not Found
+### 会话 File Not Found
 
 **问题**: Can't find session transcript after test run
 
@@ -224,14 +224,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/test-helpers.sh"
 
-# Create test project
+# Create 测试 project
 TEST_PROJECT=$(create_test_project)
 trap "cleanup_test_project $TEST_PROJECT" EXIT
 
-# Set up test files...
+# Set up 测试 files...
 cd "$TEST_PROJECT"
 
-# Run Claude with skill
+# Run Claude with 技能
 PROMPT="Your test prompt here"
 cd "$SCRIPT_DIR/../.." && timeout 1800 claude -p "$PROMPT" \
   --allowed-tools=all \
@@ -239,12 +239,12 @@ cd "$SCRIPT_DIR/../.." && timeout 1800 claude -p "$PROMPT" \
   --permission-mode bypassPermissions \
   2>&1 | tee output.txt
 
-# Find and analyze session
+# Find and analyze 会话
 WORKING_DIR_ESCAPED=$(echo "$SCRIPT_DIR/../.." | sed 's/\\//-/g' | sed 's/^-//')
 SESSION_DIR="$HOME/.claude/projects/$WORKING_DIR_ESCAPED"
 SESSION_FILE=$(find "$SESSION_DIR" -name "*.jsonl" -type f -mmin -60 | sort -r | head -1)
 
-# Verify behavior by parsing session transcript
+# Verify behavior by parsing 会话 transcript
 if grep -q '"name":"Skill".*"skill":"your-skill-name"' "$SESSION_FILE"; then
     echo "[PASS] Skill was invoked"
 fi
@@ -262,7 +262,7 @@ python3 "$SCRIPT_DIR/analyze-token-usage.py" "$SESSION_FILE"
 5. **Show token usage**: Always include token analysis for cost visibility
 6. **Test real behavior**: Verify actual files created, tests passing, commits made
 
-## Session Transcript Format
+## 会话 Transcript Format
 
 Session transcripts are JSONL (JSON Lines) files where each line is a JSON object representing a message or tool result.
 
@@ -282,7 +282,7 @@ Session transcripts are JSONL (JSON Lines) files where each line is a JSON objec
 }
 ```
 
-### Tool Results
+### 工具 Results
 
 ```json
 {

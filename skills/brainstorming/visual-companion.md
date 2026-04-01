@@ -30,14 +30,14 @@ The server watches a directory for HTML files and serves the newest one to the b
 
 **Content fragments vs full documents:** If your HTML file starts with `<!DOCTYPE` or `<html`, the server serves it as-is (just injects the helper script). Otherwise, the server automatically wraps your content in the frame template — adding the 请求头, CSS theme, selection indicator, and all interactive infrastructure. **Write content fragments by default.** Only write full documents when you need complete control over the page.
 
-## Starting a Session
+## Starting a 会话
 
 ```bash
 # Start server with persistence (mockups saved to project)
 scripts/start-server.sh --project-dir /path/to/project
 
 # Returns: {"type":"server-started","port":52341,"url":"http://localhost:52341",
-#           "screen_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/content",
+#           "screen_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/内容",
 #           "state_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/state"}
 ```
 
@@ -51,14 +51,14 @@ Save `screen_dir` and `state_dir` from the response. Tell user to open the URL.
 
 **Claude Code (macOS / Linux):**
 ```bash
-# Default mode works — the script backgrounds the server itself
+# Default 模式 works — the script backgrounds the server itself
 scripts/start-server.sh --project-dir /path/to/project
 ```
 
 **Claude Code (Windows):**
 ```bash
-# Windows auto-detects and uses foreground mode, which blocks the tool call.
-# Use run_in_background: true on the Bash tool call so the server survives
+# Windows auto-detects and uses foreground 模式, which blocks the 工具 call.
+# Use run_in_background: true on the Bash 工具 call so the server survives
 # across conversation turns.
 scripts/start-server.sh --project-dir /path/to/project
 ```
@@ -67,13 +67,13 @@ When calling this via the Bash tool, set `run_in_background: true`. Then read `$
 **Codex:**
 ```bash
 # Codex reaps background processes. The script auto-detects CODEX_CI and
-# switches to foreground mode. Run it normally — no extra flags needed.
+# switches to foreground 模式. Run it normally — no extra flags needed.
 scripts/start-server.sh --project-dir /path/to/project
 ```
 
 **Gemini CLI:**
 ```bash
-# Use --foreground and set is_background: true on your shell tool call
+# Use --foreground and set is_background: true on your shell 工具 call
 # so the process survives across turns
 scripts/start-server.sh --project-dir /path/to/project --foreground
 ```
@@ -125,7 +125,7 @@ Use `--url-host` to control what hostname is printed in the returned URL JSON.
 
 6. Repeat until done.
 
-## Writing Content Fragments
+## Writing 内容 Fragments
 
 Write just the content that goes inside the page. The server wraps it in the frame template automatically (请求头, theme CSS, selection indicator, and all interactive infrastructure).
 
@@ -257,7 +257,7 @@ The full 事件 stream shows the user's exploration path — they may click mult
 
 If `$STATE_DIR/events` doesn't exist, the user didn't interact with the browser — use only their terminal text.
 
-## Design Tips
+## 设计 Tips
 
 - **Scale fidelity to the question** — wireframes for layout, polish for polish questions
 - **Explain the question on each page** — "Which layout feels more professional?" not just "Pick one"

@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: 当你已经有一份书面的实现计划，并准备在独立会话中按 review 检查点执行时使用
+description: "当你已经有一份书面的实现计划，并准备在独立会话中按照审查检查点执行时使用。"
 ---
 
 # 执行计划

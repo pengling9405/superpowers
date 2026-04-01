@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: 当实现已经完成、测试全部通过，并且需要决定如何集成这部分工作时使用；它会通过结构化选项引导你完成 merge、PR 或清理收尾
+description: "当实现已经完成、测试全部通过，并且需要决定如何集成这部分工作时使用；它会用结构化选项引导你完成 merge、PR 或收尾清理。"
 ---
 
 # 收尾开发分支
@@ -15,7 +15,7 @@ description: 当实现已经完成、测试全部通过，并且需要决定如�
 
 ## 流程
 
-### Step 1：验证测试
+### 步骤 1：验证测试
 
 **在给任何选项前，先确认测试通过：**
 
@@ -37,7 +37,7 @@ Cannot proceed with merge/PR until tests pass.
 
 **如果测试通过：** 继续 Step 2。
 
-### Step 2：确定基准分支
+### 步骤 2：确定基准分支
 
 ```bash
 # 尝试常见基准分支
@@ -46,7 +46,7 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 也可以直接问用户：“这个分支是从 `main` 切出来的，对吗？”
 
-### Step 3：给出选项
+### 步骤 3：给出选项
 
 必须原样给出这 4 个选项：
 
@@ -63,7 +63,7 @@ Which option?
 
 **不要额外解释**，保持简洁。
 
-### Step 4：执行选择
+### 步骤 4：执行选择
 
 #### 选项 1：本地合并
 
@@ -94,10 +94,10 @@ git push -u origin <feature-branch>
 
 # 创建 PR
 gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
+## 摘要
 <2-3 bullets of what changed>
 
-## Test Plan
+## 测试 计划
 - [ ] <verification steps>
 EOF
 )"
