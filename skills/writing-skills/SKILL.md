@@ -3,31 +3,31 @@ name: writing-skills
 description: "适用于创建新技能、编辑现有技能，或在发布前验证技能是否正常工作。"
 ---
 
-# Writing 技能
+# 编写技能
 
 ## 概览
 
-**Writing skills IS Test-Driven Development applied to 流程 documentation.**
+**编写技能，本质上就是把测试驱动开发用到流程文档上。**
 
-**Personal skills live in agent-specific directories (`~/.claude/skills` for Claude Code, `~/.agents/skills/` for Codex)** 
+**个人技能应放在对应 agent 的专属目录里（Claude Code 使用 `~/.claude/skills`，Codex 使用 `~/.agents/skills/`）。**
 
-You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
+先写测试用例（通过子代理构造压力场景），观察它失败（基线行为），再编写技能文档，确认测试通过（agent 开始遵守），最后持续重构并堵住漏洞。
 
-**Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing.
+**核心原则：** 如果你没有先观察过 agent 在缺少该技能时如何失败，就无法确认这个技能是否真的教会了正确的东西。
 
-**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
+**必要前置：** 在使用本技能前，你必须先理解 `superpowers:test-driven-development`。那个技能定义了基础的 RED-GREEN-REFACTOR 循环，而本技能则把这套方法迁移到文档编写上。
 
-**Official 指导:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
+**官方指南：** 如果要查看 Anthropic 官方的技能编写最佳实践，请参见 `anthropic-best-practices.md`。本文提供的是与之互补、且更偏 TDD 的方法与规则。
 
-## What is a 技能?
+## 什么是技能？
 
-A **skill** is a 参考 guide for proven techniques, patterns, or tools. Skills help future Claude instances find and apply effective approaches.
+**技能** 是对已验证技巧、模式或工具的参考指南。它帮助未来的 Claude 实例快速找到并应用有效方法。
 
-**Skills are:** Reusable techniques, patterns, tools, 参考 guides
+**技能可以是：** 可复用的技巧、模式、工具和参考指南
 
-**Skills are NOT:** Narratives about how you solved a 问题 once
+**技能不是：** 你曾经解决过某个问题的一次性故事记录
 
-## TDD Mapping for 技能
+## 技能的 TDD 映射
 
 | TDD Concept | Skill Creation |
 |-------------|----------------|
@@ -35,22 +35,22 @@ A **skill** is a 参考 guide for proven techniques, patterns, or tools. Skills 
 | **Production code** | Skill document (SKILL.md) |
 | **Test fails (RED)** | Agent violates rule without skill (baseline) |
 | **Test passes (GREEN)** | Agent complies with skill present |
-| **Refactor** | Close loopholes while maintaining 遵循率 |
+| **Refactor** | 在保持遵循率的前提下堵住漏洞 |
 | **Write test first** | Run baseline scenario BEFORE writing skill |
 | **Watch it fail** | Document exact rationalizations agent uses |
 | **Minimal code** | Write skill addressing those specific violations |
 | **Watch it pass** | Verify agent now complies |
 | **Refactor cycle** | Find new rationalizations → plug → re-verify |
 
-The entire skill creation 流程 follows RED-GREEN-REFACTOR.
+整个技能创建过程都遵循 RED-GREEN-REFACTOR。
 
-## When to Create a 技能
+## 什么时候创建技能
 
 **Create when:**
 - Technique wasn't intuitively obvious to you
-- You'd 参考 this again across projects
+- 你未来会在不同项目里反复参考它
 - Pattern applies broadly (not project-specific)
-- Others would 收益
+- 其他人也能从中受益
 
 **Don't create for:**
 - One-off solutions
@@ -58,16 +58,16 @@ The entire skill creation 流程 follows RED-GREEN-REFACTOR.
 - Project-specific conventions (put in CLAUDE.md)
 - Mechanical constraints (if it's enforceable with regex/validation, automate it—save documentation for judgment calls)
 
-## 技能 Types
+## 技能类型
 
 ### Technique
-Concrete method with 步骤 to follow (condition-based-waiting, root-cause-tracing)
+带有明确步骤的具体方法，例如 `condition-based-waiting`、`root-cause-tracing`
 
-### 模式
-Way of thinking about problems (flatten-with-flags, test-invariants)
+### Pattern
+一种思考问题的方式，例如 `flatten-with-flags`、`test-invariants`
 
-### 参考
-API docs, syntax guides, tool documentation (office docs)
+### Reference
+API 文档、语法指南、工具说明等参考资料
 
 ## Directory Structure
 
@@ -85,21 +85,21 @@ skills/
 1. **Heavy 参考** (100+ lines) - API docs, comprehensive syntax
 2. **Reusable tools** - Scripts, utilities, templates
 
-**Keep inline:**
-- Principles and 概念
+**保留在主文档里：**
+- 原则和概念
 - Code patterns (< 50 lines)
 - Everything else
 
-## 技能.md Structure
+## SKILL.md 结构
 
 **Frontmatter (YAML):**
 - Two required fields: `name` and `description` (see [agentskills.io/specification](https://agentskills.io/specification) for all supported fields)
 - Max 1024 characters total
 - `name`: Use letters, numbers, and hyphens only (no parentheses, special chars)
-- `description`: Third-person, describes ONLY 适用场景 (NOT what it does)
-  - Start with "Use when..." to focus on triggering conditions
+  - `description`: 使用第三人称，只描述适用场景，不描述执行步骤
+  - 以 “Use when...” 开头，强调触发条件
   - Include specific symptoms, situations, and contexts
-  - **NEVER summarize the skill's 流程 or 工作流** (see CSO section for why)
+  - **绝不要在 description 里总结技能流程或工作流**（原因见下文 CSO 部分）
   - Keep under 500 characters if possible
 
 ```markdown

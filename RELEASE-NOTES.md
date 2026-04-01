@@ -1,23 +1,23 @@
-# Superpowers Release 说明
+# Superpowers 发布说明
 
 ## v5.0.6 (2026-03-24)
 
-### Inline Self-审查 Replaces Subagent 审查 Loops
+### 内联自审取代子代理审查循环
 
-The subagent review loop (dispatching a fresh agent to review plans/specs) doubled execution time (~25 min overhead) without measurably improving plan 质量. Regression 测试 across 5 versions with 5 trials each showed identical 质量 scores regardless of whether the review loop ran.
+子代理审查循环（为计划 / spec 派发全新 agent 做审查）会让执行时间翻倍，额外增加约 25 分钟，但并没有显著提升计划质量。对 5 个版本、每个版本 5 次试验的回归测试表明，无论是否启用这套审查循环，质量评分基本一致。
 
-- **brainstorming** — replaced Spec Review Loop (subagent dispatch + 3-iteration cap) with inline Spec Self-Review checklist: placeholder scan, internal consistency, scope check, ambiguity check
-- **writing-plans** — replaced Plan Review Loop (subagent dispatch + 3-iteration cap) with inline Self-Review checklist: spec coverage, placeholder scan, 类型 consistency
-- **writing-plans** — added explicit "No Placeholders" section defining plan failures (TBD, vague descriptions, undefined references, "similar to Task N")
-- Self-review catches 3-5 real bugs per run in ~30s instead of ~25 min, with comparable defect rates to the subagent approach
+- **brainstorming**：把 Spec Review Loop（子代理派发 + 最多 3 轮）改为内联 Spec 自审清单，覆盖占位符扫描、内部一致性、范围检查和歧义检查。
+- **writing-plans**：把 Plan Review Loop（子代理派发 + 最多 3 轮）改为内联自审清单，覆盖 spec 覆盖率、占位符扫描和类型一致性。
+- **writing-plans**：新增明确的 “No Placeholders” 小节，用来界定计划失败条件（如 TBD、模糊描述、未定义引用、“similar to Task N”）。
+- 自审每次大约 30 秒就能抓出 3 到 5 个真实问题，而子代理方案要花约 25 分钟，缺陷检出率却相近。
 
 ### Brainstorm Server
 
-- **Session directory restructured** — the brainstorm server session directory now contains two peer subdirectories: `content/` (HTML files served to the browser) and `state/` (events, server-info, pid, log). Previously, server state and user interaction data were stored alongside served content, making them accessible over HTTP. The `screen_dir` and `state_dir` paths are both included in the server-started JSON. (Reported by 吉田仁)
+- **会话目录重构**：brainstorm server 的会话目录现在拆成两个并列子目录：`content/`（提供给浏览器访问的 HTML 文件）和 `state/`（事件、server-info、pid、日志）。此前服务状态和用户交互数据与静态内容放在一起，可能通过 HTTP 被访问到。现在 server-started JSON 同时包含 `screen_dir` 与 `state_dir` 路径。（由吉田仁报告）
 
-### 缺陷 Fixes
+### 缺陷修复
 
-- **Owner-PID lifecycle fixes** — the brainstorm server's owner-PID monitoring had two bugs causing false shutdowns within 60 seconds: (1) EPERM from cross-user PIDs (Tailscale SSH, etc.) was treated as "流程 dead", and (2) on WSL the grandparent PID resolves to a short-lived subprocess that exits before the first lifecycle check. Fixed by treating EPERM as "alive" and validating the owner PID at startup — if it's already dead, monitoring is disabled and the server relies on the 30-minute idle timeout. This also removes the Windows/MSYS2-specific carve-out from `start-server.sh` since the server now handles it generically. (#879)
+- **Owner-PID 生命周期修复**：brainstorm server 的 owner-PID 监控此前有两个 bug，会在 60 秒内误判并关闭服务。(1) 跨用户 PID 返回的 EPERM（例如 Tailscale SSH）被当成“进程已死”；(2) 在 WSL 上，祖父进程 PID 常常解析成一个很快退出的短生命周期子进程，导致首次检查前就失效。现在修复方式是把 EPERM 当作“仍然存活”，并在启动时验证 owner PID；如果它启动时就已经失效，则关闭该监控，改为依赖 30 分钟空闲超时。这样也移除了 `start-server.sh` 中原本针对 Windows / MSYS2 的特殊分支，因为 server 现在能统一处理这类情况。(#879)
 - **writing-skills** — corrected false claim that SKILL.md frontmatter supports "only two fields"; now says "two required fields" and links to the agentskills.io specification for all supported fields (PR #882 by @arittr)
 
 ### Codex App Compatibility
